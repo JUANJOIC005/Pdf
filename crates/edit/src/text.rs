@@ -1169,7 +1169,7 @@ fn unicode_hex(ch: char) -> String {
 /// This build has no Japanese face to draw replacement text with.
 fn no_japanese_font() -> EditError {
     EditError::Invalid(
-        "this text needs PdfCraft's Japanese fallback font, which this build doesn't include \
+        "this text needs Pdf's Japanese fallback font, which this build doesn't include \
          (official releases do; to build it in, set CRAFT_FONTS_DIR to a craft-fonts checkout)"
             .into(),
     )
@@ -1183,7 +1183,7 @@ fn fallback_face<'a>(faces: &[&'a CraftFont], chars: &[char], has_glyph: impl Fn
 /// This build has no Hebrew face to draw replacement text with.
 fn no_hebrew_font() -> EditError {
     EditError::Invalid(
-        "this text needs PdfCraft's Hebrew fallback font (Noto Sans Hebrew), which this build doesn't include \
+        "this text needs Pdf's Hebrew fallback font (Noto Sans Hebrew), which this build doesn't include \
          (to build it in, set CRAFT_FONTS_DIR to a craft-fonts checkout that has it)"
             .into(),
     )

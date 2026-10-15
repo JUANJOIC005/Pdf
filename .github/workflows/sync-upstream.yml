@@ -1,0 +1,49 @@
+name: Sync PdfCraft upstream
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 5 * * *"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: sync-pdfcraft-upstream
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the private fork
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Update the upstream tracking branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git remote add upstream https://github.com/storytold/pdfcraft.git
+          git fetch upstream main
+          git push --force origin upstream/main:refs/heads/upstream-main
+
+      - name: Open an update pull request when needed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if git merge-base --is-ancestor upstream/main origin/main; then
+            echo "The private fork already contains the latest upstream commit."
+            exit 0
+          fi
+          if gh pr list --base main --head upstream-main --state open --json number --jq 'length' | grep -qx 0; then
+            gh pr create \
+              --base main \
+              --head upstream-main \
+              --title "Sync updates from PdfCraft" \
+              --body "Automated update from storytold/pdfcraft. Review conflicts, run CI, and merge only after the branded build passes."
+          fi

@@ -43,7 +43,7 @@ pub enum RedactError {
     #[error("{0}")]
     Undrawable(String),
     #[error(
-        "page {0} has vertical-writing text while a redaction mark is pending, and PdfCraft cannot tell whether that text lies under the mark yet, so nothing was changed"
+        "page {0} has vertical-writing text while a redaction mark is pending, and Pdf cannot tell whether that text lies under the mark yet, so nothing was changed"
     )]
     VerticalText(usize),
     #[error(transparent)]
@@ -530,7 +530,7 @@ pub fn apply(doc: &mut Document, pages: Option<&[usize]>) -> Result<Report, Reda
     // rebuilds fields and pages from that packet, so deleting the AcroForm field alone leaves the
     // redacted value in the file and lets a later relayout put it back. Once redactions are
     // applied the form stops being XFA: drop /AcroForm /XFA (template and datasets), the catalog's
-    // /NeedsRendering, and PdfCraft's own layout mark (pdfcraft_xfa::LAYOUT_KEY), leaving a plain
+    // /NeedsRendering, and Pdf's own layout mark (pdfcraft_xfa::LAYOUT_KEY), leaving a plain
     // already-laid-out AcroForm that neither the saved file nor a relayout can restore from.
     if let Some(root) = doc.root() {
         let strip_xfa = |d: &mut Dict| {

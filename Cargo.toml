@@ -9,7 +9,7 @@ version = "0.8.0"
 edition = "2024"
 license = "MIT OR Apache-2.0"
 rust-version = "1.95"
-repository = "https://github.com/storytold/pdfcraft"
+repository = "https://github.com/JUANJOIC005/Pdf"
 
 [workspace.dependencies]
 # Shared frontend components; engines remain independent of egui.

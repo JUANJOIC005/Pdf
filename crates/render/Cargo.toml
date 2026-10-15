@@ -1,6 +1,6 @@
 [package]
 name = "pdfcraft-render"
-description = "Page rendering (bootstrap: hayro) and document inspection for PdfCraft"
+description = "Page rendering (bootstrap: hayro) and document inspection for Pdf"
 version.workspace = true
 edition.workspace = true
 license.workspace = true

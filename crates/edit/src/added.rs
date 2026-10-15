@@ -213,7 +213,7 @@ pub struct Added {
     pub content: Content,
 }
 
-/// PdfCraft-owned page content discovered in one page/content traversal.
+/// Pdf-owned page content discovered in one page/content traversal.
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct MarkerScan {
     pub marks: Vec<MarkKind>,
@@ -442,7 +442,7 @@ fn shaped_width(t: &AddedText, s: &str, rtl: bool) -> f64 {
 
 fn arabic_error(e: GlyphError, text: &str) -> EditError {
     EditError::Invalid(match e {
-        GlyphError::NoFont => "Arabic text needs PdfCraft's Arabic font, which this build doesn't include \
+        GlyphError::NoFont => "Arabic text needs Pdf's Arabic font, which this build doesn't include \
                                (to build it in, set CRAFT_FONTS_DIR to a craft-fonts checkout that has an Arab face)"
             .into(),
         GlyphError::Missing => format!("the Arabic font can't show \"{text}\""),
@@ -667,7 +667,7 @@ fn type3_shaped(doc: &mut Document, clusters: &[&ShapedCluster], outlines: &Hash
             },
             |f| f.family,
         ),
-        None => "PdfCraft Shaped Text",
+        None => "Pdf Shaped Text",
     };
     let mut descriptor = Dict::new();
     descriptor.set(b"Type".to_vec(), Object::name("FontDescriptor"));
