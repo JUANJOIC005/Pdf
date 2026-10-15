@@ -89,7 +89,9 @@ jobs:
 
       - name: Test (with craft-fonts)
         if: runner.os == 'Linux'
-        run: cargo test --workspace
+        # Limit concurrent linkers: this workspace has many large test binaries and the hosted
+        # runner's lld can otherwise exhaust its mmap budget and terminate with SIGBUS.
+        run: cargo test --workspace --jobs 2
 
       - name: Layering
         if: runner.os == 'Linux'
