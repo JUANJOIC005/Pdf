@@ -169,6 +169,7 @@ pub fn decode_pgm(bytes: &[u8]) -> Option<(usize, usize, Vec<u8>)> {
 /// The alpha is premultiplied, which is why the composite is `channel + white * (1 - alpha)`
 /// rather than the usual `mix`. A page is normally opaque, but a transparent one must not come out
 /// darker here than it looks on screen, or the comparison blames the renderer for the harness.
+#[allow(unknown_lints, clippy::chunks_exact_to_as_chunks)] // Keep compatibility with the workspace MSRV.
 pub fn decode_pam_gray(bytes: &[u8]) -> Option<(usize, usize, Vec<u8>)> {
     let header_end = find(bytes, b"ENDHDR\n")?.checked_add(b"ENDHDR\n".len())?;
     let header = std::str::from_utf8(bytes.get(..header_end)?).ok()?;
