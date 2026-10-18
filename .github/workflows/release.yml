@@ -73,9 +73,11 @@ jobs:
             exit 1
           fi
 
-          echo "version=$version" >> "$GITHUB_OUTPUT"
-          echo "tag=$tag" >> "$GITHUB_OUTPUT"
-          echo "build_date=$(date -u +%F)" >> "$GITHUB_OUTPUT"
+          {
+            echo "version=$version"
+            echo "tag=$tag"
+            echo "build_date=$(date -u +%F)"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Build release and package DEB
         env:
