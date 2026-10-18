@@ -91,6 +91,10 @@ jobs:
         if: runner.os == 'Linux'
         # Limit concurrent linkers: this workspace has many large test binaries and the hosted
         # runner's lld can otherwise exhaust its mmap budget and terminate with SIGBUS.
+        # rust-lld (the default linker since Rust 1.90) still segfaults on the largest test
+        # binaries on the hosted runner, so link the tests with the system BFD linker.
+        env:
+          RUSTFLAGS: -C link-arg=-fuse-ld=bfd
         run: cargo test --workspace --jobs 2
 
       - name: Layering
