@@ -107,7 +107,7 @@ pub enum FillMark {
 }
 
 impl FillMark {
-    /// The `/Name` of the stamp PdfCraft draws for it.
+    /// The `/Name` of the stamp Pdf draws for it.
     pub fn name(self) -> &'static str {
         match self {
             FillMark::Check => "PCCheck",
@@ -127,7 +127,7 @@ impl FillMark {
     }
 }
 
-/// The stamps of Acrobat's stamp palette (drawn in PdfCraft's own style).
+/// The stamps of Acrobat's stamp palette (drawn in Pdf's own style).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum StampKind {
     // Standard business.
@@ -723,7 +723,7 @@ fn annot_dict(doc: &Document, r: ObjRef) -> Dict {
 
 /// A Fill & Sign item: typed text, a check/cross/dot/line, or a typed, drawn or image signature.
 ///
-/// New items carry `/PCFillSign`. Older files are recognised from the dictionaries PdfCraft
+/// New items carry `/PCFillSign`. Older files are recognised from the dictionaries Pdf
 /// already writes (`/IT /FreeTextTypeWriter`, stamp `/Name`, drawn ink whose subject is
 /// "Signature").
 pub fn is_fill_sign(doc: &Document, d: &Dict) -> bool {
@@ -1085,7 +1085,7 @@ pub fn add_annotation(doc: &mut Document, new: &NewAnnotation, meta: &Meta) -> R
         Shape::Stamp { stamp, by, .. } => {
             d.set(b"C".to_vec(), rgb(style.color));
             d.set(b"Name".to_vec(), Object::name(stamp.name()));
-            // Marks the stamp as drawn by PdfCraft: other stamps with standard names keep
+            // Marks the stamp as drawn by Pdf: other stamps with standard names keep
             // their own artwork.
             d.set(b"PCStamp".to_vec(), Object::Bool(true));
             if let Some(b) = by {
@@ -1206,6 +1206,13 @@ pub fn add_annotation(doc: &mut Document, new: &NewAnnotation, meta: &Meta) -> R
             }
             border(&mut d);
             rich_text(&mut d);
+            // The text is laid out for the page as displayed, like a stamp's label.
+            if !matches!(new.shape, Shape::Callout { .. }) {
+                let turn = pdfcraft_model::pages(doc).get(new.page).map_or(0, |p| p.rotation(doc));
+                if matches!(turn, 90 | 180 | 270) {
+                    d.set(b"PCTextRotate".to_vec(), Object::Int(turn));
+                }
+            }
         }
         _ => {}
     }
@@ -1277,7 +1284,7 @@ fn refuse_foreign_text(doc: &Document, d: &Dict) -> Result<(), AnnotError> {
         d.get(b"AP").is_some_and(|ap| doc.resolve(ap).as_dict().is_some_and(|ap| ap.contains(b"N"))) && pdfcraft_fonts::undrawn_mark(d).is_none();
     if drawn_elsewhere && let Some((what, c)) = appearance::undrawable_text(d) {
         return Err(AnnotError::Undrawable(format!(
-            "PdfCraft can't redraw this comment: the standard fonts can't draw \"{}\" (U+{:04X}) in {what}, which would then show as ? (the comment was left as it is)",
+            "Pdf can't redraw this comment: the standard fonts can't draw \"{}\" (U+{:04X}) in {what}, which would then show as ? (the comment was left as it is)",
             c.escape_debug(),
             u32::from(c)
         )));
@@ -1290,7 +1297,7 @@ fn refuse_foreign_text(doc: &Document, d: &Dict) -> Result<(), AnnotError> {
 ///
 /// A comment whose text the standard fonts can't draw, with an appearance another program drew
 /// (with a font that has those characters), keeps that appearance: redrawing it would put `?` in
-/// their place, so the edit is refused (`AnnotError::Undrawable`). One PdfCraft drew with `?`
+/// their place, so the edit is refused (`AnnotError::Undrawable`). One Pdf drew with `?`
 /// (marked `pdfcraft_fonts::UNDRAWN_MARK`) is redrawn.
 pub fn set_appearance(doc: &mut Document, r: ObjRef) -> Result<(), AnnotError> {
     refuse_foreign_text(doc, &annot_dict(doc, r))?;
@@ -1939,6 +1946,47 @@ pub fn set_style(
     redraw_or_restore(doc, r, before)
 }
 
+/// Change the font size of a text box, typewriter text or callout (`/DA` keeps its colour; the
+/// rich-text strings follow) and redraw it. The box grows to hold the wrapped text at the new
+/// size and never shrinks, so a box the user drew large stays large. Sizes are 1 to 400 pt.
+pub fn set_font_size(doc: &mut Document, page: usize, index: usize, size: f64, meta: &Meta) -> Result<(), AnnotError> {
+    let (_, r) = annot_ref(doc, page, index)?;
+    unlocked(doc, r)?;
+    let d = annot_dict(doc, r);
+    if d.name(b"Subtype") != Some(b"FreeText") {
+        return Err(AnnotError::Invalid("only text boxes, typewriter text and callouts have a font size".into()));
+    }
+    if !size.is_finite() || !(1.0..=400.0).contains(&size) {
+        return Err(AnnotError::Invalid("font size must be 1\u{2013}400 pt".into()));
+    }
+    refuse_foreign_text(doc, &d)?;
+    let before = d;
+    doc.update_dict(r, |d| {
+        let (col, _) = appearance::parse_da(d);
+        d.set(b"DA".to_vec(), PdfString::literal(format!("{} {} {} rg /Helv {} Tf", n(col[0]), n(col[1]), n(col[2]), n(size)).into_bytes()));
+        rich_text(d);
+        touch(d, meta);
+    })?;
+    let text = text_value(doc, &annot_dict(doc, r), b"Contents").unwrap_or_default();
+    let result = match fitted_box(doc, r, &text) {
+        Some(fit) => {
+            let cur = annot_dict(doc, r);
+            let nums: Vec<f64> =
+                cur.get(b"Rect").and_then(|o| o.as_array()).map(|a| a.iter().filter_map(|x| x.as_f64()).collect()).unwrap_or_default();
+            // Keep the top and sides; only the bottom edge moves, and only downwards.
+            match four(&nums).map(normalize) {
+                Some(old) if !cur.contains(b"CL") => apply_text_box(doc, r, [fit[0], fit[1].min(old[1]), fit[2], fit[3]], meta, false),
+                _ => apply_text_box(doc, r, fit, meta, false),
+            }
+        }
+        None => redraw_or_restore(doc, r, before.clone()),
+    };
+    if result.is_err() {
+        doc.set(r, Object::Dict(before));
+    }
+    result
+}
+
 /// Whether a comment of this subtype has an interior that can be filled (`/IC`: rectangles,
 /// ovals, polygons and clouds, §12.5.6.8–9).
 pub fn fillable(subtype: &str) -> bool {
@@ -2173,6 +2221,8 @@ pub struct Props {
     pub fillable: bool,
     /// `/IC`, the interior colour (`None`: no fill).
     pub fill: Option<Rgb>,
+    /// Text boxes, typewriter text and callouts: the `/DA` font size in points.
+    pub font_size: Option<f64>,
 }
 
 /// The current properties of the comment at `(page, index)`.
@@ -2198,6 +2248,7 @@ pub fn props(doc: &Document, page: usize, index: usize) -> Option<Props> {
         locked: annotation_flags(doc, d) & FLAG_LOCKED != 0,
         fillable: fillable(&subtype),
         fill: fill_of(d),
+        font_size: (subtype == "FreeText").then(|| appearance::parse_da(d).1),
         subtype,
         endings: line_endings_of(d),
     })

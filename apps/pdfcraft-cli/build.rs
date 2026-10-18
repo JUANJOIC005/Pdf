@@ -13,11 +13,11 @@ fn main() {
         return;
     }
     let mut res = winresource::WindowsResource::new();
-    res.set("ProductName", "PdfCraft")
-        .set("FileDescription", "PdfCraft command-line tool")
+    res.set("ProductName", "Pdf")
+        .set("FileDescription", "Pdf command-line tool")
         .set("LegalCopyright", "Copyright (c) the PdfCraft contributors. MIT OR Apache-2.0.")
-        .set("OriginalFilename", "pdfcraft-cli.exe")
-        .set("InternalName", "pdfcraft-cli");
+        .set("OriginalFilename", "pdf-cli.exe")
+        .set("InternalName", "pdf-cli");
     if let Err(e) = res.compile() {
         if std::env::var_os("PDFCRAFT_REQUIRE_WINRES").is_some() {
             println!("cargo::error=embedding Windows resources failed: {e}");

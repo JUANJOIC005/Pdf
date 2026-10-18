@@ -9,6 +9,7 @@
 	Interface language	Интерфейс тілі
 	Identity	Жеке деректер
 	Name on new comments	Жаңа түсініктемелердегі аты
+	Hide hover previews for highlights without comment text	Түсініктеме мәтіні жоқ белгілеулер үшін меңзер алдын ала қарауын жасыру
 	Open…	Ашу…
 	Open Recent	Соңғы файлдарды ашу
 	Pin folder to Home…	Қалтаны Басты бетке бекіту…
@@ -122,17 +123,17 @@
 	Next page	Келесі бет
 	Previous page	Алдыңғы бет
 	Current page — type a page number or label (such as iv) and press Enter	Ағымдағы бет — бет нөмірін немесе белгісін (мысалы, iv) теріңіз де, Enter пернесін басыңыз
-	Welcome to PdfCraft	PdfCraft-ге қош келдіңіз
+	Welcome to Pdf	Pdf-ге қош келдіңіз
 	An open-source PDF workbench — local, private, and scriptable.	Ашық бастапқы кодты PDF жұмыс орны — жергілікті, жеке әрі скрипттерді қолдайтын.
-	Join the ArtCraft community	ArtCraft қауымдастығына қосылыңыз
+	Join the Pdf community	Pdf қауымдастығына қосылыңыз
 	Get help, share feedback and follow development on Discord.	Көмек алыңыз, пікір бөлісіңіз және Discord-тағы әзірлеуді қадағалаңыз.
 	Recommended tools	Ұсынылған құралдар
 	Use now	Дәл қазір пайдалану
 	Open file	Файлды ашу
 	Recent	Соңғы
-	Files you open in PdfCraft appear here. Drop a PDF anywhere to open it.	PdfCraft-те ашқан файлдарыңыз осында көрсетіледі. PDF файлын ашу үшін оны кез келген жерге апарып тастаңыз.
+	Files you open in Pdf appear here. Drop a PDF anywhere to open it.	Pdf-те ашқан файлдарыңыз осында көрсетіледі. PDF файлын ашу үшін оны кез келген жерге апарып тастаңыз.
 	Privacy	Жекелік
-	PdfCraft works offline. No telemetry, no account, and no cloud processing unless you add a provider.	PdfCraft офлайн жұмыс істейді. Провайдер қоспағаныңызша телеметрия да, тіркелгі де, бұлтта өңдеу де жоқ.
+	Pdf works offline. No telemetry, no account, and no cloud processing unless you add a provider.	Pdf офлайн жұмыс істейді. Провайдер қоспағаныңызша телеметрия да, тіркелгі де, бұлтта өңдеу де жоқ.
 	Scripts run in a sandbox without file or network access. With JavaScript off, Acrobat's standard format, validate and calculate functions still work.	Скрипттер файлға да, желіге де қатынасы жоқ құмсалғышта орындалады. JavaScript өшірулі тұрса да, Acrobat-тың стандартты пішімдеу, тексеру және есептеу функциялары әлі де жұмыс істейді.
 	Back to all tools	Барлық құралдарға оралу
 	Close panel	Панельді жабу
@@ -269,12 +270,12 @@
 	Split document…	Құжатты бөлу…
 	Number pages…	Беттерді нөмірлеу…
 	Keyboard shortcuts	Пернетақта тіркесімдері
-	Join the ArtCraft Discord	ArtCraft Discord-ына қосылыңыз
-	PdfCraft web page	PdfCraft веб-сайты
-	PdfCraft on GitHub	GitHub-тағы PdfCraft
-	ArtCraft website	ArtCraft веб-сайты
+	Join the Pdf Discord	Pdf Discord-ына қосылыңыз
+	Pdf web page	Pdf веб-сайты
+	Pdf on GitHub	GitHub-тағы Pdf
+	Pdf website	Pdf веб-сайты
 	Check for updates…	Жаңартуларды тексеру…
-	About PdfCraft	PdfCraft туралы
+	About Pdf	Pdf туралы
 	Export a PDF	PDF экспорттау
 	Export to	Мынаған экспорттау
 	Microsoft Word (.docx)	Microsoft Word (.docx)
@@ -330,6 +331,7 @@
 	Split	Бөлу
 	More	Қосымша
 	Set page boxes	Бет шектерін орнату
+	Set page transitions	Бет ауысуларын орнату
 	Page labels	Бет белгілері
 	Page transitions	Бет ауысуы
 	Add comments	Түсініктеме қосу
@@ -542,6 +544,7 @@
 	Remove unused objects and merge identical ones	Пайдаланылмаған нысандарды алып тастау және ұқсастарын біріктіру
 	Audit space usage…	Кеңістікті пайдалануды тексеру…
 	Space Audit	Кеңістікті пайдалану аудиті
+	What takes up the space in this file, by kind of content.	Бұл файлдағы орынды не алып жатыр, мазмұн түрі бойынша.
 	Bytes	Байт
 	Content Streams	Мазмұн ағындары
 	X Object Forms	XObject формалары
@@ -728,9 +731,9 @@
 	Check for updates	Жаңартуларды тексеру
 	No check has run yet.	Тексеру әлі жүргізілген жоқ.
 	Checking for a newer version…	Жаңа нұсқа бар ма екені тексерілуде…
-	PdfCraft {v} is available.	PdfCraft {v} қолжетімді.
+	Pdf {v} is available.	Pdf {v} қолжетімді.
 	You have version {c}. Download the new version from its release page.	Сізде {c} нұсқасы бар. Жаңа нұсқаны шығарылым бетінен жүктеп алыңыз.
-	PdfCraft {c} is up to date.	PdfCraft {c} нұсқасы ең соңғы.
+	Pdf {c} is up to date.	Pdf {c} нұсқасы ең соңғы.
 	Couldn't check for updates: {e}	Жаңартуларды тексеру мүмкін болмады: {e}
 	You have version {c}. All releases are listed at {page}.	Сізде {c} нұсқасы бар. Барлық шығарылымдар {page} бетінде көрсетілген.
 	Asks GitHub for the latest release. Nothing is downloaded or installed automatically.	GitHub-тан соңғы шығарылымды сұрайды. Ештеңе автоматты түрде жүктелмейді немесе орнатылмайды.
@@ -811,6 +814,12 @@
 	Windows store  ·  	Windows қоймасы  ·  
 	Issued by: 	Шығарушы: 
 	, Expires: 	, Жарамдылық мерзімі: 
+	Digitally signed by	Цифрлық қолтаңба қойған
+	DN: 	DN: 
+	Reason: 	Себебі: 
+	Location: 	Орны: 
+	Date: 	Күні: 
+	The labels are in English: the signature's font can't draw them in this language.	Белгілер ағылшын тілінде: қолтаңба қаріпі оларды бұл тілде сала алмайды.
 	No digital IDs yet.	Әзірге цифрлық ID жоқ.
 	Configure New Digital ID	Жаңа цифрлық ID теңшеу
 	Remove "{name}" from this list? The file itself is not deleted.	«{name}» осы тізімнен алып тасталсын ба? Файлдың өзі жойылмайды.
@@ -839,8 +848,8 @@
 	No changes allowed	Ешқандай өзгеріс рұқсат етілмейді
 	Annotations, form fill-in, and digital signatures	Белгілеулер, форманы толтыру және цифрлық қолтаңбалар
 	Form fill-in and digital signatures	Форманы толтыру және цифрлық қолтаңбалар
-	The key is in the macOS Keychain, which may ask to allow PdfCraft to use it.	Кілт macOS Keychain ішінде; ол PdfCraft-ге оны пайдалануға рұқсат сұрауы мүмкін.
-	The key is in the Windows certificate store, which may ask to allow PdfCraft to use it.	Кілт Windows сертификаттар қоймасында; ол PdfCraft-ге оны пайдалануға рұқсат сұрауы мүмкін.
+	The key is in the macOS Keychain, which may ask to allow Pdf to use it.	Кілт macOS Keychain ішінде; ол Pdf-ге оны пайдалануға рұқсат сұрауы мүмкін.
+	The key is in the Windows certificate store, which may ask to allow Pdf to use it.	Кілт Windows сертификаттар қоймасында; ол Pdf-ге оны пайдалануға рұқсат сұрауы мүмкін.
 	Digital ID password	Цифрлық ID құпиясөзі
 	Back	Артқа
 	Validate all	Барлығын тексеру
@@ -1091,6 +1100,7 @@
 	Custom text:	Жеке мәтін:
 	Font:	Қаріп:
 	Font size:	Қаріп өлшемі:
+	Font size	Қаріп өлшемі
 	Auto-size text to fit redaction region	Мәтін өлшемін жасыру аймағына автоматты бейімдеу
 	Font colour:	Қаріп түсі:
 	Repeat overlay text	Үстеме мәтінді қайталау
@@ -1230,6 +1240,7 @@
 	Copy text	Мәтінді көшіру
 	Properties…	Сипаттар…
 	Make Current Properties Default	Ағымдағы сипаттарды әдепкі етіп орнату
+	Make Properties Default	Сипаттарды әдепкі етіп орнату
 	More options	Қосымша параметрлер
 	Sort by	Бойынша сұрыптау
 	Author	Автор
@@ -1332,7 +1343,7 @@
 	Anyone opening the document will need this password. It's applied when you save.	Құжатты ашатын кез келген адамға осы құпиясөз қажет болады. Ол сақтау кезінде қолданылады.
 	The document opens without a password; this password is needed to change the restrictions. It's applied when you save.	Құжат құпиясөзсіз ашылады; шектеулерді өзгерту үшін осы құпиясөз керек. Ол сақтау кезінде қолданылады.
 	Recover unsaved documents?	Сақталмаған құжаттарды қалпына келтіру керек пе?
-	PdfCraft didn't shut down normally. These documents had changes that were autosaved:	PdfCraft қалыпты жабылмады. Осы құжаттардың өзгерістері автосақталды:
+	Pdf didn't shut down normally. These documents had changes that were autosaved:	Pdf қалыпты жабылмады. Осы құжаттардың өзгерістері автосақталды:
 	just now	жаңа ғана
 	{n} min ago	{n} минут бұрын
 	{n} h ago	{n} сағат бұрын
@@ -1348,6 +1359,9 @@
 	Sort comments by:	Түсініктемелерді сұрыптау:
 	Create PDF Comment Summary	Түсініктемелердің PDF қорытындысын жасау
 	Revert to the previously saved version of “{name}”? Changes since then can't be undone afterwards.	«{name}» бұрын сақталған нұсқасына оралу керек пе? Осы уақыттан кейінгі өзгерістерді кейін болдырмауға болмайды.
+	Save over the changed file?	Өзгертілген файлдың үстіне сақтау керек пе?
+	“{name}” changed on disk after it was opened or last saved. Saving now replaces that newer version with this one.	«{name}» ашылғаннан немесе соңғы сақталғаннан кейін дискіде өзгертілді. Қазір сақтау сол жаңарақ нұсқаны осымен алмастырады.
+	Save anyway	Бәрібір сақтау
 	Number pages	Беттерді нөмірлеу
 	Style	Стиль
 	None (prefix only)	Жоқ (тек префикс)
@@ -1488,10 +1502,10 @@
 	On the web, open or drop an image to convert it	Веб-нұсқада түрлендіру үшін суретті ашыңыз немесе сүйреп әкеліп тастаңыз
 	Couldn't optimize the file: {e}	Файлды оңтайландыру мүмкін болмады: {e}
 	Couldn't write {path}: {e}	{path} жолына жазу мүмкін болмады: {e}
-	The form asks to be submitted to {u}; PdfCraft doesn't send form data. Save the document to keep your entries.	Форма {u} адресіне жіберілуді сұрайды; PdfCraft форма деректерін жібермейді. Енгізген деректеріңізді сақтап қалу үшін құжатты сақтаңыз.
+	The form asks to be submitted to {u}; Pdf doesn't send form data. Save the document to keep your entries.	Форма {u} адресіне жіберілуді сұрайды; Pdf форма деректерін жібермейді. Енгізген деректеріңізді сақтап қалу үшін құжатты сақтаңыз.
 	This PDF uses the unsupported {s} action.	Бұл PDF қолдау көрсетілмейтін {s} әрекетін пайдаланады.
 	{name}: the {other} action isn't supported yet	{name}: {other} әрекеті әлі қолдау көрсетілмейді
-	{name} submits the form to {url}; PdfCraft doesn't send form data. Save the document to keep your entries.	{name} форманы {url} адресіне жібереді; PdfCraft форма деректерін жібермейді. Енгізген деректеріңізді сақтап қалу үшін құжатты сақтаңыз.
+	{name} submits the form to {url}; Pdf doesn't send form data. Save the document to keep your entries.	{name} форманы {url} адресіне жібереді; Pdf форма деректерін жібермейді. Енгізген деректеріңізді сақтап қалу үшін құжатты сақтаңыз.
 	Export stopped: {e}	Экспорт тоқтатылды: {e}
 	Exported 1 image	1 сурет экспортталды
 	Exported {n} images	{n} сурет экспортталды
@@ -1620,6 +1634,7 @@
 	Couldn't use {name}: {e}	{name} файлын пайдалану мүмкін болмады: {e}
 	Couldn't extract pages: {e}	Беттерді шығарып алу мүмкін болмады: {e}
 	Couldn't write {name}: {e}	{name} файлына жазу мүмкін болмады: {e}
+	the name is not a plain file name	атау қарапайым файл атауы емес
 	Wrote 1 file to {dir}	1 файл {dir} ішіне жазылды
 	Wrote {n} files to {dir}	{n} файл {dir} ішіне жазылды
 	No pages match those choices	Ешбір бет бұл таңдауларға сәйкес келмейді
@@ -1704,8 +1719,8 @@
 	Signed and all signatures are valid.	Қол қойылды, барлық қолтаңбалар жарамды.
 	At least one signature has problems.	Кемінде бір қолтаңбада мәселелер бар.
 	This document is secured. Some changes are restricted by its security settings.	Бұл құжат қорғалған. Кейбір өзгерістер оның қауіпсіздік параметрлерімен шектеулі.
-	This is a dynamic XFA form, which PdfCraft can't display yet. What you see is the file's placeholder page.	Бұл динамикалық XFA формасы, оны PdfCraft әлі көрсете алмайды. Көріп тұрғаныңыз — файлдың орынбасар беті.
-	This form also contains XFA data, which PdfCraft doesn't read yet. You can fill its fields, but Acrobat may show the XFA values instead.	Бұл формада PdfCraft әлі оқымайтын XFA деректері де бар. Өрістерін толтыра аласыз, бірақ Acrobat орнына XFA мәндерін көрсетуі мүмкін.
+	This is a dynamic XFA form, which Pdf can't display yet. What you see is the file's placeholder page.	Бұл динамикалық XFA формасы, оны Pdf әлі көрсете алмайды. Көріп тұрғаныңыз — файлдың орынбасар беті.
+	This form also contains XFA data, which Pdf doesn't read yet. You can fill its fields, but Acrobat may show the XFA values instead.	Бұл формада Pdf әлі оқымайтын XFA деректері де бар. Өрістерін толтыра аласыз, бірақ Acrobat орнына XFA мәндерін көрсетуі мүмкін.
 	This document contains {n} interactive form fields.	Бұл құжат {n} интерактивті форма өрісін қамтиды.
 	This file was damaged and has been repaired. Saving keeps the repaired version.	Бұл файл зақымдалған еді және жөнделді. Сақтау кезінде жөнделген нұсқа сақталады.
 	Dismiss	Жабу
@@ -2059,7 +2074,7 @@ calendar date	September	Қыркүйек
 calendar date	October	Қазан
 calendar date	November	Қараша
 calendar date	December	Желтоқсан
-	Reopen the files that were open when PdfCraft last closed	PdfCraft соңғы рет жабылғанда ашық болған файлдарды қайта ашу
+	Reopen the files that were open when Pdf last closed	Pdf соңғы рет жабылғанда ашық болған файлдарды қайта ашу
 	Clear Recent Files	Соңғы файлдарды тазарту
 	Remove from Recent	Соңғылардан алып тастау
 	Remove {name} from Recent	{name} дегенді соңғылардан алып тастау
@@ -2071,8 +2086,8 @@ calendar date	December	Желтоқсан
 	A link	Сілтеме
 	A button	Түйме
 	A script	Сценарий
-	{who} in this document tried to open an address PdfCraft won't open: {e}.	Осы құжаттағы {who} PdfCraft ашпайтын адресті ашпақ болды: {e}.
-	{who} in this document tried to open an address PdfCraft won't open: {e}. Only web (http, https) and email (mailto) links open from documents.	Осы құжаттағы {who} PdfCraft ашпайтын адресті ашпақ болды: {e}. Құжаттардан тек веб (http, https) және email (mailto) сілтемелері ашылады.
+	{who} in this document tried to open an address Pdf won't open: {e}.	Осы құжаттағы {who} Pdf ашпайтын адресті ашпақ болды: {e}.
+	{who} in this document tried to open an address Pdf won't open: {e}. Only web (http, https) and email (mailto) links open from documents.	Осы құжаттағы {who} Pdf ашпайтын адресті ашпақ болды: {e}. Құжаттардан тек веб (http, https) және email (mailto) сілтемелері ашылады.
 	Another file dialog is still open. Finish with it first.	Басқа файл сұхбат терезесі әлі ашық тұр. Алдымен оны аяқтаңыз.
 	Couldn't show the file picker. Please try again.	Файл таңдау терезесін көрсету мүмкін болмады. Қайталап көріңіз.
 	The document changed while you were choosing a file, so nothing was changed.	Сіз файл таңдап жатқанда құжат өзгергендіктен, ешнәрсе өзгертілген жоқ.
@@ -2128,6 +2143,8 @@ calendar date	December	Желтоқсан
 	Check the pages	Беттерді белгілеу
 	Closed arrow	Жабық көрсеткі
 	Collapse all	Барлығын жию
+	Collapse all pages	Барлық беттерді жию
+	Expand all pages	Барлық беттерді жаю
 	Column select	Баған бойынша таңдау
 	Comb of characters	Таңбалар торы
 	Custom font	Арнаулы қаріп
@@ -2157,7 +2174,7 @@ calendar date	December	Желтоқсан
 	Open a PDF ({key})	PDF ашу ({key})
 	Open arrow	Ашық көрсеткі
 	Pages: {k} of {n}	Беттер: {k}, барлығы {n}
-	PdfCraft is drawing without a graphics processor, so it may be slow. Updating the graphics driver may help.	PdfCraft графикалық процессорсыз сурет салуда, сондықтан баяу жұмыс істеуі мүмкін. Графикалық драйверді жаңарту көмектесуі мүмкін.
+	Pdf is drawing without a graphics processor, so it may be slow. Updating the graphics driver may help.	Pdf графикалық процессорсыз сурет салуда, сондықтан баяу жұмыс істеуі мүмкін. Графикалық драйверді жаңарту көмектесуі мүмкін.
 	Preview unavailable: {e}	Алдын ала көру қолжетімсіз: {e}
 	Previous ({key})	Алдыңғы ({key})
 	Print ({key})	Басып шығару ({key})
@@ -2177,7 +2194,7 @@ calendar date	December	Желтоқсан
 	Slash	Қиғаш сызық
 	Some bookmarks are not shown here: the panel lists a limited number, nested a limited depth.	Кейбір бетбелгілер осында көрсетілмеген: панель шектеулі санды, шектеулі тереңдікке дейін ғана тізеді.
 	Switch to List view to change the pages it takes.	Қамтитын беттерін өзгерту үшін Тізім көрінісіне ауысыңыз.
-	Text recognition isn't installed: its model files are missing. Reinstall PdfCraft, or set PDFCRAFT_MODELS to the folder that holds them.	Мәтінді тану орнатылмаған: модель файлдары жоқ. PdfCraft қайта орнатыңыз немесе PDFCRAFT_MODELS айнымалысына олар жатқан қалтаны көрсетіңіз.
+	Text recognition isn't installed: its model files are missing. Reinstall Pdf, or set PDFCRAFT_MODELS to the folder that holds them.	Мәтінді тану орнатылмаған: модель файлдары жоқ. Pdf қайта орнатыңыз немесе PDFCRAFT_MODELS айнымалысына олар жатқан қалтаны көрсетіңіз.
 	Text used as a clipping path cannot be moved with this selection.	Қиып алу жолы ретінде қолданылатын мәтін бұл таңдаумен жылжытылмайды.
 	The document changed while you were editing field properties.	Өріс сипаттарын түзетіп жүргенде құжат өзгерді.
 	The document is no longer open.	Құжат енді ашық емес.
@@ -2193,7 +2210,7 @@ calendar date	December	Желтоқсан
 	Zoom in ({key})	Үлкейту ({key})
 	Zoom in / out (also pinch or {key}-scroll)	Үлкейту / кішірейту (сонымен қатар қысу немесе {key}-айналдыру)
 	Zoom out ({key})	Кішірейту ({key})
-	the text recognition models are not installed (reinstall PdfCraft, or set PDFCRAFT_MODELS to the folder that holds them)	мәтінді тану модельдері орнатылмаған (PdfCraft қайта орнатыңыз немесе PDFCRAFT_MODELS айнымалысына олар жатқан қалтаны көрсетіңіз)
+	the text recognition models are not installed (reinstall Pdf, or set PDFCRAFT_MODELS to the folder that holds them)	мәтінді тану модельдері орнатылмаған (Pdf қайта орнатыңыз немесе PDFCRAFT_MODELS айнымалысына олар жатқан қалтаны көрсетіңіз)
 	{name} is too large for a word list (at most 1 MB).	{name} сөз тізімі үшін тым үлкен (ең көбі 1 МБ).
 	{n} fields selected	{n} өріс таңдалды
 	{n} word(s) or phrase(s)	{n} сөз немесе тіркес
@@ -2225,6 +2242,8 @@ key	Space	Бос орын
 	Fill & Sign signature	«Толтыру және қол қою» қолтаңбасы
 	Choose image…	Сурет таңдау…
 	Looking for printers…	Принтерлер ізделуде…
+	Sending sheet {s} of {n} to {printer}…	{n} парақтың {s}-парағы {printer} құрылғысына жіберілуде…
+	No printers were found. Check that the printer is installed and the print spooler is running, then open Print again.	Принтерлер табылмады. Принтердің орнатылғанын және басып шығару кезегі қызметінің жұмыс істеп тұрғанын тексеріп, «Басып шығару» терезесін қайта ашыңыз.
 	Sending to {printer}…	{printer} құрылғысына жіберілуде…
 	Enter permissions password…	Рұқсаттар құпиясөзін енгізу…
 	Permissions password	Рұқсаттар құпиясөзі
@@ -2259,10 +2278,10 @@ key	Space	Бос орын
 	Printer paper and scaling may differ. Check driver settings.	Принтер қағазы мен масштабы өзгеше болуы мүмкін. Драйвер параметрлерін тексеріңіз.
 	Drawing scale changes. Use Actual size for full-scale plans.	Сызба масштабы өзгереді. Толық масштабты жоспарлар үшін Нақты өлшемді пайдаланыңыз.
 	Reload documents when their files change on disk	Дискідегі файлдары өзгергенде құжаттарды қайта жүктеу
-	This file changed on disk. Reload it to see the new version; your unsaved changes will be lost.	Бұл файл дискіде өзгерді. Жаңа нұсқасын көру үшін оны қайта жүктеңіз; сақталмаған өзгерістер жоғалады.
+	This file changed on disk. Reload shows the new version and drops your unsaved changes; Save replaces it with this version.	Бұл файл дискіде өзгертілді. «Қайта жүктеу» жаңа нұсқаны көрсетіп, сақталмаған өзгерістеріңізді тастайды; «Сақтау» оны осы нұсқамен алмастырады.
 	Reload	Қайта жүктеу
 	Couldn't reload {name}: {e}	{name} қайта жүктеу мүмкін болмады: {e}
-	Mouse wheel scroll speed	Тінтуір дөңгелегімен айналдыру жылдамдығы
+	Scroll speed (mouse wheel and arrow keys)	Айналдыру жылдамдығы (тінтуір дөңгелегі және көрсеткі пернелері)
 scroll speed	Slow	Баяу
 scroll speed	Normal	Қалыпты
 scroll speed	Fast	Жылдам
@@ -2279,8 +2298,8 @@ animation effects	Off	Өшірулі
 	Greyscale	Сұр реңктер
 	Black and white	Ақ-қара
 	This printer's driver doesn't take two-sided settings from other programs, so its own setting applies. Change it in Properties…	Бұл принтердің драйвері басқа бағдарламалардан екі жақты басып шығару баптауларын қабылдамайды, сондықтан өз баптауы қолданылады. Оны мына жерден өзгертіңіз: Сипаттар…
-	This field's font can't draw “{c}” ({code}), so PdfCraft shows ? in its place. The value is saved, and other PDF viewers redraw the field from it.	Бұл өрістің қаріпі «{c}» ({code}) таңбасын сала алмайды, сондықтан PdfCraft оның орнына ? көрсетеді. Мән сақталады, ал басқа PDF қарау құралдары өрісті соған қарап қайта салады.
-	The fonts PdfCraft writes with can't draw “{c}” ({code}), so it shows as ? in every PDF viewer. The text is saved.	PdfCraft жазатын қаріптер «{c}» ({code}) таңбасын сала алмайды, сондықтан ол барлық PDF қарау құралдарында ? болып көрінеді. Мәтін сақталады.
+	This field's font can't draw “{c}” ({code}), so Pdf shows ? in its place. The value is saved, and other PDF viewers redraw the field from it.	Бұл өрістің қаріпі «{c}» ({code}) таңбасын сала алмайды, сондықтан Pdf оның орнына ? көрсетеді. Мән сақталады, ал басқа PDF қарау құралдары өрісті соған қарап қайта салады.
+	The fonts Pdf writes with can't draw “{c}” ({code}), so it shows as ? in every PDF viewer. The text is saved.	Pdf жазатын қаріптер «{c}» ({code}) таңбасын сала алмайды, сондықтан ол барлық PDF қарау құралдарында ? болып көрінеді. Мәтін сақталады.
 	Browser's print dialog	Браузердің басып шығару терезесі
 	Copies, two-sided printing and colour are chosen in the browser's print dialog.	Көшірмелер саны, екі жақты басып шығару және түс браузердің басып шығару терезесінде таңдалады.
 	Preparing {n} sheets for printing…	Басып шығаруға парақтар дайындалуда: {n}…
@@ -2310,7 +2329,7 @@ animation effects	Off	Өшірулі
 @plural	Downloaded {n} PDF|Downloaded {n} PDFs	{n} PDF жүктелді|{n} PDF жүктелді
 @plural	{n} field name collides with earlier files and will be renamed: {list}|{n} field names collide with earlier files and will be renamed: {list}	{n} өріс атауы алдыңғы файлдармен қайшы келеді және қайта аталады: {list}|{n} өріс атауы алдыңғы файлдармен қайшы келеді және қайта аталады: {list}
 	Scan	Сканерлеу
-	Sign a sheet of white paper and take a photo of it in bright, even light (use the flash). Choose the photo or drop it here: PdfCraft finds the signature and removes the paper.	Ақ қағаз парағына қол қойып, оны жарық әрі біркелкі жарықта суретке түсіріңіз (жарқылды қосыңыз). Суретті таңдаңыз немесе осында тастаңыз: PdfCraft қолтаңбаны тауып, қағазды алып тастайды.
+	Sign a sheet of white paper and take a photo of it in bright, even light (use the flash). Choose the photo or drop it here: Pdf finds the signature and removes the paper.	Ақ қағаз парағына қол қойып, оны жарық әрі біркелкі жарықта суретке түсіріңіз (жарқылды қосыңыз). Суретті таңдаңыз немесе осында тастаңыз: Pdf қолтаңбаны тауып, қағазды алып тастайды.
 	Choose photo…	Суретті таңдау…
 	No photo chosen	Сурет таңдалмаған
 	Photo	Сурет
@@ -2339,6 +2358,10 @@ animation effects	Off	Өшірулі
 	The linked PDF opened, but its named destination was not applied.	Байланысты PDF ашылды, бірақ оның аталған мақсаты қолданылмады.
 	The linked PDF opened, but its page destination was out of range.	Байланысты PDF ашылды, бірақ оның мақсатты беті ауқымнан тыс.
 	Local cross-PDF links require the desktop app	PDF файлдары арасындағы жергілікті сілтемелер үшін жұмыс үстелі қолданбасы қажет
+	Cut Image	Суретті кесу
+	Redact Image	Суретті жасыру
+	Create Link…	Сілтеме жасау…
+	Recognize Text…	Мәтінді тану…
 	Minimize	Жию
 	Maximize	Жаю
 	Restore	Қалпына келтіру
@@ -2348,7 +2371,63 @@ animation effects	Off	Өшірулі
 # Absolute local GoToR confirmation (#1364).
 	Allow	Рұқсат беру
 	Only allow this if you trust the source document.	Бастапқы құжатқа сенсеңіз ғана рұқсат беріңіз.
+	Open in Full Screen mode?	Толық экран режимінде ашу керек пе?
+	This document asks to open in Full Screen mode: the page fills the screen and nothing else shows. Press Esc at any time to leave it.	Бұл құжат толық экран режимінде ашылуды сұрайды: бет экранды толтырады және басқа ештеңе көрсетілмейді. Шығу үшін кез келген уақытта Esc басыңыз.
+	Full Screen	Толық экран
+	Not now	Қазір емес
 	Open this local PDF?	Осы жергілікті PDF файлын ашу керек пе?
 	This document is trying to open a local file:	Бұл құжат жергілікті файлды ашуға әрекеттеніп жатыр:
 	Move tag earlier	Тегті ертерек жылжыту
 	Move tag later	Тегті кейінірек жылжыту
+
+# Historical snapshot notice bar (View signed version / View revision).
+	You are viewing the signed version of “{from}” (revision {rev}). It is a snapshot: changes here won't affect the original.	Сіз „{from}“ құжатының қол қойылған нұсқасын ({rev} нұсқа) қарап отырсыз. Бұл сақталған көшірме: мұндағы өзгерістер түпнұсқаға әсер етпейді.
+	You are viewing revision {rev} of “{from}”. It is a snapshot: changes here won't affect the original.	Сіз „{from}“ құжатының {rev} нұсқасын қарап отырсыз. Бұл сақталған көшірме: мұндағы өзгерістер түпнұсқаға әсер етпейді.
+	Turn upside down (180°)	Төңкеру (180°)
+	4 x 6 in label (101.6 x 152.4 mm)	4 × 6 дюйм жапсырма (101,6 × 152,4 мм)
+	Cuts each page to its printed area, turns it upright and fits it to the sheet without stretching. One label per sheet.	Әр бетті басылған аймағына дейін қиып, тік бұрып, созбай параққа сыйғызады. Әр параққа бір жапсырма.
+	Find untagged content	Тегтелмеген мазмұнды табу
+	No untagged content was found.	Тегтелмеген мазмұн табылмады.
+	Found {n} untagged content problems.	Тегтелмеген мазмұнға қатысты {n} мәселе табылды.
+	Tag form fields	Пішін өрістерін тегтеу
+	Mark as artifact	Артефакт ретінде белгілеу
+	Remove this leaf tag from reading order and mark its direct content as an artifact	Осы жапырақ тегін оқу ретінен алып тастап, оның тікелей мазмұнын артефакт ретінде белгілеңіз
+	Mark content as artifact	Мазмұнды артефакт ретінде белгілеу
+	Word count	Сөздер саны
+	Current page only	Тек ағымдағы бет
+	Exclude tagged tables	Белгіленген кестелерді есепке алмау
+	Exclude tagged code blocks	Белгіленген код блоктарын есепке алмау
+	Exclude image/OCR text	Сурет/OCR мәтінін есепке алмау
+	Exclusions use PDF tags. Untagged tables and code remain included. Image exclusion also removes invisible text.	Есептен шығару PDF тегтерін пайдаланады. Тегсіз кестелер мен код есепте қалады. Суреттерді алып тастау көрінбейтін мәтінді де алып тастайды.
+	Words	Сөздер
+	Characters	Таңбалар
+	Characters without spaces	Бос орынсыз таңбалар
+	Pages counted	Есептелген беттер
+	Some pages contain no countable text. Scanned images need OCR first.	Кейбір беттерде санауға болатын мәтін жоқ. Сканерленген суреттерге алдымен OCR қажет.
+	Some content could not be classified safely and was kept in the count.	Кейбір мазмұнды сенімді түрде жіктеу мүмкін болмады, сондықтан ол есепте қалды.
+	Counting words… {n} pages read	Сөздер саналуда… {n} бет оқылды
+	Word counting stopped unexpectedly.	Сөздерді санау күтпеген жерден тоқтады.
+	Word count…	Сөздер саны…
+@id	file.word_count	Сөздер саны…
+	Standard	Стандартты
+	Mobile	Мобильді құрылғы
+	Merge image fragments	Сурет фрагменттерін біріктіру
+	Optimizing… merging image fragments	Оңтайландыру… сурет фрагменттерін біріктіру
+	Side by side	Қатар
+	New file only	Тек жаңа файл
+	Old file: {name}	Ескі файл: {name}
+	New file: {name}	Жаңа файл: {name}
+	Print as image	Сурет ретінде басып шығару
+	Resolution:	Ажыратымдылық:
+	Use it when a printer skips text, shading or transparency. The print is no longer searchable text; with Print in grayscale, the pictures are grey.	Принтер мәтінді, көлеңкені немесе мөлдірлікті өткізіп жіберсе, қолданыңыз. Басылған құжат енді іздеуге болатын мәтін емес; сұр реңкпен басып шығарғанда суреттер сұр болады.
+	Crop Image	Суретті қию
+	Remove Crop	Қиюды алып тастау
+	Trim the picture with its handles; Enter or Done applies	Суретті тұтқаларымен қиыңыз; Enter немесе Дайын қолданады
+	Redaction mark appearance	Жасыру белгісінің көрінісі
+	Outline colour:	Контур түсі:
+	Fill colour:	Толтыру түсі:
+	Shown while the pointer is over a mark.	Меңзер белгінің үстінде тұрғанда көрсетіледі.
+	Opacity:	Мөлдірсіздік:
+	Make properties default	Қасиеттерді әдепкі ету
+	Pages selected	Таңдалған беттер
+	Page properties	Бет қасиеттері

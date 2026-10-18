@@ -1,4 +1,4 @@
-//! The system's choice for Preferences ▸ "Reopen the files that were open when PdfCraft last closed".
+//! The system's choice for Preferences ▸ "Reopen the files that were open when Pdf last closed".
 //!
 //! On macOS, System Settings ▸ Desktop & Dock ▸ Windows ▸ "Close windows when quitting an
 //! application" is on by default; turning it off stores `NSQuitAlwaysKeepsWindows = 1`, and apps

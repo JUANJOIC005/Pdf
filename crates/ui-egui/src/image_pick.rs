@@ -62,7 +62,7 @@ pub(crate) fn paint(painter: &egui::Painter, xf: &PageXform, page: usize, info: 
 fn safe_name(s: &str) -> String {
     let cleaned: String = s.chars().map(|c| if c.is_control() || r#"/\:*?"<>|"#.contains(c) { '_' } else { c }).take(80).collect();
     let cleaned = cleaned.trim().trim_matches('.').to_string();
-    if cleaned.is_empty() { "PdfCraft".into() } else { cleaned }
+    if cleaned.is_empty() { "Pdf".into() } else { cleaned }
 }
 
 /// The per-user folder that holds the file of the last Copy Image in Original Format: `Clipboard`
@@ -79,9 +79,9 @@ fn clipboard_dir() -> Option<std::path::PathBuf> {
     }
     let env = |k: &str| std::env::var_os(k).filter(|v| !v.is_empty()).map(PathBuf::from).filter(|p| p.is_absolute());
     if cfg!(target_os = "macos") {
-        env("HOME").map(|h| h.join("Library/Caches/PdfCraft/Clipboard"))
+        env("HOME").map(|h| h.join("Library/Caches/Pdf/Clipboard"))
     } else if cfg!(windows) {
-        env("LOCALAPPDATA").map(|d| d.join("PdfCraft").join("Clipboard"))
+        env("LOCALAPPDATA").map(|d| d.join("Pdf").join("Clipboard"))
     } else {
         env("XDG_CACHE_HOME").or_else(|| env("HOME").map(|h| h.join(".cache"))).map(|d| d.join("pdfcraft/clipboard"))
     }
@@ -220,7 +220,7 @@ mod tests {
     #[test]
     fn file_names_are_safe() {
         assert_eq!(safe_name("a/b:c"), "a_b_c");
-        assert_eq!(safe_name("  ..  "), "PdfCraft");
+        assert_eq!(safe_name("  ..  "), "Pdf");
         assert_eq!(safe_name("Relazione 2026"), "Relazione 2026");
     }
 
@@ -245,7 +245,7 @@ mod tests {
         std::fs::write(dir.join("Old p1 img1.png"), b"old").unwrap();
         let path = write_clipboard_file(&dir, "New p2 img1.jpg", b"new").unwrap();
         assert_eq!(std::fs::read(&path).unwrap(), b"new");
-        assert!(dir.join("keep.txt").exists(), "files PdfCraft didn't write are kept");
+        assert!(dir.join("keep.txt").exists(), "files Pdf didn't write are kept");
         assert!(!dir.join("Old p1 img1.png").exists(), "the previous copy is removed");
         assert!(write_clipboard_file(&dir, "../escape p1 img1.png", b"x").is_err());
         #[cfg(unix)]

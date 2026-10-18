@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Name=Pdf
+GenericName=PDF Editor
+Comment=Read, organize, combine, split and secure PDFs
+Exec=pdf %U
+TryExec=pdf
+Icon=io.github.juanjoic005.pdf
+Terminal=false
+StartupNotify=true
+StartupWMClass=io.github.juanjoic005.pdf
+Categories=Office;Viewer;
+Keywords=pdf;viewer;editor;annotate;sign;forms;merge;split;
+MimeType=application/pdf;

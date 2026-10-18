@@ -15,7 +15,7 @@
 # localisation or any other product's translation. Terminology: annotations are "komentáře",
 # pages are "stránky", form fields are "formulářová pole", redaction is "začernění", flattening is
 # "sloučení se stránkou", tags are "tagy" (to tag = "označkovat"). Product and format names
-# (PdfCraft, PDF, PDF/A, OCR, XFA, Word, HTML…) stay in Latin letters; the trailing "…" of dialog
+# (Pdf, PDF, PDF/A, OCR, XFA, Word, HTML…) stay in Latin letters; the trailing "…" of dialog
 # commands is kept. Messages with a count but no `@plural` entry use count-neutral wording
 # ("Vybráno stránek: {n}"), because Czech has three plural forms.
 
@@ -40,6 +40,7 @@
 	Auto follows the system's text size. Pages always render at the display's full resolution.	Automaticky se řídí velikostí textu v systému. Stránky se vždy vykreslují v plném rozlišení displeje.
 	Identity	Identita
 	Name on new comments	Jméno autora nových komentářů
+	Hide hover previews for highlights without comment text	Skrýt náhledy při najetí u zvýraznění bez textu komentáře
 	Enable Acrobat JavaScript	Povolit Acrobat JavaScript
 	OK	OK
 	Open…	Otevřít…
@@ -116,12 +117,12 @@
 	Split document…	Rozdělit dokument…
 	Number pages…	Očíslovat stránky…
 	Keyboard shortcuts	Klávesové zkratky
-	Join the ArtCraft Discord	Připojit se ke komunitě ArtCraft na Discordu
-	PdfCraft web page	Webová stránka PdfCraft
-	PdfCraft on GitHub	PdfCraft na GitHubu
-	ArtCraft website	Web ArtCraft
+	Join the Pdf Discord	Připojit se ke komunitě Pdf na Discordu
+	Pdf web page	Webová stránka Pdf
+	Pdf on GitHub	Pdf na GitHubu
+	Pdf website	Web Pdf
 	Check for updates…	Zkontrolovat aktualizace…
-	About PdfCraft	O aplikaci PdfCraft
+	About Pdf	O aplikaci Pdf
 	Auto	Automaticky
 	Continuous scrolling	Plynulé posouvání
 	Single page	Jednostránkové zobrazení
@@ -135,15 +136,15 @@
 	Fit to width scrolling	Plynulé posouvání s přizpůsobením šířce
 	Fit one full page	Celá jedna stránka
 	Used when a PDF doesn't ask for a layout or zoom. Continuous scrolling never snaps between pages.	Používá se, když PDF nepožaduje rozložení ani zvětšení. Plynulé posouvání mezi stránkami neskáče.
-	Reopen the files that were open when PdfCraft last closed	Znovu otevřít soubory, které byly otevřené při posledním zavření aplikace PdfCraft
+	Reopen the files that were open when Pdf last closed	Znovu otevřít soubory, které byly otevřené při posledním zavření aplikace Pdf
 	Reload documents when their files change on disk	Znovu načítat dokumenty při změně jejich souborů na disku
-	This file changed on disk. Reload it to see the new version; your unsaved changes will be lost.	Tento soubor se na disku změnil. Znovu jej načtěte, abyste viděli novou verzi; neuložené změny budou ztraceny.
+	This file changed on disk. Reload shows the new version and drops your unsaved changes; Save replaces it with this version.	Tento soubor se na disku změnil. Znovu načíst zobrazí novou verzi a zahodí neuložené změny; Uložit ji nahradí touto verzí.
 	Reload	Znovu načíst
 	Couldn't reload {name}: {e}	Soubor {name} nelze znovu načíst: {e}
 	Choose a PNG or JPEG image (up to 4 MiB). Transparency is preserved.	Vyberte obrázek PNG nebo JPEG (nejvýše 4 MiB). Průhlednost bude zachována.
 	Couldn't import the signature image: {e}	Obrázek podpisu nelze importovat: {e}
 	Portable mode is off: {folder} can't be written ({error}). Settings are kept in your user folder instead.	Přenosný režim je vypnutý: do složky {folder} nelze zapisovat ({error}). Nastavení se místo toho ukládá do vaší uživatelské složky.
-	PdfCraft is drawing without a graphics processor, so it may be slow. Updating the graphics driver may help.	PdfCraft vykresluje bez grafického procesoru, takže může být pomalý. Pomoci může aktualizace grafického ovladače.
+	Pdf is drawing without a graphics processor, so it may be slow. Updating the graphics driver may help.	Pdf vykresluje bez grafického procesoru, takže může být pomalý. Pomoci může aktualizace grafického ovladače.
 	Go to page…	Přejít na stránku…
 	Margins	Okraje
 	For page sizes and margins.	Pro velikosti stránek a okraje.
@@ -278,17 +279,17 @@ key	Space	Mezerník
 	Next page	Další stránka
 	Previous page	Předchozí stránka
 	Current page — type a page number or label (such as iv) and press Enter	Aktuální stránka — zadejte číslo nebo označení stránky (třeba iv) a stiskněte Enter
-	Welcome to PdfCraft	Vítá vás PdfCraft
+	Welcome to Pdf	Vítá vás Pdf
 	An open-source PDF workbench — local, private, and scriptable.	Open-source dílna pro PDF — lokální, soukromá a skriptovatelná.
-	Join the ArtCraft community	Připojte se ke komunitě ArtCraft
+	Join the Pdf community	Připojte se ke komunitě Pdf
 	Get help, share feedback and follow development on Discord.	Získejte pomoc, sdílejte zpětnou vazbu a sledujte vývoj na Discordu.
 	Recommended tools	Doporučené nástroje
 	Use now	Použít
 	Open file	Otevřít soubor
 	Recent	Nedávné
-	Files you open in PdfCraft appear here. Drop a PDF anywhere to open it.	Zde se zobrazí soubory, které otevřete v PdfCraftu. Soubor PDF otevřete přetažením kamkoli do okna.
+	Files you open in Pdf appear here. Drop a PDF anywhere to open it.	Zde se zobrazí soubory, které otevřete v Pdfu. Soubor PDF otevřete přetažením kamkoli do okna.
 	Privacy	Soukromí
-	PdfCraft works offline. No telemetry, no account, and no cloud processing unless you add a provider.	PdfCraft funguje offline. Žádná telemetrie, žádný účet a žádné zpracování v cloudu, pokud nepřidáte poskytovatele.
+	Pdf works offline. No telemetry, no account, and no cloud processing unless you add a provider.	Pdf funguje offline. Žádná telemetrie, žádný účet a žádné zpracování v cloudu, pokud nepřidáte poskytovatele.
 	Scripts run in a sandbox without file or network access. With JavaScript off, Acrobat's standard format, validate and calculate functions still work.	Skripty běží v izolovaném prostředí bez přístupu k souborům a síti. S vypnutým JavaScriptem dál fungují standardní funkce Acrobatu pro formátování, ověření a výpočty.
 	Back to all tools	Zpět na všechny nástroje
 	Close panel	Zavřít panel
@@ -451,6 +452,7 @@ key	Space	Mezerník
 	Split	Rozdělit
 	More	Další
 	Set page boxes	Nastavit rámečky stránek
+	Set page transitions	Nastavit přechody stránek
 	Page labels	Označení stránek
 	Page transitions	Přechody stránek
 	Add comments	Přidat komentáře
@@ -662,6 +664,7 @@ key	Space	Mezerník
 	Remove unused objects and merge identical ones	Odebrat nepoužívané objekty a sloučit shodné
 	Audit space usage…	Analyzovat využití místa…
 	Space Audit	Analýza využití místa
+	What takes up the space in this file, by kind of content.	Co zabírá místo v tomto souboru, podle druhu obsahu.
 	Bytes	Bajty
 	Content Streams	Proudy obsahu
 	X Object Forms	Objekty Form XObject
@@ -846,9 +849,9 @@ key	Space	Mezerník
 	Check for updates	Zkontrolovat aktualizace
 	No check has run yet.	Kontrola zatím neproběhla.
 	Checking for a newer version…	Hledání novější verze…
-	PdfCraft {v} is available.	Je k dispozici PdfCraft {v}.
+	Pdf {v} is available.	Je k dispozici Pdf {v}.
 	You have version {c}. Download the new version from its release page.	Máte verzi {c}. Novou verzi si stáhněte z její stránky s vydáním.
-	PdfCraft {c} is up to date.	PdfCraft {c} je aktuální.
+	Pdf {c} is up to date.	Pdf {c} je aktuální.
 	Couldn't check for updates: {e}	Aktualizace nelze zkontrolovat: {e}
 	You have version {c}. All releases are listed at {page}.	Máte verzi {c}. Všechna vydání najdete na {page}.
 	Asks GitHub for the latest release. Nothing is downloaded or installed automatically.	Zjistí na GitHubu nejnovější vydání. Nic se automaticky nestahuje ani neinstaluje.
@@ -929,6 +932,12 @@ key	Space	Mezerník
 	Windows store  ·  	Úložiště Windows  ·  
 	Issued by: 	Vydal: 
 	, Expires: 	, platnost do: 
+	Digitally signed by	Digitálně podepsal
+	DN: 	DN: 
+	Reason: 	Důvod: 
+	Location: 	Místo: 
+	Date: 	Datum: 
+	The labels are in English: the signature's font can't draw them in this language.	Popisky jsou v angličtině: písmo podpisu je v tomto jazyce nedokáže vykreslit.
 	No digital IDs yet.	Zatím žádná digitální ID.
 	Configure New Digital ID	Nastavit nové digitální ID
 	Remove "{name}" from this list? The file itself is not deleted.	Odebrat „{name}“ z tohoto seznamu? Samotný soubor se nesmaže.
@@ -961,8 +970,8 @@ key	Space	Mezerník
 	No changes allowed	Nejsou povoleny žádné změny
 	Annotations, form fill-in, and digital signatures	Anotace, vyplňování formulářů a digitální podpisy
 	Form fill-in and digital signatures	Vyplňování formulářů a digitální podpisy
-	The key is in the macOS Keychain, which may ask to allow PdfCraft to use it.	Klíč je v Klíčence systému macOS, která se může zeptat, zda PdfCraftu povolit jeho použití.
-	The key is in the Windows certificate store, which may ask to allow PdfCraft to use it.	Klíč je v úložišti certifikátů Windows, které se může zeptat, zda PdfCraftu povolit jeho použití.
+	The key is in the macOS Keychain, which may ask to allow Pdf to use it.	Klíč je v Klíčence systému macOS, která se může zeptat, zda Pdfu povolit jeho použití.
+	The key is in the Windows certificate store, which may ask to allow Pdf to use it.	Klíč je v úložišti certifikátů Windows, které se může zeptat, zda Pdfu povolit jeho použití.
 	Digital ID password	Heslo digitálního ID
 	Back	Zpět
 	Validate all	Ověřit vše
@@ -1214,6 +1223,7 @@ key	Space	Mezerník
 	Redaction code:	Kód začernění:
 	Font:	Písmo:
 	Font size:	Velikost písma:
+	Font size	Velikost písma
 	Auto-size text to fit redaction region	Automaticky přizpůsobit velikost textu oblasti začernění
 	Font colour:	Barva písma:
 	Repeat overlay text	Opakovat překryvný text
@@ -1315,7 +1325,7 @@ key	Space	Mezerník
 	Downsample to	Převzorkovat na
 	Also recognize pages that already have text	Rozpoznat i stránky, které už obsahují text
 	Pictures on those pages are recognized too; words already in the page's text are not added again	Rozpoznají se i obrázky na těchto stránkách; slova, která už jsou v textu stránky, se znovu nepřidají
-	Text recognition isn't installed: its model files are missing. Reinstall PdfCraft, or set PDFCRAFT_MODELS to the folder that holds them.	Rozpoznávání textu není nainstalováno: chybí soubory jeho modelů. Přeinstalujte PdfCraft nebo nastavte PDFCRAFT_MODELS na složku, ve které jsou.
+	Text recognition isn't installed: its model files are missing. Reinstall Pdf, or set PDFCRAFT_MODELS to the folder that holds them.	Rozpoznávání textu není nainstalováno: chybí soubory jeho modelů. Přeinstalujte Pdf nebo nastavte PDFCRAFT_MODELS na složku, ve které jsou.
 	Settings	Nastavení
 	Optional	Volitelné
 	Planned · {m}	Plánováno · {m}
@@ -1354,6 +1364,7 @@ key	Space	Mezerník
 	Copy text	Kopírovat text
 	Properties…	Vlastnosti…
 	Make Current Properties Default	Nastavit aktuální vlastnosti jako výchozí
+	Make Properties Default	Nastavit vlastnosti jako výchozí
 	More options	Další možnosti
 	Sort by	Seřadit podle
 	Author	Autor
@@ -1459,7 +1470,7 @@ key	Space	Mezerník
 	Anyone opening the document will need this password. It's applied when you save.	Každý, kdo dokument otevře, bude potřebovat toto heslo. Použije se při uložení.
 	The document opens without a password; this password is needed to change the restrictions. It's applied when you save.	Dokument se otevře bez hesla; toto heslo je potřeba ke změně omezení. Použije se při uložení.
 	Recover unsaved documents?	Obnovit neuložené dokumenty?
-	PdfCraft didn't shut down normally. These documents had changes that were autosaved:	PdfCraft nebyl řádně ukončen. V těchto dokumentech byly změny, které se automaticky uložily:
+	Pdf didn't shut down normally. These documents had changes that were autosaved:	Pdf nebyl řádně ukončen. V těchto dokumentech byly změny, které se automaticky uložily:
 	just now	právě teď
 	{n} min ago	před {n} min
 	{n} h ago	před {n} h
@@ -1475,6 +1486,9 @@ key	Space	Mezerník
 	Sort comments by:	Seřadit komentáře podle:
 	Create PDF Comment Summary	Vytvořit souhrn komentářů v PDF
 	Revert to the previously saved version of “{name}”? Changes since then can't be undone afterwards.	Vrátit se k dříve uložené verzi „{name}“? Změny provedené od té doby pak nepůjde vrátit zpět.
+	Save over the changed file?	Uložit přes změněný soubor?
+	“{name}” changed on disk after it was opened or last saved. Saving now replaces that newer version with this one.	Soubor „{name}“ se na disku změnil po otevření nebo posledním uložení. Uložení nyní nahradí tuto novější verzi touto.
+	Save anyway	Přesto uložit
 	Number pages	Očíslovat stránky
 	Style	Styl
 	None (prefix only)	Žádný (jen předpona)
@@ -1615,10 +1629,10 @@ key	Space	Mezerník
 	On the web, open or drop an image to convert it	Na webu obrázek k převodu otevřete nebo přetáhněte
 	Couldn't optimize the file: {e}	Soubor nelze optimalizovat: {e}
 	Couldn't write {path}: {e}	Nelze zapsat {path}: {e}
-	The form asks to be submitted to {u}; PdfCraft doesn't send form data. Save the document to keep your entries.	Formulář žádá o odeslání na {u}; PdfCraft data formulářů neodesílá. Své údaje zachováte uložením dokumentu.
+	The form asks to be submitted to {u}; Pdf doesn't send form data. Save the document to keep your entries.	Formulář žádá o odeslání na {u}; Pdf data formulářů neodesílá. Své údaje zachováte uložením dokumentu.
 	This PDF uses the unsupported {s} action.	Tento PDF používá nepodporovanou akci {s}.
 	{name}: the {other} action isn't supported yet	{name}: akce {other} zatím není podporována
-	{name} submits the form to {url}; PdfCraft doesn't send form data. Save the document to keep your entries.	{name} odesílá formulář na {url}; PdfCraft data formulářů neodesílá. Své údaje zachováte uložením dokumentu.
+	{name} submits the form to {url}; Pdf doesn't send form data. Save the document to keep your entries.	{name} odesílá formulář na {url}; Pdf data formulářů neodesílá. Své údaje zachováte uložením dokumentu.
 	Export stopped: {e}	Export byl zastaven: {e}
 	Exported 1 image	Exportován 1 obrázek
 	Exported {n} images	Exportováno obrázků: {n}
@@ -1741,6 +1755,7 @@ key	Space	Mezerník
 	Couldn't use {name}: {e}	{name} nelze použít: {e}
 	Couldn't extract pages: {e}	Stránky nelze extrahovat: {e}
 	Couldn't write {name}: {e}	{name} nelze zapsat: {e}
+	the name is not a plain file name	název není prostý název souboru
 	Wrote 1 file to {dir}	Zapsán 1 soubor do {dir}
 	Wrote {n} files to {dir}	Zapsáno souborů: {n} (složka {dir})
 	No pages match those choices	Těmto volbám neodpovídají žádné stránky
@@ -1826,8 +1841,8 @@ key	Space	Mezerník
 	Signed and all signatures are valid.	Podepsáno a všechny podpisy jsou platné.
 	At least one signature has problems.	Alespoň jeden podpis má problémy.
 	This document is secured. Some changes are restricted by its security settings.	Tento dokument je zabezpečený. Některé změny omezuje jeho nastavení zabezpečení.
-	This is a dynamic XFA form, which PdfCraft can't display yet. What you see is the file's placeholder page.	Toto je dynamický formulář XFA, který PdfCraft zatím neumí zobrazit. Vidíte zástupnou stránku souboru.
-	This form also contains XFA data, which PdfCraft doesn't read yet. You can fill its fields, but Acrobat may show the XFA values instead.	Tento formulář obsahuje také data XFA, která PdfCraft zatím nečte. Pole můžete vyplnit, ale Acrobat může místo nich zobrazit hodnoty XFA.
+	This is a dynamic XFA form, which Pdf can't display yet. What you see is the file's placeholder page.	Toto je dynamický formulář XFA, který Pdf zatím neumí zobrazit. Vidíte zástupnou stránku souboru.
+	This form also contains XFA data, which Pdf doesn't read yet. You can fill its fields, but Acrobat may show the XFA values instead.	Tento formulář obsahuje také data XFA, která Pdf zatím nečte. Pole můžete vyplnit, ale Acrobat může místo nich zobrazit hodnoty XFA.
 	This document contains {n} interactive form fields.	Tento dokument obsahuje interaktivní formulářová pole (počet: {n}).
 	This file was damaged and has been repaired. Saving keeps the repaired version.	Tento soubor byl poškozený a byl opraven. Uložením se zachová opravená verze.
 	Dismiss	Zavřít
@@ -1876,7 +1891,7 @@ key	Space	Mezerník
 	there are no pages to print	nejsou žádné stránky k tisku
 	the document has no tags	dokument nemá žádné tagy
 	{0}: {1}	{0}: {1}
-	the text recognition models are not installed (reinstall PdfCraft, or set PDFCRAFT_MODELS to the folder that holds them)	modely pro rozpoznávání textu nejsou nainstalované (přeinstalujte PdfCraft nebo nastavte PDFCRAFT_MODELS na složku, ve které jsou)
+	the text recognition models are not installed (reinstall Pdf, or set PDFCRAFT_MODELS to the folder that holds them)	modely pro rozpoznávání textu nejsou nainstalované (přeinstalujte Pdf nebo nastavte PDFCRAFT_MODELS na složku, ve které jsou)
 	the image is empty	obrázek je prázdný
 	this file isn't XFDF, FDF, XML or text form data	tento soubor neobsahuje data formuláře ve formátu XFDF, FDF, XML ani v textovém
 	nothing in the file matches this document	nic v souboru neodpovídá tomuto dokumentu
@@ -2178,8 +2193,8 @@ calendar date	December	prosince
 	A link	Odkaz
 	A button	Tlačítko
 	A script	Skript
-	{who} in this document tried to open an address PdfCraft won't open: {e}.	Pokus o otevření adresy, kterou PdfCraft neotevře ({who} v tomto dokumentu): {e}.
-	{who} in this document tried to open an address PdfCraft won't open: {e}. Only web (http, https) and email (mailto) links open from documents.	Pokus o otevření adresy, kterou PdfCraft neotevře ({who} v tomto dokumentu): {e}. Z dokumentů se otevírají jen webové (http, https) a e-mailové (mailto) odkazy.
+	{who} in this document tried to open an address Pdf won't open: {e}.	Pokus o otevření adresy, kterou Pdf neotevře ({who} v tomto dokumentu): {e}.
+	{who} in this document tried to open an address Pdf won't open: {e}. Only web (http, https) and email (mailto) links open from documents.	Pokus o otevření adresy, kterou Pdf neotevře ({who} v tomto dokumentu): {e}. Z dokumentů se otevírají jen webové (http, https) a e-mailové (mailto) odkazy.
 	Another file dialog is still open. Finish with it first.	Je stále otevřené jiné dialogové okno se soubory. Nejdřív ho dokončete.
 	Couldn't show the file picker. Please try again.	Výběr souborů nelze zobrazit. Zkuste to prosím znovu.
 	The document changed while you were choosing a file, so nothing was changed.	Dokument se změnil, zatímco jste vybírali soubor, proto se nic nezměnilo.
@@ -2243,6 +2258,8 @@ certificate	Subject	Subjekt
 	List view	Zobrazení seznamu
 	Expand all	Rozbalit vše
 	Collapse all	Sbalit vše
+	Collapse all pages	Sbalit všechny stránky
+	Expand all pages	Rozbalit všechny stránky
 	Files are combined in the order shown. Drag them to change it.	Soubory se slučují v zobrazeném pořadí. Pořadí změníte přetažením.
 	Pages: {k} of {n}	Stránky: {k} z {n}
 	Check the pages	Zkontrolujte stránky
@@ -2251,6 +2268,8 @@ certificate	Subject	Subjekt
 	Remove page	Odebrat stránku
 	Remove {n} pages	Odebrat stránky ({n})
 	Looking for printers…	Hledání tiskáren…
+	Sending sheet {s} of {n} to {printer}…	Odesílání listu {s} z {n} na {printer}…
+	No printers were found. Check that the printer is installed and the print spooler is running, then open Print again.	Nebyly nalezeny žádné tiskárny. Zkontrolujte, že je tiskárna nainstalovaná a zařazování tisku běží, a pak znovu otevřete Tisk.
 	Sending to {printer}…	Odesílání na {printer}…
 	Fill colour	Barva výplně
 	Fill colour: none	Barva výplně: žádná
@@ -2276,7 +2295,7 @@ certificate	Subject	Subjekt
 
 # Digital ID errors, the Signatures panel and the certificate viewer.
 	Enter a name.	Zadejte jméno.
-	The password must have at least 6 characters.	Heslo musí mít alespoň 6 znaků.
+	The password must have at least 8 characters.	Heslo musí mít alespoň 8 znaků.
 	The passwords do not match.	Hesla se neshodují.
 	There is no folder to save the digital ID in.	Není k dispozici složka, do které by se digitální ID uložilo.
 	The password is incorrect.	Heslo není správné.
@@ -2318,7 +2337,7 @@ certificate	Subject	Subjekt
 	Active	Aktivní
 	Dark theme	Tmavý motiv
 	Appearance settings…	Nastavení vzhledu…
-	Mouse wheel scroll speed	Rychlost posouvání kolečkem myši
+	Scroll speed (mouse wheel and arrow keys)	Rychlost posouvání (kolečko myši a šipky)
 scroll speed	Slow	Pomalá
 scroll speed	Normal	Normální
 scroll speed	Fast	Rychlá
@@ -2366,8 +2385,8 @@ animation effects	Off	Vypnuto
 	Change the colour of line art as well as text	Změnit barvu i čar, ne jen textu
 	Colours are remapped while rendering; the document itself never changes.	Barvy se mění při vykreslování; samotný dokument se nikdy nemění.
 	This printer's driver doesn't take two-sided settings from other programs, so its own setting applies. Change it in Properties…	Ovladač této tiskárny nepřijímá nastavení oboustranného tisku z jiných programů, proto platí jeho vlastní nastavení. Změňte ho ve Vlastnosti…
-	This field's font can't draw “{c}” ({code}), so PdfCraft shows ? in its place. The value is saved, and other PDF viewers redraw the field from it.	Písmo tohoto pole neumí zobrazit „{c}“ ({code}), proto PdfCraft místo něj ukazuje ?. Hodnota se uloží a jiné prohlížeče PDF pole podle ní překreslí.
-	The fonts PdfCraft writes with can't draw “{c}” ({code}), so it shows as ? in every PDF viewer. The text is saved.	Písma, kterými PdfCraft píše, neumí zobrazit „{c}“ ({code}), proto se ve všech prohlížečích PDF zobrazí jako ?. Text se uloží.
+	This field's font can't draw “{c}” ({code}), so Pdf shows ? in its place. The value is saved, and other PDF viewers redraw the field from it.	Písmo tohoto pole neumí zobrazit „{c}“ ({code}), proto Pdf místo něj ukazuje ?. Hodnota se uloží a jiné prohlížeče PDF pole podle ní překreslí.
+	The fonts Pdf writes with can't draw “{c}” ({code}), so it shows as ? in every PDF viewer. The text is saved.	Písma, kterými Pdf píše, neumí zobrazit „{c}“ ({code}), proto se ve všech prohlížečích PDF zobrazí jako ?. Text se uloží.
 	Browser's print dialog	Dialog tisku prohlížeče
 	Copies, two-sided printing and colour are chosen in the browser's print dialog.	Počet kopií, oboustranný tisk a barva se volí v dialogu tisku prohlížeče.
 	Preparing {n} sheets for printing…	Příprava {n} listů k tisku…
@@ -2396,7 +2415,7 @@ animation effects	Off	Vypnuto
 	no output folder was chosen	nebyla vybrána výstupní složka
 @plural	Downloaded {n} PDF|Downloaded {n} PDFs	Stažen {n} soubor PDF|Staženy {n} soubory PDF|Staženo {n} souborů PDF
 	Scan	Skenovat
-	Sign a sheet of white paper and take a photo of it in bright, even light (use the flash). Choose the photo or drop it here: PdfCraft finds the signature and removes the paper.	Podepište se na bílý list papíru a vyfoťte ho při jasném, rovnoměrném světle (použijte blesk). Vyberte fotografii nebo ji sem přetáhněte: PdfCraft najde podpis a odstraní papír.
+	Sign a sheet of white paper and take a photo of it in bright, even light (use the flash). Choose the photo or drop it here: Pdf finds the signature and removes the paper.	Podepište se na bílý list papíru a vyfoťte ho při jasném, rovnoměrném světle (použijte blesk). Vyberte fotografii nebo ji sem přetáhněte: Pdf najde podpis a odstraní papír.
 	Choose photo…	Vybrat fotografii…
 	No photo chosen	Není vybrána žádná fotografie
 	Photo	Fotografie
@@ -2415,6 +2434,10 @@ animation effects	Off	Vypnuto
 	The linked PDF opened, but its named destination was not applied.	Odkazovaný PDF se otevřel, ale jeho pojmenovaný cíl nebyl použit.
 	The linked PDF opened, but its page destination was out of range.	Odkazovaný PDF se otevřel, ale cílová stránka je mimo rozsah.
 	Local cross-PDF links require the desktop app	Místní odkazy mezi soubory PDF vyžadují desktopovou aplikaci
+	Cut Image	Vyjmout obrázek
+	Redact Image	Začernit obrázek
+	Create Link…	Vytvořit odkaz…
+	Recognize Text…	Rozpoznat text…
 	Minimize	Minimalizovat
 	Maximize	Maximalizovat
 	Restore	Obnovit
@@ -2424,7 +2447,63 @@ animation effects	Off	Vypnuto
 # Absolute local GoToR confirmation (#1364).
 	Allow	Povolit
 	Only allow this if you trust the source document.	Povolte tuto akci pouze v případě, že důvěřujete zdrojovému dokumentu.
+	Open in Full Screen mode?	Otevřít v režimu celé obrazovky?
+	This document asks to open in Full Screen mode: the page fills the screen and nothing else shows. Press Esc at any time to leave it.	Tento dokument žádá o otevření v režimu celé obrazovky: stránka vyplní obrazovku a nic jiného se nezobrazí. Stisknutím Esc jej kdykoli opustíte.
+	Full Screen	Celá obrazovka
+	Not now	Teď ne
 	Open this local PDF?	Otevřít tento místní soubor PDF?
 	This document is trying to open a local file:	Tento dokument se pokouší otevřít místní soubor:
 	Move tag earlier	Přesunout značku dříve
 	Move tag later	Přesunout značku později
+
+# Historical snapshot notice bar (View signed version / View revision).
+	You are viewing the signed version of “{from}” (revision {rev}). It is a snapshot: changes here won't affect the original.	Prohlížíte si podepsanou verzi dokumentu „{from}“ (revize {rev}). Je to snímek: změny zde neovlivní originál.
+	You are viewing revision {rev} of “{from}”. It is a snapshot: changes here won't affect the original.	Prohlížíte si revizi {rev} dokumentu „{from}“. Je to snímek: změny zde neovlivní originál.
+	Turn upside down (180°)	Otočit vzhůru nohama (180°)
+	4 x 6 in label (101.6 x 152.4 mm)	Štítek 4 × 6 in (101,6 × 152,4 mm)
+	Cuts each page to its printed area, turns it upright and fits it to the sheet without stretching. One label per sheet.	Ořízne každou stránku na potištěnou oblast, otočí ji svisle a přizpůsobí listu bez deformace. Jeden štítek na list.
+	Find untagged content	Najít neoznačený obsah
+	No untagged content was found.	Nebyl nalezen žádný neoznačený obsah.
+	Found {n} untagged content problems.	Nalezeno problémů s neoznačeným obsahem: {n}.
+	Tag form fields	Označit pole formuláře
+	Mark as artifact	Označit jako artefakt
+	Remove this leaf tag from reading order and mark its direct content as an artifact	Odeberte tuto značku listu z pořadí čtení a označte její přímý obsah jako artefakt
+	Mark content as artifact	Označit obsah jako artefakt
+	Word count	Počet slov
+	Current page only	Pouze aktuální stránka
+	Exclude tagged tables	Vynechat označené tabulky
+	Exclude tagged code blocks	Vynechat označené bloky kódu
+	Exclude image/OCR text	Vynechat text obrázků a OCR
+	Exclusions use PDF tags. Untagged tables and code remain included. Image exclusion also removes invisible text.	Vynechávání využívá tagy PDF. Neoznačené tabulky a kód zůstávají zahrnuty. Vynechání obrázků odstraní i neviditelný text.
+	Words	Slova
+	Characters	Znaky
+	Characters without spaces	Znaky bez mezer
+	Pages counted	Započítané stránky
+	Some pages contain no countable text. Scanned images need OCR first.	Některé stránky neobsahují text k počítání. U naskenovaných obrázků je nejprve nutné OCR.
+	Some content could not be classified safely and was kept in the count.	Část obsahu nebylo možné spolehlivě zařadit a zůstala zahrnuta v počtu.
+	Counting words… {n} pages read	Počítání slov… přečtené stránky: {n}
+	Word counting stopped unexpectedly.	Počítání slov se neočekávaně zastavilo.
+	Word count…	Počet slov…
+@id	file.word_count	Počet slov…
+	Standard	Standardní
+	Mobile	Mobilní zařízení
+	Merge image fragments	Sloučit fragmenty obrázků
+	Optimizing… merging image fragments	Optimalizace… slučování fragmentů obrázků
+	Side by side	Vedle sebe
+	New file only	Jen nový soubor
+	Old file: {name}	Starý soubor: {name}
+	New file: {name}	Nový soubor: {name}
+	Print as image	Tisknout jako obrázek
+	Resolution:	Rozlišení:
+	Use it when a printer skips text, shading or transparency. The print is no longer searchable text; with Print in grayscale, the pictures are grey.	Použijte, když tiskárna vynechává text, stínování nebo průhlednost. Výtisk už není prohledávatelný text; s tiskem v odstínech šedi jsou obrázky šedé.
+	Crop Image	Oříznout obrázek
+	Remove Crop	Odebrat oříznutí
+	Trim the picture with its handles; Enter or Done applies	Ořízněte obrázek úchyty; Enter nebo Hotovo použije
+	Redaction mark appearance	Vzhled značky začernění
+	Outline colour:	Barva obrysu:
+	Fill colour:	Barva výplně:
+	Shown while the pointer is over a mark.	Zobrazí se, když je ukazatel nad značkou.
+	Opacity:	Neprůhlednost:
+	Make properties default	Nastavit vlastnosti jako výchozí
+	Pages selected	Vybrané stránky
+	Page properties	Vlastnosti stránky

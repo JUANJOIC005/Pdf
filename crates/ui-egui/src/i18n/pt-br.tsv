@@ -5,7 +5,7 @@
 # Clean-room: every entry was written from the plain meaning of the English label using ordinary
 # Brazilian Portuguese computing vocabulary. No proprietary localisation resource, string table or
 # product UI (Acrobat's included) was consulted or copied; add entries the same way.
-# Product and technology names (PdfCraft, PDF, Acrobat JavaScript ...) are not translated;
+# Product and technology names (Pdf, PDF, Acrobat JavaScript ...) are not translated;
 # the trailing "…" of dialog commands is kept.
 
 	Menu	Menu
@@ -23,6 +23,7 @@
 	Auto follows the system's text size. Pages always render at the display's full resolution.	Automático segue o tamanho do texto do sistema. As páginas sempre são exibidas na resolução total da tela.
 	Identity	Identidade
 	Name on new comments	Nome nos novos comentários
+	Hide hover previews for highlights without comment text	Ocultar as prévias ao passar o ponteiro em destaques sem texto de comentário
 	Open…	Abrir…
 	Open Recent	Abrir recentes
 	Clear Recent Files	Limpar arquivos recentes
@@ -77,9 +78,9 @@
 	Choose a PNG or JPEG image (up to 4 MiB). Transparency is preserved.	Escolha uma imagem PNG ou JPEG (até 4 MiB). A transparência é preservada.
 	Couldn't import the signature image: {e}	Não foi possível importar a imagem da assinatura: {e}
 	Portable mode is off: {folder} can't be written ({error}). Settings are kept in your user folder instead.	O modo portátil está desativado: não é possível gravar em {folder} ({error}). As configurações ficam na sua pasta de usuário.
-	PdfCraft is drawing without a graphics processor, so it may be slow. Updating the graphics driver may help.	O PdfCraft está desenhando sem processador gráfico, por isso pode ficar lento. Atualizar o driver de vídeo pode ajudar.
+	Pdf is drawing without a graphics processor, so it may be slow. Updating the graphics driver may help.	O Pdf está desenhando sem processador gráfico, por isso pode ficar lento. Atualizar o driver de vídeo pode ajudar.
 	Go to page…	Ir para a página…
-	Reopen the files that were open when PdfCraft last closed	Reabrir os arquivos que estavam abertos quando o PdfCraft foi fechado pela última vez
+	Reopen the files that were open when Pdf last closed	Reabrir os arquivos que estavam abertos quando o Pdf foi fechado pela última vez
 	Margins	Margens
 	For page sizes and margins.	Para tamanhos de página e margens.
 	Open	Abrir
@@ -213,6 +214,7 @@
 	Remove unused objects and merge identical ones	Remover objetos não utilizados e mesclar os idênticos
 	Audit space usage…	Auditar uso de espaço…
 	Space Audit	Auditoria de espaço
+	What takes up the space in this file, by kind of content.	O que ocupa o espaço deste arquivo, por tipo de conteúdo.
 	Bytes	Bytes
 	Content Streams	Fluxos de conteúdo
 	X Object Forms	Formulários XObject
@@ -264,7 +266,7 @@
 	characters	caracteres
 	Field is used for file selection	O campo é usado para seleção de arquivo
 	Check spelling	Verificar ortografia
-	Comb of	Pente de
+	Comb of	Caixas para
 	Export Value: {on}	Valor de exportação: {on}
 	Check box is checked by default	A caixa de seleção fica marcada por padrão
 	Button is checked by default	O botão fica selecionado por padrão
@@ -401,9 +403,9 @@
 	Check for updates	Verificar atualizações
 	No check has run yet.	Nenhuma verificação foi executada ainda.
 	Checking for a newer version…	Verificando se há uma versão mais recente…
-	PdfCraft {v} is available.	O PdfCraft {v} está disponível.
+	Pdf {v} is available.	O Pdf {v} está disponível.
 	You have version {c}. Download the new version from its release page.	Você tem a versão {c}. Baixe a nova versão na página de lançamentos.
-	PdfCraft {c} is up to date.	O PdfCraft {c} está atualizado.
+	Pdf {c} is up to date.	O Pdf {c} está atualizado.
 	Couldn't check for updates: {e}	Não foi possível verificar atualizações: {e}
 	You have version {c}. All releases are listed at {page}.	Você tem a versão {c}. Todos os lançamentos estão listados em {page}.
 	Asks GitHub for the latest release. Nothing is downloaded or installed automatically.	Consulta o GitHub para obter o lançamento mais recente. Nada é baixado ou instalado automaticamente.
@@ -484,6 +486,12 @@
 	Keychain  ·  	Chaveiro  ·  
 	Issued by: 	Emitido por: 
 	, Expires: 	, Expira em: 
+	Digitally signed by	Assinado digitalmente por
+	DN: 	DN: 
+	Reason: 	Motivo: 
+	Location: 	Local: 
+	Date: 	Data: 
+	The labels are in English: the signature's font can't draw them in this language.	Os rótulos estão em inglês: a fonte da assinatura não consegue desenhá-los neste idioma.
 	No digital IDs yet.	Nenhuma ID digital ainda.
 	Configure New Digital ID	Configurar nova ID digital
 	Remove "{name}" from this list? The file itself is not deleted.	Remover "{name}" desta lista? O arquivo em si não é excluído.
@@ -516,7 +524,7 @@
 	No changes allowed	Nenhuma alteração permitida
 	Annotations, form fill-in, and digital signatures	Anotações, preenchimento de formulário e assinaturas digitais
 	Form fill-in and digital signatures	Preenchimento de formulário e assinaturas digitais
-	The key is in the macOS Keychain, which may ask to allow PdfCraft to use it.	A chave está no Chaveiro do macOS, que pode solicitar permissão para o PdfCraft usá-la.
+	The key is in the macOS Keychain, which may ask to allow Pdf to use it.	A chave está no Chaveiro do macOS, que pode solicitar permissão para o Pdf usá-la.
 	Digital ID password	Senha da ID digital
 	Back	Voltar
 	Validate all	Validar tudo
@@ -774,6 +782,7 @@
 	Redaction code:	Código de ocultação:
 	Font:	Fonte:
 	Font size:	Tamanho da fonte:
+	Font size	Tamanho da fonte
 	Auto-size text to fit redaction region	Ajustar tamanho do texto automaticamente à região de ocultação
 	Font colour:	Cor da fonte:
 	Repeat overlay text	Repetir texto de sobreposição
@@ -917,6 +926,7 @@
 	Replace	Substituir
 	Split	Dividir
 	Set page boxes	Definir limites da página
+	Set page transitions	Definir transições de página
 	Page labels	Rótulos de página
 	Page transitions	Transições de página
 	Sticky note	Nota adesiva
@@ -1171,6 +1181,7 @@
 	Copy text	Copiar texto
 	Properties…	Propriedades…
 	Make Current Properties Default	Tornar as propriedades atuais padrão
+	Make Properties Default	Tornar as propriedades padrão
 	More options	Mais opções
 	Sort by	Classificar por
 	Author	Autor
@@ -1192,7 +1203,7 @@
 	Pink	Rosa
 	Purple	Roxo
 	Blue	Azul
-	Light blue	Azul claro
+	Light blue	Azul-claro
 	Green	Verde
 	Gray	Cinza
 	Black	Preto
@@ -1276,7 +1287,7 @@
 	Anyone opening the document will need this password. It's applied when you save.	Qualquer pessoa que abrir o documento precisará desta senha. Ela será aplicada ao salvar.
 	The document opens without a password; this password is needed to change the restrictions. It's applied when you save.	O documento é aberto sem senha; esta senha é necessária para alterar as restrições. Ela será aplicada ao salvar.
 	Recover unsaved documents?	Recuperar documentos não salvos?
-	PdfCraft didn't shut down normally. These documents had changes that were autosaved:	O PdfCraft não foi encerrado normalmente. Estes documentos tiveram alterações salvas automaticamente:
+	Pdf didn't shut down normally. These documents had changes that were autosaved:	O Pdf não foi encerrado normalmente. Estes documentos tiveram alterações salvas automaticamente:
 	just now	agora mesmo
 	{n} min ago	há {n} min
 	{n} h ago	há {n} h
@@ -1302,6 +1313,9 @@
 	Sort comments by:	Classificar comentários por:
 	Create PDF Comment Summary	Criar resumo de comentários do PDF
 	Revert to the previously saved version of “{name}”? Changes since then can't be undone afterwards.	Reverter para a versão salva anteriormente de “{name}”? As alterações feitas desde então não poderão ser desfeitas depois.
+	Save over the changed file?	Salvar sobre o arquivo alterado?
+	“{name}” changed on disk after it was opened or last saved. Saving now replaces that newer version with this one.	“{name}” foi alterado no disco depois de ser aberto ou salvo pela última vez. Salvar agora substitui essa versão mais recente por esta.
+	Save anyway	Salvar mesmo assim
 	Number pages	Numerar páginas
 	Style	Estilo
 	None (prefix only)	Nenhum (apenas prefixo)
@@ -1444,10 +1458,10 @@
 	On the web, open or drop an image to convert it	Na Web, abra ou solte uma imagem para convertê-la
 	Couldn't optimize the file: {e}	Não foi possível otimizar o arquivo: {e}
 	Couldn't write {path}: {e}	Não foi possível gravar {path}: {e}
-	The form asks to be submitted to {u}; PdfCraft doesn't send form data. Save the document to keep your entries.	O formulário solicita envio para {u}; o PdfCraft não envia dados de formulário. Salve o documento para manter suas entradas.
+	The form asks to be submitted to {u}; Pdf doesn't send form data. Save the document to keep your entries.	O formulário solicita envio para {u}; o Pdf não envia dados de formulário. Salve o documento para manter suas entradas.
 	This PDF uses the unsupported {s} action.	Este PDF usa a ação {s} não compatível.
 	{name}: the {other} action isn't supported yet	{name}: a ação {other} ainda não é suportada
-	{name} submits the form to {url}; PdfCraft doesn't send form data. Save the document to keep your entries.	{name} envia o formulário para {url}; o PdfCraft não envia dados de formulário. Salve o documento para manter suas entradas.
+	{name} submits the form to {url}; Pdf doesn't send form data. Save the document to keep your entries.	{name} envia o formulário para {url}; o Pdf não envia dados de formulário. Salve o documento para manter suas entradas.
 	Export stopped: {e}	Exportação interrompida: {e}
 	Exported 1 image	1 imagem exportada
 	Exported {n} images	{n} imagens exportadas
@@ -1498,6 +1512,8 @@
 	Sent to {printer}	Enviado para {printer}
 	Sent to {printer}: {msg}	Enviado para {printer}: {msg}
 	Looking for printers…	Procurando impressoras…
+	Sending sheet {s} of {n} to {printer}…	Enviando a folha {s} de {n} para {printer}…
+	No printers were found. Check that the printer is installed and the print spooler is running, then open Print again.	Nenhuma impressora encontrada. Verifique se a impressora está instalada e se o spooler de impressão está em execução e abra Imprimir novamente.
 	Sending to {printer}…	Enviando para {printer}…
 	Choose a folder for the searchable files	Escolha uma pasta para os arquivos pesquisáveis
 	Files are combined in this order. Leave Pages empty to take every page.	Os arquivos são combinados nesta ordem. Deixe Páginas em branco para incluir todas as páginas.
@@ -1522,6 +1538,7 @@
 	Couldn't use {name}: {e}	Não foi possível usar {name}: {e}
 	Couldn't extract pages: {e}	Não foi possível extrair páginas: {e}
 	Couldn't write {name}: {e}	Não foi possível gravar {name}: {e}
+	the name is not a plain file name	o nome não é um nome de arquivo simples
 	Wrote 1 file to {dir}	1 arquivo gravado em {dir}
 	Wrote {n} files to {dir}	{n} arquivos gravados em {dir}
 	No pages match those choices	Nenhuma página corresponde a essas opções
@@ -1612,8 +1629,8 @@
 	Signed and all signatures are valid.	Assinado e todas as assinaturas são válidas.
 	At least one signature has problems.	Pelo menos uma assinatura apresenta problemas.
 	This document is secured. Some changes are restricted by its security settings.	Este documento está protegido. Algumas alterações são restritas por suas configurações de segurança.
-	This is a dynamic XFA form, which PdfCraft can't display yet. What you see is the file's placeholder page.	Este é um formulário XFA dinâmico, que o PdfCraft ainda não pode exibir. O que você vê é a página de espaço reservado do arquivo.
-	This form also contains XFA data, which PdfCraft doesn't read yet. You can fill its fields, but Acrobat may show the XFA values instead.	Este formulário também contém dados XFA, que o PdfCraft ainda não lê. Você pode preencher seus campos, mas o Acrobat pode exibir os valores XFA em vez disso.
+	This is a dynamic XFA form, which Pdf can't display yet. What you see is the file's placeholder page.	Este é um formulário XFA dinâmico, que o Pdf ainda não pode exibir. O que você vê é a página de espaço reservado do arquivo.
+	This form also contains XFA data, which Pdf doesn't read yet. You can fill its fields, but Acrobat may show the XFA values instead.	Este formulário também contém dados XFA, que o Pdf ainda não lê. Você pode preencher seus campos, mas o Acrobat pode exibir os valores XFA em vez disso.
 	This document contains {n} interactive form fields.	Este documento contém {n} campos de formulário interativos.
 	This file was damaged and has been repaired. Saving keeps the repaired version.	Este arquivo estava danificado e foi reparado. Salvar manterá a versão reparada.
 	Dismiss	Dispensar
@@ -1652,7 +1669,7 @@
 	Read	Ler
 	Convert	Converter
 	E-Sign	Assinatura eletrônica
-	Welcome to PdfCraft	Bem-vindo ao PdfCraft
+	Welcome to Pdf	Bem-vindo ao Pdf
 	An open-source PDF workbench — local, private, and scriptable.	Uma bancada de trabalho de PDF de código aberto — local, privada e programável.
 	Recommended tools	Ferramentas recomendadas
 	Use now	Usar agora
@@ -1687,15 +1704,15 @@
 	Split document…	Dividir documento…
 	Number pages…	Numerar páginas…
 	Keyboard shortcuts	Atalhos de teclado
-	Join the ArtCraft Discord	Entrar no Discord do ArtCraft
-	Join the ArtCraft community	Entrar na comunidade ArtCraft
+	Join the Pdf Discord	Entrar no Discord do Pdf
+	Join the Pdf community	Entrar na comunidade Pdf
 	Get help, share feedback and follow development on Discord.	Obtenha ajuda, compartilhe comentários e acompanhe o desenvolvimento no Discord.
 	Join our Discord	Entrar em nosso Discord
-	PdfCraft web page	Página da Web do PdfCraft
-	PdfCraft on GitHub	PdfCraft no GitHub
-	ArtCraft website	Site do ArtCraft
+	Pdf web page	Página da Web do Pdf
+	Pdf on GitHub	Pdf no GitHub
+	Pdf website	Site do Pdf
 	Check for updates…	Verificar atualizações…
-	About PdfCraft	Sobre o PdfCraft
+	About Pdf	Sobre o Pdf
 	JavaScript console…	Console JavaScript…
 	Document JavaScripts…	JavaScripts do documento…
 	Recognize text…	Reconhecer texto…
@@ -1705,8 +1722,8 @@
 	Add background…	Adicionar plano de fundo…
 	Prepare a form	Preparar um formulário
 	Digitally sign	Assinar digitalmente
-	Files you open in PdfCraft appear here. Drop a PDF anywhere to open it.	Os arquivos abertos no PdfCraft aparecem aqui. Solte um PDF em qualquer lugar para abri-lo.
-	PdfCraft works offline. No telemetry, no account, and no cloud processing unless you add a provider.	O PdfCraft funciona offline. Sem telemetria, sem conta e sem processamento em nuvem, a menos que você adicione um provedor.
+	Files you open in Pdf appear here. Drop a PDF anywhere to open it.	Os arquivos abertos no Pdf aparecem aqui. Solte um PDF em qualquer lugar para abri-lo.
+	Pdf works offline. No telemetry, no account, and no cloud processing unless you add a provider.	O Pdf funciona offline. Sem telemetria, sem conta e sem processamento em nuvem, a menos que você adicione um provedor.
 	Measure distance	Medir distância
 	Measure perimeter	Medir perímetro
 	Measure area	Medir área
@@ -1913,7 +1930,7 @@
 	the image is empty	a imagem está vazia
 	The operation failed.	A operação falhou.
 	the password is incorrect	a senha está incorreta
-	The title in the metadata and the document information differ	O título nos metadados e nas informações do documento são diferentes
+	The title in the metadata and the document information differ	Os títulos nos metadados e nas informações do documento são diferentes
 	the title must not be empty	o título não deve estar vazio
 	there are no pages to print	não há páginas para imprimir
 	this document is signed: rewriting it would invalidate its signatures (save it incrementally instead)	este documento está assinado: regravá-lo invalidaria suas assinaturas (salve de forma incremental)
@@ -2035,7 +2052,7 @@
 	{name} can't be combined: {why}	{name} não pode ser combinado: {why}
 	Selected pages	Páginas selecionadas
 	No pages selected	Nenhuma página selecionada
-	Created a PDF from {n} files; left out: {names}	Criado um PDF de {n} arquivos; deixando de fora: {names}
+	Created a PDF from {n} files; left out: {names}	PDF criado a partir de {n} arquivos; deixados de fora: {names}
 	Created a PDF from the first {n} files	Criado um PDF dos primeiros {n} arquivos
 	Created a PDF from {n} files	Criado um PDF de {n} arquivos
 	Folders	Pastas
@@ -2058,14 +2075,14 @@
 	Optimizing… writing the copy	Otimizando… gravando a cópia
 	Print single-sided. Keep the sheets in order, cut at the marks, then stack the piles left to right, top to bottom.	Imprima somente na frente. Mantenha as folhas em ordem, corte nas marcas e empilhe as pilhas da esquerda para a direita, de cima para baixo.
 	Windows store  ·  	Repositório do Windows  ·  
-	The key is in the Windows certificate store, which may ask to allow PdfCraft to use it.	A chave está no repositório de certificados do Windows, que pode solicitar permissão para o PdfCraft usá-la.
+	The key is in the Windows certificate store, which may ask to allow Pdf to use it.	A chave está no repositório de certificados do Windows, que pode solicitar permissão para o Pdf usá-la.
 	This web address mixes letters from different alphabets, a common way to imitate another site's name.	Este endereço da web mistura letras de alfabetos diferentes, uma forma comum de imitar o nome de outro site.
 	This web address uses letters from another alphabet, which can look like familiar ones.	Este endereço da web usa letras de outro alfabeto, que podem parecer familiares.
 	Only continue if you trust this document. An address can carry information from the document, such as what you typed into its form.	Continue apenas se você confiar neste documento. Um endereço pode carregar informações do documento, como o que você digitou no formulário dele.
 	The PDF text fonts can't draw “{c}” ({code}). Choose supported text.	As fontes de texto PDF não podem exibir “{c}” ({code}). Escolha um texto compatível.
 	The standard fonts can't draw “{c}” ({code}). Only Western European characters can be added as text for now.	As fontes padrão não conseguem desenhar “{c}” ({code}). Por enquanto, apenas caracteres da Europa Ocidental podem ser adicionados como texto.
-	This field's font can't draw “{c}” ({code}), so PdfCraft shows ? in its place. The value is saved, and other PDF viewers redraw the field from it.	A fonte deste campo não consegue desenhar “{c}” ({code}), então o PdfCraft mostra ? no lugar. O valor foi salvo, e outros leitores de PDF redesenham o campo a partir dele.
-	The fonts PdfCraft writes with can't draw “{c}” ({code}), so it shows as ? in every PDF viewer. The text is saved.	As fontes que o PdfCraft usa para escrever não conseguem desenhar “{c}” ({code}), então ele aparece como ? em qualquer leitor de PDF. O texto foi salvo.
+	This field's font can't draw “{c}” ({code}), so Pdf shows ? in its place. The value is saved, and other PDF viewers redraw the field from it.	A fonte deste campo não consegue desenhar “{c}” ({code}), então o Pdf mostra ? no lugar. O valor foi salvo, e outros leitores de PDF redesenham o campo a partir dele.
+	The fonts Pdf writes with can't draw “{c}” ({code}), so it shows as ? in every PDF viewer. The text is saved.	As fontes que o Pdf usa para escrever não conseguem desenhar “{c}” ({code}), então ele aparece como ? em qualquer leitor de PDF. O texto foi salvo.
 	Line ending	Fim de linha
 	Show	Mostrar
 	Sort	Classificar
@@ -2108,7 +2125,7 @@ action wizard	Start	Iniciar
 	Choose a folder on this computer to pin	Escolha uma pasta deste computador para fixar
 	Commits	Commits
 	Company	Empresa
-	Contributors	Colaboradores
+	Contributors	Contribuidores
 	Couldn't open the printer's preferences: {e}	Não foi possível abrir as preferências da impressora: {e}
 	Couldn't optimize the file	Não foi possível otimizar o arquivo
 	Couldn't show the file picker. Please try again.	Não foi possível mostrar o seletor de arquivos. Tente novamente.
@@ -2162,7 +2179,7 @@ action wizard	Start	Iniciar
 	Smaller pages	Páginas menores
 	Squiggly	Ondulado
 	Table rows belong directly in a table or its head, body or foot. Fix the table's tags.	As linhas de tabela devem ficar diretamente em uma tabela ou em seu cabeçalho, corpo ou rodapé. Corrija as tags da tabela.
-	Text recognition isn't installed: its model files are missing. Reinstall PdfCraft, or set PDFCRAFT_MODELS to the folder that holds them.	O reconhecimento de texto não está instalado: faltam os arquivos dos modelos. Reinstale o PdfCraft ou defina PDFCRAFT_MODELS como a pasta que os contém.
+	Text recognition isn't installed: its model files are missing. Reinstall Pdf, or set PDFCRAFT_MODELS to the folder that holds them.	O reconhecimento de texto não está instalado: faltam os arquivos dos modelos. Reinstale o Pdf ou defina PDFCRAFT_MODELS como a pasta que os contém.
 	Text, marks and signatures become part of the page. Other comments stay editable.	Texto, marcas e assinaturas passam a fazer parte da página. Os demais comentários continuam editáveis.
 	That didn't work: an internal error stopped it ({m}).	Não funcionou: um erro interno interrompeu a ação ({m}).
 	The Windows store's digital IDs couldn't be listed: {e}	Não foi possível listar os IDs digitais do repositório do Windows: {e}
@@ -2177,12 +2194,12 @@ action wizard	Start	Iniciar
 	Use {what}	Usar {what}
 	Username	Nome de usuário
 	You can pin up to {n} folders. Unpin one first.	Você pode fixar até {n} pastas. Desafixe uma primeiro.
-	the text recognition models are not installed (reinstall PdfCraft, or set PDFCRAFT_MODELS to the folder that holds them)	os modelos de reconhecimento de texto não estão instalados (reinstale o PdfCraft ou defina PDFCRAFT_MODELS como a pasta que os contém)
+	the text recognition models are not installed (reinstall Pdf, or set PDFCRAFT_MODELS to the folder that holds them)	os modelos de reconhecimento de texto não estão instalados (reinstale o Pdf ou defina PDFCRAFT_MODELS como a pasta que os contém)
 	yyyy or yy year · m or mm month · mmm or mmmm month name · d or dd day · ddd or dddd weekday. H, h, M, s and t are time letters and can't be used on their own: put {escape} before a letter to show it as is.	yyyy ou yy ano · m ou mm mês · mmm ou mmmm nome do mês · d ou dd dia · ddd ou dddd dia da semana. H, h, M, s e t são letras de hora e não podem ser usadas sozinhas: coloque {escape} antes de uma letra para mostrá-la como está.
 	{chars} can't be written into the PDF yet: Fill & Sign text is Western European only. Pick a numeric format such as dd.mm.yyyy.	{chars} ainda não pode ser escrito no PDF: o texto de Preencher e assinar aceita só caracteres da Europa ocidental. Escolha um formato numérico como dd.mm.yyyy.
 	{folder} is already pinned to Home	{folder} já está fixada no Início
-	{who} in this document tried to open an address PdfCraft won't open: {e}.	{who} neste documento tentou abrir um endereço que o PdfCraft não abre: {e}.
-	{who} in this document tried to open an address PdfCraft won't open: {e}. Only web (http, https) and email (mailto) links open from documents.	{who} neste documento tentou abrir um endereço que o PdfCraft não abre: {e}. Só links da web (http, https) e de e-mail (mailto) abrem a partir de documentos.
+	{who} in this document tried to open an address Pdf won't open: {e}.	{who} neste documento tentou abrir um endereço que o Pdf não abre: {e}.
+	{who} in this document tried to open an address Pdf won't open: {e}. Only web (http, https) and email (mailto) links open from documents.	{who} neste documento tentou abrir um endereço que o Pdf não abre: {e}. Só links da web (http, https) e de e-mail (mailto) abrem a partir de documentos.
 	ΔLOC	ΔLOC
 	−Bin	−Bin
 	−LOC	−LOC
@@ -2199,7 +2216,7 @@ comment menu	Edit	Editar
 	Character limit:	Limite de caracteres:
 	Character limit 0 means no limit. A comb of characters needs a limit.	O limite de caracteres 0 significa sem limite. As caixas de caracteres precisam de um limite.
 	To change locked fields, also set Locked to No.	Para alterar campos bloqueados, defina também “Bloqueado” como “Não”.
-	Comb of characters	Pente de caracteres
+	Comb of characters	Caixas de caracteres
 	The document changed while you were editing field properties.	O documento mudou enquanto você editava as propriedades dos campos.
 	The document is no longer open.	O documento não está mais aberto.
 	The field properties dialog is no longer open.	A caixa de propriedades dos campos não está mais aberta.
@@ -2242,6 +2259,8 @@ key	Space	Espaço
 	Switch to List view to change the pages it takes.	Mude para a exibição em lista para alterar as páginas incluídas.
 	Expand all	Expandir tudo
 	Collapse all	Recolher tudo
+	Collapse all pages	Recolher todas as páginas
+	Expand all pages	Expandir todas as páginas
 	Remove page	Remover página
 	Remove {n} pages	Remover {n} páginas
 
@@ -2262,7 +2281,7 @@ key	Space	Espaço
 	Printer paper and scaling may differ. Check driver settings.	O papel e a escala da impressora podem variar. Confira as configurações do driver.
 	Drawing scale changes. Use Actual size for full-scale plans.	A escala do desenho muda. Use Tamanho real para plantas em escala.
 	Reload documents when their files change on disk	Recarregar documentos quando os arquivos mudarem no disco
-	This file changed on disk. Reload it to see the new version; your unsaved changes will be lost.	Este arquivo foi alterado no disco. Recarregue-o para ver a nova versão; suas alterações não salvas serão perdidas.
+	This file changed on disk. Reload shows the new version and drops your unsaved changes; Save replaces it with this version.	Este arquivo foi alterado no disco. Recarregar mostra a nova versão e descarta suas alterações não salvas; Salvar a substitui por esta versão.
 	Reload	Recarregar
 	Couldn't reload {name}: {e}	Não foi possível recarregar {name}: {e}
 	Select page {label}	Selecionar página {label}
@@ -2281,7 +2300,7 @@ calendar date	September	setembro
 calendar date	October	outubro
 calendar date	November	novembro
 calendar date	December	dezembro
-	Mouse wheel scroll speed	Velocidade de rolagem da roda do mouse
+	Scroll speed (mouse wheel and arrow keys)	Velocidade de rolagem (roda do mouse e teclas de seta)
 scroll speed	Slow	Lenta
 scroll speed	Normal	Normal
 scroll speed	Fast	Rápida
@@ -2336,7 +2355,7 @@ animation effects	Off	Desativados
 	no output folder was chosen	nenhuma pasta de saída foi escolhida
 @plural	Downloaded {n} PDF|Downloaded {n} PDFs	{n} PDF baixado|{n} PDFs baixados
 	Scan	Digitalizar
-	Sign a sheet of white paper and take a photo of it in bright, even light (use the flash). Choose the photo or drop it here: PdfCraft finds the signature and removes the paper.	Assine uma folha de papel branco e tire uma foto dela com luz forte e uniforme (use o flash). Escolha a foto ou solte-a aqui: o PdfCraft encontra a assinatura e remove o papel.
+	Sign a sheet of white paper and take a photo of it in bright, even light (use the flash). Choose the photo or drop it here: Pdf finds the signature and removes the paper.	Assine uma folha de papel branco e tire uma foto dela com luz forte e uniforme (use o flash). Escolha a foto ou solte-a aqui: o Pdf encontra a assinatura e remove o papel.
 	Choose photo…	Escolher foto…
 	No photo chosen	Nenhuma foto escolhida
 	Photo	Foto
@@ -2355,6 +2374,10 @@ animation effects	Off	Desativados
 	The linked PDF opened, but its named destination was not applied.	O PDF vinculado foi aberto, mas seu destino nomeado não foi aplicado.
 	The linked PDF opened, but its page destination was out of range.	O PDF vinculado foi aberto, mas sua página de destino está fora do intervalo.
 	Local cross-PDF links require the desktop app	Links locais entre PDFs exigem o aplicativo para desktop
+	Cut Image	Recortar imagem
+	Redact Image	Ocultar dados da imagem
+	Create Link…	Criar link…
+	Recognize Text…	Reconhecer texto…
 	Minimize	Minimizar
 	Maximize	Maximizar
 	Restore	Restaurar
@@ -2364,7 +2387,63 @@ animation effects	Off	Desativados
 # Absolute local GoToR confirmation (#1364).
 	Allow	Permitir
 	Only allow this if you trust the source document.	Permita esta ação somente se confiar no documento de origem.
+	Open in Full Screen mode?	Abrir no modo de tela cheia?
+	This document asks to open in Full Screen mode: the page fills the screen and nothing else shows. Press Esc at any time to leave it.	Este documento pede para abrir no modo de tela cheia: a página preenche a tela e nada mais é exibido. Pressione Esc a qualquer momento para sair.
+	Full Screen	Tela cheia
+	Not now	Agora não
 	Open this local PDF?	Abrir este PDF local?
 	This document is trying to open a local file:	Este documento está tentando abrir um arquivo local:
 	Move tag earlier	Mover tag para antes
 	Move tag later	Mover tag para depois
+
+# Historical snapshot notice bar (View signed version / View revision).
+	You are viewing the signed version of “{from}” (revision {rev}). It is a snapshot: changes here won't affect the original.	Você está vendo a versão assinada de “{from}” (revisão {rev}). É um instantâneo: as alterações aqui não afetarão o original.
+	You are viewing revision {rev} of “{from}”. It is a snapshot: changes here won't affect the original.	Você está vendo a revisão {rev} de “{from}”. É um instantâneo: as alterações aqui não afetarão o original.
+	Turn upside down (180°)	Virar de cabeça para baixo (180°)
+	4 x 6 in label (101.6 x 152.4 mm)	Etiqueta 4 × 6 pol (101,6 × 152,4 mm)
+	Cuts each page to its printed area, turns it upright and fits it to the sheet without stretching. One label per sheet.	Recorta cada página na área impressa, deixa-a na vertical e ajusta-a à folha sem distorcer. Uma etiqueta por folha.
+	Find untagged content	Encontrar conteúdo sem marcação
+	No untagged content was found.	Nenhum conteúdo sem marcação foi encontrado.
+	Found {n} untagged content problems.	Foram encontrados {n} problemas de conteúdo sem marcação.
+	Tag form fields	Marcar campos de formulário
+	Mark as artifact	Marcar como artefato
+	Remove this leaf tag from reading order and mark its direct content as an artifact	Remova esta tag folha da ordem de leitura e marque seu conteúdo direto como artefato
+	Mark content as artifact	Marcar conteúdo como artefato
+	Word count	Contagem de palavras
+	Current page only	Somente a página atual
+	Exclude tagged tables	Excluir tabelas com tags
+	Exclude tagged code blocks	Excluir blocos de código com tags
+	Exclude image/OCR text	Excluir texto de imagens/OCR
+	Exclusions use PDF tags. Untagged tables and code remain included. Image exclusion also removes invisible text.	As exclusões usam tags de PDF. Tabelas e código sem tags continuam incluídos. A exclusão de imagens também remove o texto invisível.
+	Words	Palavras
+	Characters	Caracteres
+	Characters without spaces	Caracteres sem espaços
+	Pages counted	Páginas contadas
+	Some pages contain no countable text. Scanned images need OCR first.	Algumas páginas não contêm texto para contar. As imagens digitalizadas precisam primeiro de OCR.
+	Some content could not be classified safely and was kept in the count.	Parte do conteúdo não pôde ser classificada de forma confiável e foi mantida na contagem.
+	Counting words… {n} pages read	Contando palavras… {n} páginas lidas
+	Word counting stopped unexpectedly.	A contagem de palavras parou inesperadamente.
+	Word count…	Contagem de palavras…
+@id	file.word_count	Contagem de palavras…
+	Standard	Padrão
+	Mobile	Celular
+	Merge image fragments	Mesclar fragmentos de imagem
+	Optimizing… merging image fragments	Otimizando… mesclando fragmentos de imagem
+	Side by side	Lado a lado
+	New file only	Somente o arquivo novo
+	Old file: {name}	Arquivo antigo: {name}
+	New file: {name}	Arquivo novo: {name}
+	Print as image	Imprimir como imagem
+	Resolution:	Resolução:
+	Use it when a printer skips text, shading or transparency. The print is no longer searchable text; with Print in grayscale, the pictures are grey.	Use quando uma impressora omite texto, sombreamento ou transparência. A impressão deixa de ser texto pesquisável; com Imprimir em tons de cinza, as imagens ficam cinza.
+	Crop Image	Cortar imagem
+	Remove Crop	Remover corte
+	Trim the picture with its handles; Enter or Done applies	Corte a imagem com as alças; Enter ou Concluído aplica
+	Redaction mark appearance	Aparência da marca de redação
+	Outline colour:	Cor do contorno:
+	Fill colour:	Cor de preenchimento:
+	Shown while the pointer is over a mark.	Mostrada enquanto o ponteiro está sobre uma marca.
+	Opacity:	Opacidade:
+	Make properties default	Tornar propriedades padrão
+	Pages selected	Páginas selecionadas
+	Page properties	Propriedades da página

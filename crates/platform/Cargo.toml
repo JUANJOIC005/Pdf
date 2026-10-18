@@ -1,6 +1,6 @@
 [package]
 name = "pdfcraft-platform"
-description = "Operating-system services shared by the PdfCraft desktop app and automation tools"
+description = "Operating-system services shared by the Pdf desktop app and automation tools"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -9,6 +9,10 @@ license.workspace = true
 workspace = true
 
 [dependencies]
+
+[target.'cfg(target_os = "macos")'.dependencies]
+# `write_atomically`: a volume that refuses F_FULLFSYNC gets a plain fsync.
+rustix = { version = "1", features = ["fs"] }
 
 [target.'cfg(target_os = "linux")'.dependencies]
 # Already in the dependency graph through the accessibility integration. The portal watcher

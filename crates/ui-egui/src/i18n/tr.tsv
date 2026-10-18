@@ -2,7 +2,7 @@
 # (context <TAB> source <TAB> translation; @id, @plural and other contexts; escapes \n \t \\).
 # Plural forms (see `plural_none` in i18n/mod.rs): one form.
 #
-# Clean-room: clean-room translations of PdfCraft's English UI labels, no proprietary localisation resources.
+# Clean-room: clean-room translations of Pdf's English UI labels, no proprietary localisation resources.
 
 	Menu	Menü
 	File	Dosya
@@ -15,6 +15,7 @@
 	Interface language	Arayüz dili
 	Identity	Kimlik
 	Name on new comments	Yeni yorumlardaki ad
+	Hide hover previews for highlights without comment text	Yorum metni olmayan vurgular için üzerine gelme önizlemelerini gizle
 	Open…	Aç…
 	New blank PDF	Yeni boş PDF
 	Create PDF from file…	Dosyadan PDF oluştur…
@@ -119,17 +120,17 @@
 	Next page	Sonraki sayfa
 	Previous page	Önceki sayfa
 	Current page — type a page number or label (such as iv) and press Enter	Geçerli sayfa — bir sayfa numarası veya etiketi (örneğin iv) yazıp Enter'a basın
-	Welcome to PdfCraft	PdfCraft'a Hoş Geldiniz
+	Welcome to Pdf	Pdf'a Hoş Geldiniz
 	An open-source PDF workbench — local, private, and scriptable.	Açık kaynaklı bir PDF çalışma alanı — yerel, gizli ve komut dosyalarıyla yönetilebilir.
-	Join the ArtCraft community	ArtCraft topluluğuna katılın
+	Join the Pdf community	Pdf topluluğuna katılın
 	Get help, share feedback and follow development on Discord.	Discord'da yardım alın, geri bildirim paylaşın ve geliştirmeyi takip edin.
 	Recommended tools	Önerilen araçlar
 	Use now	Şimdi kullan
 	Open file	Dosya aç
 	Recent	Son kullanılanlar
-	Files you open in PdfCraft appear here. Drop a PDF anywhere to open it.	PdfCraft'ta açtığınız dosyalar burada görünür. Açmak için bir PDF'i herhangi bir yere bırakın.
+	Files you open in Pdf appear here. Drop a PDF anywhere to open it.	Pdf'ta açtığınız dosyalar burada görünür. Açmak için bir PDF'i herhangi bir yere bırakın.
 	Privacy	Gizlilik
-	PdfCraft works offline. No telemetry, no account, and no cloud processing unless you add a provider.	PdfCraft çevrimdışı çalışır. Bir sağlayıcı eklemediğiniz sürece telemetri yok, hesap yok ve bulut işleme yok.
+	Pdf works offline. No telemetry, no account, and no cloud processing unless you add a provider.	Pdf çevrimdışı çalışır. Bir sağlayıcı eklemediğiniz sürece telemetri yok, hesap yok ve bulut işleme yok.
 	Scripts run in a sandbox without file or network access. With JavaScript off, Acrobat's standard format, validate and calculate functions still work.	Komut dosyaları dosya veya ağ erişimi olmadan yalıtılmış alanda (sandbox) çalışır. JavaScript kapalıyken bile Acrobat'ın standart biçimlendirme, doğrulama ve hesaplama işlevleri çalışmaya devam eder.
 	Back to all tools	Tüm araçlara geri dön
 	Close panel	Paneli kapat
@@ -267,12 +268,12 @@
 	Split document…	Belgeyi böl…
 	Number pages…	Sayfaları numaralandır…
 	Keyboard shortcuts	Klavye kısayolları
-	Join the ArtCraft Discord	ArtCraft Discord'una katıl
-	PdfCraft web page	PdfCraft web sayfası
-	PdfCraft on GitHub	GitHub'da PdfCraft
-	ArtCraft website	ArtCraft web sitesi
+	Join the Pdf Discord	Pdf Discord'una katıl
+	Pdf web page	Pdf web sayfası
+	Pdf on GitHub	GitHub'da Pdf
+	Pdf website	Pdf web sitesi
 	Check for updates…	Güncellemeleri denetle…
-	About PdfCraft	PdfCraft hakkında
+	About Pdf	Pdf hakkında
 	Export a PDF	PDF'i dışa aktar
 	Export to	Şuraya aktar
 	Microsoft Word (.docx)	Microsoft Word (.docx)
@@ -328,6 +329,7 @@
 	Split	Böl
 	More	Daha fazla
 	Set page boxes	Sayfa kutularını ayarla
+	Set page transitions	Sayfa geçişlerini ayarla
 	Page labels	Sayfa etiketleri
 	Page transitions	Sayfa geçişleri
 	Add comments	Yorum ekle
@@ -540,6 +542,7 @@
 	Remove unused objects and merge identical ones	Kullanılmayan nesneleri kaldır ve aynı olanları birleştir
 	Audit space usage…	Alan kullanımını denetle…
 	Space Audit	Alan Denetimi
+	What takes up the space in this file, by kind of content.	Bu dosyadaki alanı neyin kapladığı, içerik türüne göre.
 	Bytes	Bayt
 	Content Streams	İçerik Akışları
 	X Object Forms	XObject Formları
@@ -727,9 +730,9 @@
 	Check for updates	Güncellemeleri denetle
 	No check has run yet.	Henüz denetim yapılmadı.
 	Checking for a newer version…	Daha yeni bir sürüm denetleniyor…
-	PdfCraft {v} is available.	PdfCraft {v} kullanılabilir.
+	Pdf {v} is available.	Pdf {v} kullanılabilir.
 	You have version {c}. Download the new version from its release page.	{c} sürümüne sahipsiniz. Yeni sürümü sürüm sayfasından indirin.
-	PdfCraft {c} is up to date.	PdfCraft {c} güncel.
+	Pdf {c} is up to date.	Pdf {c} güncel.
 	Couldn't check for updates: {e}	Güncellemeler denetlenemedi: {e}
 	You have version {c}. All releases are listed at {page}.	{c} sürümüne sahipsiniz. Tüm sürümler {page} adresinde listelenmiştir.
 	Asks GitHub for the latest release. Nothing is downloaded or installed automatically.	En son sürüm için GitHub'ı sorgular. Hiçbir şey otomatik olarak indirilmez veya kurulmaz.
@@ -810,6 +813,12 @@
 	Windows store  ·  	Windows depolama alanı  ·  
 	Issued by: 	Veren: 
 	, Expires: 	, Son kullanma tarihi: 
+	Digitally signed by	Dijital olarak imzalayan
+	DN: 	DN: 
+	Reason: 	Neden: 
+	Location: 	Konum: 
+	Date: 	Tarih: 
+	The labels are in English: the signature's font can't draw them in this language.	Etiketler İngilizce: imzanın yazı tipi bu dilde onları çizemiyor.
 	No digital IDs yet.	Henüz dijital kimlik yok.
 	Configure New Digital ID	Yeni Dijital Kimlik Yapılandır
 	Remove "{name}" from this list? The file itself is not deleted.	"{name}" bu listeden kaldırılsın mı? Dosyanın kendisi silinmez.
@@ -838,8 +847,8 @@
 	No changes allowed	Değişikliğe izin verilmez
 	Annotations, form fill-in, and digital signatures	Açıklamalar, form doldurma ve dijital imzalar
 	Form fill-in and digital signatures	Form doldurma ve dijital imzalar
-	The key is in the macOS Keychain, which may ask to allow PdfCraft to use it.	Anahtar macOS Anahtar Zinciri'ndedir ve PdfCraft'ın kullanmasına izin vermenizi isteyebilir.
-	The key is in the Windows certificate store, which may ask to allow PdfCraft to use it.	Anahtar Windows sertifika deposundadır ve PdfCraft'ın kullanmasına izin vermenizi isteyebilir.
+	The key is in the macOS Keychain, which may ask to allow Pdf to use it.	Anahtar macOS Anahtar Zinciri'ndedir ve Pdf'ın kullanmasına izin vermenizi isteyebilir.
+	The key is in the Windows certificate store, which may ask to allow Pdf to use it.	Anahtar Windows sertifika deposundadır ve Pdf'ın kullanmasına izin vermenizi isteyebilir.
 	Digital ID password	Dijital kimlik parolası
 	Back	Geri
 	Validate all	Tümünü doğrula
@@ -1104,6 +1113,7 @@
 	Redaction code:	Karartma kodu:
 	Font:	Yazı tipi:
 	Font size:	Yazı tipi boyutu:
+	Font size	Yazı tipi boyutu
 	Auto-size text to fit redaction region	Metni karartma bölgesine sığacak şekilde otomatik boyutlandır
 	Font colour:	Yazı tipi rengi:
 	Repeat overlay text	Üst metni yinele
@@ -1205,7 +1215,7 @@
 	Downsample to	Şu değere alt örnekle:
 	Also recognize pages that already have text	Zaten metin içeren sayfaları da tanı
 	Pictures on those pages are recognized too; words already in the page's text are not added again	Bu sayfalardaki resimler de tanınır; sayfanın metninde zaten bulunan sözcükler yeniden eklenmez
-	Text recognition isn't installed: its model files are missing. Reinstall PdfCraft, or set PDFCRAFT_MODELS to the folder that holds them.	Metin tanıma yüklü değil: model dosyaları eksik. PdfCraft'ı yeniden yükleyin veya PDFCRAFT_MODELS ortam değişkenini bunları içeren klasöre ayarlayın.
+	Text recognition isn't installed: its model files are missing. Reinstall Pdf, or set PDFCRAFT_MODELS to the folder that holds them.	Metin tanıma yüklü değil: model dosyaları eksik. Pdf'ı yeniden yükleyin veya PDFCRAFT_MODELS ortam değişkenini bunları içeren klasöre ayarlayın.
 	Settings	Ayarlar
 	Optional	İsteğe bağlı
 	Planned · {m}	Planlandı · {m}
@@ -1244,6 +1254,7 @@
 	Copy text	Metni kopyala
 	Properties…	Özellikler…
 	Make Current Properties Default	Geçerli Özellikleri Varsayılan Yap
+	Make Properties Default	Özellikleri Varsayılan Yap
 	More options	Diğer seçenekler
 	Sort by	Sırala
 	Author	Yazar
@@ -1348,7 +1359,7 @@
 	Anyone opening the document will need this password. It's applied when you save.	Belgeyi açan herkesin bu parolaya ihtiyacı olacaktır. Kaydettiğinizde uygulanır.
 	The document opens without a password; this password is needed to change the restrictions. It's applied when you save.	Belge parola olmadan açılır; kısıtlamaları değiştirmek için bu parola gerekir. Kaydettiğinizde uygulanır.
 	Recover unsaved documents?	Kaydedilmemiş belgeler kurtarılsın mı?
-	PdfCraft didn't shut down normally. These documents had changes that were autosaved:	PdfCraft normal şekilde kapanmadı. Bu belgelerde otomatik olarak kaydedilen değişiklikler vardı:
+	Pdf didn't shut down normally. These documents had changes that were autosaved:	Pdf normal şekilde kapanmadı. Bu belgelerde otomatik olarak kaydedilen değişiklikler vardı:
 	just now	az önce
 	{n} min ago	{n} dk önce
 	{n} h ago	{n} sa önce
@@ -1364,6 +1375,9 @@
 	Sort comments by:	Yorumları şuna göre sırala:
 	Create PDF Comment Summary	PDF Yorum Özeti Oluştur
 	Revert to the previously saved version of “{name}”? Changes since then can't be undone afterwards.	“{name}” belgesinin daha önce kaydedilmiş sürümüne geri dönülsün mü? O andan sonraki değişiklikler geri alınamaz.
+	Save over the changed file?	Değiştirilen dosyanın üzerine kaydedilsin mi?
+	“{name}” changed on disk after it was opened or last saved. Saving now replaces that newer version with this one.	“{name}” açıldıktan veya son kaydedildikten sonra diskte değişti. Şimdi kaydetmek o daha yeni sürümü bununla değiştirir.
+	Save anyway	Yine de kaydet
 	Number pages	Sayfaları numaralandır
 	Style	Stil
 	None (prefix only)	Yok (yalnızca önek)
@@ -1504,10 +1518,10 @@
 	On the web, open or drop an image to convert it	Web'de dönüştürmek için bir resim açın veya sürükleyip bırakın
 	Couldn't optimize the file: {e}	Dosya en iyileştirilemedi: {e}
 	Couldn't write {path}: {e}	{path} yazılamadı: {e}
-	The form asks to be submitted to {u}; PdfCraft doesn't send form data. Save the document to keep your entries.	Form {u} adresine gönderilmek isteniyor; PdfCraft form verilerini göndermez. Girdilerinizi korumak için belgeyi kaydedin.
+	The form asks to be submitted to {u}; Pdf doesn't send form data. Save the document to keep your entries.	Form {u} adresine gönderilmek isteniyor; Pdf form verilerini göndermez. Girdilerinizi korumak için belgeyi kaydedin.
 	This PDF uses the unsupported {s} action.	Bu PDF desteklenmeyen {s} eylemini kullanıyor.
 	{name}: the {other} action isn't supported yet	{name}: {other} eylemi henüz desteklenmiyor
-	{name} submits the form to {url}; PdfCraft doesn't send form data. Save the document to keep your entries.	{name} formu {url} adresine gönderiyor; PdfCraft form verilerini göndermez. Girdilerinizi korumak için belgeyi kaydedin.
+	{name} submits the form to {url}; Pdf doesn't send form data. Save the document to keep your entries.	{name} formu {url} adresine gönderiyor; Pdf form verilerini göndermez. Girdilerinizi korumak için belgeyi kaydedin.
 	Export stopped: {e}	Dışa aktarma durduruldu: {e}
 	Exported 1 image	1 resim dışa aktarıldı
 	Exported {n} images	{n} resim dışa aktarıldı
@@ -1589,6 +1603,7 @@
 	Couldn't use {name}: {e}	{name} kullanılamadı: {e}
 	Couldn't extract pages: {e}	Sayfalar ayıklanamadı: {e}
 	Couldn't write {name}: {e}	{name} yazılamadı: {e}
+	the name is not a plain file name	ad, basit bir dosya adı değil
 	Wrote 1 file to {dir}	1 dosya {dir} konumuna yazıldı
 	Wrote {n} files to {dir}	{n} dosya {dir} konumuna yazıldı
 	No pages match those choices	Bu seçimlerle eşleşen sayfa yok
@@ -1607,7 +1622,7 @@
 	Couldn't open {name}: {e}	{name} açılamadı: {e}
 	Couldn't read {name}: {e}	{name} okunamadı: {e}
 	Portable mode is off: {folder} can't be written ({error}). Settings are kept in your user folder instead.	Taşınabilir mod kapalı: {folder} konumuna yazılamıyor ({error}). Ayarlar bunun yerine kullanıcı klasörünüzde tutulur.
-	PdfCraft is drawing without a graphics processor, so it may be slow. Updating the graphics driver may help.	PdfCraft grafik işlemcisi olmadan çizim yapıyor, bu nedenle yavaş olabilir. Grafik sürücüsünü güncellemek yardımcı olabilir.
+	Pdf is drawing without a graphics processor, so it may be slow. Updating the graphics driver may help.	Pdf grafik işlemcisi olmadan çizim yapıyor, bu nedenle yavaş olabilir. Grafik sürücüsünü güncellemek yardımcı olabilir.
 	Couldn't save: {e}	Kaydedilemedi: {e}
 	Downloading attachments on the web arrives with M3.10 ({n} bytes ready)	Web'de ek indirme M3.10 ile sunulacaktır ({n} bayt hazır)
 	`{command}` {when}	`{command}` {when}
@@ -1675,8 +1690,8 @@
 	Signed and all signatures are valid.	İmzalandı ve tüm imzalar geçerli.
 	At least one signature has problems.	En az bir imzada sorun var.
 	This document is secured. Some changes are restricted by its security settings.	Bu belge güvenlidir. Bazı değişiklikler güvenlik ayarlarıyla kısıtlanmıştır.
-	This is a dynamic XFA form, which PdfCraft can't display yet. What you see is the file's placeholder page.	Bu, PdfCraft'ın henüz görüntüleyemediği dinamik bir XFA formudur. Gördüğünüz şey dosyanın yer tutucu sayfasıdır.
-	This form also contains XFA data, which PdfCraft doesn't read yet. You can fill its fields, but Acrobat may show the XFA values instead.	Bu form aynı zamanda PdfCraft'ın henüz okumadığı XFA verilerini de içerir. Alanlarını doldurabilirsiniz ancak Acrobat bunun yerine XFA değerlerini gösterebilir.
+	This is a dynamic XFA form, which Pdf can't display yet. What you see is the file's placeholder page.	Bu, Pdf'ın henüz görüntüleyemediği dinamik bir XFA formudur. Gördüğünüz şey dosyanın yer tutucu sayfasıdır.
+	This form also contains XFA data, which Pdf doesn't read yet. You can fill its fields, but Acrobat may show the XFA values instead.	Bu form aynı zamanda Pdf'ın henüz okumadığı XFA verilerini de içerir. Alanlarını doldurabilirsiniz ancak Acrobat bunun yerine XFA değerlerini gösterebilir.
 	This document contains {n} interactive form fields.	Bu belge {n} etkileşimli form alanı içeriyor.
 	This file was damaged and has been repaired. Saving keeps the repaired version.	Bu dosya hasarlıydı ve onarıldı. Kaydetmek onarılan sürümü korur.
 	Dismiss	Kapat
@@ -1725,7 +1740,7 @@
 	there are no pages to print	yazdırılacak sayfa yok
 	the document has no tags	belgenin etiketi yok
 	{0}: {1}	{0}: {1}
-	the text recognition models are not installed (reinstall PdfCraft, or set PDFCRAFT_MODELS to the folder that holds them)	metin tanıma modelleri yüklü değil (PdfCraft'ı yeniden yükleyin veya PDFCRAFT_MODELS değişkenini bunları içeren klasöre ayarlayın)
+	the text recognition models are not installed (reinstall Pdf, or set PDFCRAFT_MODELS to the folder that holds them)	metin tanıma modelleri yüklü değil (Pdf'ı yeniden yükleyin veya PDFCRAFT_MODELS değişkenini bunları içeren klasöre ayarlayın)
 	the image is empty	resim boş
 	this file isn't XFDF, FDF, XML or text form data	bu dosya XFDF, FDF, XML veya metin form verisi değil
 	nothing in the file matches this document	dosyadaki hiçbir şey bu belgeyle eşleşmiyor
@@ -2085,7 +2100,7 @@ comment menu	Edit	Düzenle
 signature pad	Type	Yaz
 certificate	Subject	Konu
 action wizard	Start	Başlat
-	Reopen the files that were open when PdfCraft last closed	PdfCraft en son kapatıldığında açık olan dosyaları yeniden aç
+	Reopen the files that were open when Pdf last closed	Pdf en son kapatıldığında açık olan dosyaları yeniden aç
 	Add {what}	{what} ekle
 	Use {what}	{what} kullan
 	Place saved {what}	Kayıtlı {what} yerleştir
@@ -2093,8 +2108,8 @@ action wizard	Start	Başlat
 	A link	Bir bağlantı
 	A button	Bir düğme
 	A script	Bir komut dosyası
-	{who} in this document tried to open an address PdfCraft won't open: {e}.	Bu belgedeki {who}, PdfCraft'ın açamayacağı bir adresi açmaya çalıştı: {e}.
-	{who} in this document tried to open an address PdfCraft won't open: {e}. Only web (http, https) and email (mailto) links open from documents.	Bu belgedeki {who}, PdfCraft'ın açamayacağı bir adresi açmaya çalıştı: {e}. Belgelerden yalnızca web (http, https) ve e-posta (mailto) bağlantıları açılır.
+	{who} in this document tried to open an address Pdf won't open: {e}.	Bu belgedeki {who}, Pdf'ın açamayacağı bir adresi açmaya çalıştı: {e}.
+	{who} in this document tried to open an address Pdf won't open: {e}. Only web (http, https) and email (mailto) links open from documents.	Bu belgedeki {who}, Pdf'ın açamayacağı bir adresi açmaya çalıştı: {e}. Belgelerden yalnızca web (http, https) ve e-posta (mailto) bağlantıları açılır.
 	Another file dialog is still open. Finish with it first.	Başka bir dosya iletişim kutusu hala açık. Önce onu tamamlayın.
 	Couldn't show the file picker. Please try again.	Dosya seçici gösterilemedi. Lütfen tekrar deneyin.
 	The document changed while you were choosing a file, so nothing was changed.	Bir dosya seçerken belge değişti, bu yüzden hiçbir şey değiştirilmedi.
@@ -2171,6 +2186,8 @@ key	Space	Boşluk
 
 # Printing and multi-object selection
 	Looking for printers…	Yazıcılar aranıyor…
+	Sending sheet {s} of {n} to {printer}…	{n} yapraktan {s}. yaprak {printer} yazıcısına gönderiliyor…
+	No printers were found. Check that the printer is installed and the print spooler is running, then open Print again.	Yazıcı bulunamadı. Yazıcının yüklü olduğunu ve yazdırma biriktiricisinin çalıştığını denetleyip Yazdır'ı yeniden açın.
 	Sending to {printer}…	{printer} yazıcısına gönderiliyor…
 	Column select	Sütun seçimi
 @plural	{n} object selected|{n} objects selected	{n} nesne seçildi
@@ -2199,6 +2216,8 @@ key	Space	Boşluk
 	Some bookmarks are not shown here: the panel lists a limited number, nested a limited depth.	Bazı yer imleri burada gösterilmiyor: panel sınırlı sayıda ve sınırlı derinlikte listeler.
 	Expand all	Tümünü genişlet
 	Collapse all	Tümünü daralt
+	Collapse all pages	Tüm sayfaları daralt
+	Expand all pages	Tüm sayfaları genişlet
 	Remove page	Sayfayı kaldır
 	Remove {n} pages	{n} sayfayı kaldır
 
@@ -2257,10 +2276,10 @@ key	Space	Boşluk
 	Printer paper and scaling may differ. Check driver settings.	Yazıcı kâğıdı ve ölçekleme farklı olabilir. Sürücü ayarlarını kontrol edin.
 	Drawing scale changes. Use Actual size for full-scale plans.	Çizim ölçeği değişir. Tam ölçekli planlar için Gerçek boyutu kullanın.
 	Reload documents when their files change on disk	Diskteki dosyaları değiştiğinde belgeleri yeniden yükle
-	This file changed on disk. Reload it to see the new version; your unsaved changes will be lost.	Bu dosya diskte değişti. Yeni sürümü görmek için yeniden yükleyin; kaydedilmemiş değişiklikleriniz kaybolacak.
+	This file changed on disk. Reload shows the new version and drops your unsaved changes; Save replaces it with this version.	Bu dosya diskte değişti. Yeniden yükle yeni sürümü gösterir ve kaydedilmemiş değişikliklerinizi atar; Kaydet onu bu sürümle değiştirir.
 	Reload	Yeniden yükle
 	Couldn't reload {name}: {e}	{name} yeniden yüklenemedi: {e}
-	Mouse wheel scroll speed	Fare tekerleği kaydırma hızı
+	Scroll speed (mouse wheel and arrow keys)	Kaydırma hızı (fare tekerleği ve ok tuşları)
 scroll speed	Slow	Yavaş
 scroll speed	Normal	Orta
 scroll speed	Fast	Hızlı
@@ -2277,8 +2296,8 @@ animation effects	Off	Kapalı
 	Greyscale	Gri tonlamalı
 	Black and white	Siyah beyaz
 	This printer's driver doesn't take two-sided settings from other programs, so its own setting applies. Change it in Properties…	Bu yazıcının sürücüsü diğer programlardan gelen çift taraflı yazdırma ayarlarını kabul etmez, bu yüzden kendi ayarı geçerlidir. Değiştirmek için: Özellikler…
-	This field's font can't draw “{c}” ({code}), so PdfCraft shows ? in its place. The value is saved, and other PDF viewers redraw the field from it.	Bu alanın yazı tipi “{c}” ({code}) karakterini çizemiyor, bu yüzden PdfCraft yerine ? gösteriyor. Değer kaydedilir ve diğer PDF görüntüleyiciler alanı ondan yeniden çizer.
-	The fonts PdfCraft writes with can't draw “{c}” ({code}), so it shows as ? in every PDF viewer. The text is saved.	PdfCraft'ın yazdığı yazı tipleri “{c}” ({code}) karakterini çizemiyor, bu yüzden her PDF görüntüleyicide ? olarak görünür. Metin kaydedilir.
+	This field's font can't draw “{c}” ({code}), so Pdf shows ? in its place. The value is saved, and other PDF viewers redraw the field from it.	Bu alanın yazı tipi “{c}” ({code}) karakterini çizemiyor, bu yüzden Pdf yerine ? gösteriyor. Değer kaydedilir ve diğer PDF görüntüleyiciler alanı ondan yeniden çizer.
+	The fonts Pdf writes with can't draw “{c}” ({code}), so it shows as ? in every PDF viewer. The text is saved.	Pdf'ın yazdığı yazı tipleri “{c}” ({code}) karakterini çizemiyor, bu yüzden her PDF görüntüleyicide ? olarak görünür. Metin kaydedilir.
 	Browser's print dialog	Tarayıcının yazdırma penceresi
 	Copies, two-sided printing and colour are chosen in the browser's print dialog.	Kopya sayısı, çift taraflı yazdırma ve renk tarayıcının yazdırma penceresinde seçilir.
 	Preparing {n} sheets for printing…	Yazdırma için {n} sayfa hazırlanıyor…
@@ -2308,7 +2327,7 @@ animation effects	Off	Kapalı
 @plural	Downloaded {n} PDF|Downloaded {n} PDFs	{n} PDF indirildi
 @plural	{n} field name collides with earlier files and will be renamed: {list}|{n} field names collide with earlier files and will be renamed: {list}	{n} alan adı önceki dosyalarla çakışıyor ve yeniden adlandırılacak: {list}
 	Scan	Tara
-	Sign a sheet of white paper and take a photo of it in bright, even light (use the flash). Choose the photo or drop it here: PdfCraft finds the signature and removes the paper.	Beyaz bir kâğıda imzanızı atın ve parlak, eşit ışıkta fotoğrafını çekin (flaş kullanın). Fotoğrafı seçin veya buraya bırakın: PdfCraft imzayı bulur ve kâğıdı kaldırır.
+	Sign a sheet of white paper and take a photo of it in bright, even light (use the flash). Choose the photo or drop it here: Pdf finds the signature and removes the paper.	Beyaz bir kâğıda imzanızı atın ve parlak, eşit ışıkta fotoğrafını çekin (flaş kullanın). Fotoğrafı seçin veya buraya bırakın: Pdf imzayı bulur ve kâğıdı kaldırır.
 	Choose photo…	Fotoğraf seç…
 	No photo chosen	Fotoğraf seçilmedi
 	Photo	Fotoğraf
@@ -2337,6 +2356,10 @@ animation effects	Off	Kapalı
 	The linked PDF opened, but its named destination was not applied.	Bağlantılı PDF açıldı, ancak adlandırılmış hedefi uygulanmadı.
 	The linked PDF opened, but its page destination was out of range.	Bağlantılı PDF açıldı, ancak sayfa hedefi aralık dışında.
 	Local cross-PDF links require the desktop app	PDF'ler arası yerel bağlantılar masaüstü uygulamasını gerektirir
+	Cut Image	Resmi Kes
+	Redact Image	Resmi karart
+	Create Link…	Bağlantı oluştur…
+	Recognize Text…	Metni Tanı…
 	Minimize	Küçült
 	Maximize	Büyüt
 	Restore	Geri yükle
@@ -2346,7 +2369,63 @@ animation effects	Off	Kapalı
 # Absolute local GoToR confirmation (#1364).
 	Allow	İzin ver
 	Only allow this if you trust the source document.	Buna yalnızca kaynak belgeye güveniyorsanız izin verin.
+	Open in Full Screen mode?	Tam ekran modunda açılsın mı?
+	This document asks to open in Full Screen mode: the page fills the screen and nothing else shows. Press Esc at any time to leave it.	Bu belge tam ekran modunda açılmak istiyor: sayfa ekranı doldurur ve başka hiçbir şey görünmez. Çıkmak için istediğiniz zaman Esc tuşuna basın.
+	Full Screen	Tam ekran
+	Not now	Şimdi değil
 	Open this local PDF?	Bu yerel PDF açılsın mı?
 	This document is trying to open a local file:	Bu belge yerel bir dosya açmaya çalışıyor:
 	Move tag earlier	Etiketi daha erken taşı
 	Move tag later	Etiketi daha geç taşı
+
+# Historical snapshot notice bar (View signed version / View revision).
+	You are viewing the signed version of “{from}” (revision {rev}). It is a snapshot: changes here won't affect the original.	“{from}” belgesinin imzalanmış sürümünü (düzeltme {rev}) görüntülüyorsunuz. Bu bir anlık görüntüdür: buradaki değişiklikler özgün belgeyi etkilemez.
+	You are viewing revision {rev} of “{from}”. It is a snapshot: changes here won't affect the original.	“{from}” belgesinin {rev}. düzeltmesini görüntülüyorsunuz. Bu bir anlık görüntüdür: buradaki değişiklikler özgün belgeyi etkilemez.
+	Turn upside down (180°)	Baş aşağı çevir (180°)
+	4 x 6 in label (101.6 x 152.4 mm)	4 × 6 inç etiket (101,6 × 152,4 mm)
+	Cuts each page to its printed area, turns it upright and fits it to the sheet without stretching. One label per sheet.	Her sayfayı basılı alanına göre kırpar, dik çevirir ve germeden sayfaya sığdırır. Sayfa başına bir etiket.
+	Find untagged content	Etiketlenmemiş içeriği bul
+	No untagged content was found.	Etiketlenmemiş içerik bulunamadı.
+	Found {n} untagged content problems.	{n} etiketlenmemiş içerik sorunu bulundu.
+	Tag form fields	Form alanlarını etiketle
+	Mark as artifact	Yapıt olarak işaretle
+	Remove this leaf tag from reading order and mark its direct content as an artifact	Bu yaprak etiketini okuma sırasından kaldırın ve doğrudan içeriğini yapıt olarak işaretleyin
+	Mark content as artifact	İçeriği yapıt olarak işaretle
+	Word count	Sözcük sayısı
+	Current page only	Yalnızca geçerli sayfa
+	Exclude tagged tables	Etiketli tabloları hariç tut
+	Exclude tagged code blocks	Etiketli kod bloklarını hariç tut
+	Exclude image/OCR text	Görüntü/OCR metnini hariç tut
+	Exclusions use PDF tags. Untagged tables and code remain included. Image exclusion also removes invisible text.	Hariç tutma işlemleri PDF etiketlerini kullanır. Etiketsiz tablolar ve kod sayılmaya devam eder. Görüntüleri hariç tutmak görünmez metni de kaldırır.
+	Words	Sözcükler
+	Characters	Karakterler
+	Characters without spaces	Boşluksuz karakterler
+	Pages counted	Sayılan sayfalar
+	Some pages contain no countable text. Scanned images need OCR first.	Bazı sayfalarda sayılabilecek metin yok. Taranmış görüntüler için önce OCR gerekir.
+	Some content could not be classified safely and was kept in the count.	Bazı içerikler güvenilir biçimde sınıflandırılamadığı için sayıma dahil edildi.
+	Counting words… {n} pages read	Sözcükler sayılıyor… {n} sayfa okundu
+	Word counting stopped unexpectedly.	Sözcük sayımı beklenmedik şekilde durdu.
+	Word count…	Sözcük sayısı…
+@id	file.word_count	Sözcük sayısı…
+	Standard	Standart
+	Mobile	Mobil
+	Merge image fragments	Görüntü parçalarını birleştir
+	Optimizing… merging image fragments	İyileştiriliyor… görüntü parçaları birleştiriliyor
+	Side by side	Yan yana
+	New file only	Yalnızca yeni dosya
+	Old file: {name}	Eski dosya: {name}
+	New file: {name}	Yeni dosya: {name}
+	Print as image	Resim olarak yazdır
+	Resolution:	Çözünürlük:
+	Use it when a printer skips text, shading or transparency. The print is no longer searchable text; with Print in grayscale, the pictures are grey.	Yazıcı metni, gölgelendirmeyi veya saydamlığı atladığında kullanın. Çıktı artık aranabilir metin değildir; gri tonlamalı yazdırmayla resimler gri olur.
+	Crop Image	Resmi kırp
+	Remove Crop	Kırpmayı kaldır
+	Trim the picture with its handles; Enter or Done applies	Resmi tutamaçlarıyla kırpın; Enter veya Bitti uygular
+	Redaction mark appearance	Karartma işareti görünümü
+	Outline colour:	Kenar rengi:
+	Fill colour:	Dolgu rengi:
+	Shown while the pointer is over a mark.	İşaretçi bir işaretin üzerindeyken gösterilir.
+	Opacity:	Opaklık:
+	Make properties default	Özellikleri varsayılan yap
+	Pages selected	Seçilen sayfalar
+	Page properties	Sayfa özellikleri

@@ -7,7 +7,7 @@
 # Hungarian computing vocabulary (informal "te", nouns for commands such as Mentés and Megnyitás).
 # No proprietary localisation resource, string table or product UI (Acrobat's included) was
 # consulted or copied; add entries the same way.
-# Product and technology names (PdfCraft, PDF, Acrobat JavaScript ...) are not translated;
+# Product and technology names (Pdf, PDF, Acrobat JavaScript ...) are not translated;
 # the trailing "…" of dialog commands is kept.
 	Menu	Menü
 	File	Fájl
@@ -23,6 +23,7 @@
 	Auto follows the system's text size. Pages always render at the display's full resolution.	Az Automatikus beállítás a rendszer szövegméretét követi. Az oldalak mindig a kijelző teljes felbontásában jelennek meg.
 	Identity	Személyazonosság
 	Name on new comments	Név az új megjegyzéseken
+	Hide hover previews for highlights without comment text	Megjegyzésszöveg nélküli kiemelések előnézetének elrejtése rámutatáskor
 	Open…	Megnyitás…
 	New blank PDF	Új üres PDF
 	Create PDF from file…	PDF létrehozása fájlból…
@@ -132,17 +133,17 @@
 	Next page	Következő oldal
 	Previous page	Előző oldal
 	Current page — type a page number or label (such as iv) and press Enter	Aktuális oldal — írj be egy oldalszámot vagy címkét (például iv), majd nyomd meg az Entert
-	Welcome to PdfCraft	Üdvözöljük a PdfCraftban
+	Welcome to Pdf	Üdvözöljük a Pdfban
 	An open-source PDF workbench — local, private, and scriptable.	Nyílt forráskódú PDF-munkapad — helyi, privát és parancsfájlokkal vezérelhető.
-	Join the ArtCraft community	Csatlakozz az ArtCraft közösséghez
+	Join the Pdf community	Csatlakozz az Pdf közösséghez
 	Get help, share feedback and follow development on Discord.	Kérj segítséget, oszd meg a véleményed, és kövesd a fejlesztést a Discordon.
 	Recommended tools	Ajánlott eszközök
 	Use now	Használat most
 	Open file	Fájl megnyitása
 	Recent	Legutóbbiak
-	Files you open in PdfCraft appear here. Drop a PDF anywhere to open it.	A PdfCraftban megnyitott fájlok itt jelennek meg. Húzz ide egy PDF-et a megnyitáshoz.
+	Files you open in Pdf appear here. Drop a PDF anywhere to open it.	A Pdfban megnyitott fájlok itt jelennek meg. Húzz ide egy PDF-et a megnyitáshoz.
 	Privacy	Adatvédelem
-	PdfCraft works offline. No telemetry, no account, and no cloud processing unless you add a provider.	A PdfCraft offline működik. Nincs telemetria, nincs fiók, és nincs felhőfeldolgozás, amíg nem adsz hozzá szolgáltatót.
+	Pdf works offline. No telemetry, no account, and no cloud processing unless you add a provider.	A Pdf offline működik. Nincs telemetria, nincs fiók, és nincs felhőfeldolgozás, amíg nem adsz hozzá szolgáltatót.
 	Scripts run in a sandbox without file or network access. With JavaScript off, Acrobat's standard format, validate and calculate functions still work.	A szkriptek homokozóban futnak, fájl- és hálózat-hozzáférés nélkül. Kikapcsolt JavaScript mellett az Acrobat szabványos formázó, ellenőrző és számoló függvényei továbbra is működnek.
 	Back to all tools	Vissza az összes eszközhöz
 	Close panel	Panel bezárása
@@ -280,12 +281,12 @@
 	Split document…	Dokumentum felosztása…
 	Number pages…	Oldalak számozása…
 	Keyboard shortcuts	Billentyűparancsok
-	Join the ArtCraft Discord	Csatlakozás az ArtCraft Discordhoz
-	PdfCraft web page	A PdfCraft weblapja
-	PdfCraft on GitHub	PdfCraft a GitHubon
-	ArtCraft website	Az ArtCraft webhelye
+	Join the Pdf Discord	Csatlakozás az Pdf Discordhoz
+	Pdf web page	A Pdf weblapja
+	Pdf on GitHub	Pdf a GitHubon
+	Pdf website	Az Pdf webhelye
 	Check for updates…	Frissítések keresése…
-	About PdfCraft	A PdfCraftról
+	About Pdf	A Pdfról
 	Export a PDF	PDF exportálása
 	Export to	Exportálás ide
 	Microsoft Word (.docx)	Microsoft Word (.docx)
@@ -341,6 +342,7 @@
 	Split	Felosztás
 	More	Továbbiak
 	Set page boxes	Oldalkeretek beállítása
+	Set page transitions	Oldalátmenetek beállítása
 	Page labels	Oldalcímkék
 	Page transitions	Oldalváltások
 	Add comments	Megjegyzések hozzáadása
@@ -553,6 +555,7 @@
 	Remove unused objects and merge identical ones	Nem használt objektumok eltávolítása és az azonosak egyesítése
 	Audit space usage…	Helyfoglalás vizsgálata…
 	Space Audit	Helyfoglalás
+	What takes up the space in this file, by kind of content.	Mi foglalja a helyet ebben a fájlban, tartalomtípusonként.
 	Bytes	Bájt
 	Content Streams	Tartalomfolyamok
 	X Object Forms	XObject-űrlapok
@@ -742,9 +745,9 @@
 	Check for updates	Frissítések keresése
 	No check has run yet.	Még nem futott ellenőrzés.
 	Checking for a newer version…	Újabb verzió keresése…
-	PdfCraft {v} is available.	Elérhető a PdfCraft {v}.
+	Pdf {v} is available.	Elérhető a Pdf {v}.
 	You have version {c}. Download the new version from its release page.	A jelenlegi verzió: {c}. Töltsd le az újat a kiadási oldaláról.
-	PdfCraft {c} is up to date.	A PdfCraft {c} naprakész.
+	Pdf {c} is up to date.	A Pdf {c} naprakész.
 	Couldn't check for updates: {e}	A frissítések keresése nem sikerült: {e}
 	You have version {c}. All releases are listed at {page}.	A jelenlegi verzió: {c}. Minden kiadás itt található: {page}.
 	Asks GitHub for the latest release. Nothing is downloaded or installed automatically.	A GitHubtól kéri le a legújabb kiadást. Semmi sem töltődik le vagy települ automatikusan.
@@ -826,6 +829,12 @@
 	Windows store  ·  	Windows-tároló  ·  
 	Issued by: 	Kiállította: 
 	, Expires: 	, lejár: 
+	Digitally signed by	Digitálisan aláírta
+	DN: 	DN: 
+	Reason: 	Indok: 
+	Location: 	Hely: 
+	Date: 	Dátum: 
+	The labels are in English: the signature's font can't draw them in this language.	A címkék angolul jelennek meg: az aláírás betűtípusa ezen a nyelven nem tudja megjeleníteni őket.
 	No digital IDs yet.	Még nincs digitális azonosító.
 	Configure New Digital ID	Új digitális azonosító beállítása
 	Remove "{name}" from this list? The file itself is not deleted.	Eltávolítja a(z) „{name}” elemet erről a listáról? Maga a fájl nem törlődik.
@@ -858,8 +867,8 @@
 	No changes allowed	Semmilyen módosítás nem engedélyezett
 	Annotations, form fill-in, and digital signatures	Széljegyzetek, űrlapkitöltés és digitális aláírások
 	Form fill-in and digital signatures	Űrlapkitöltés és digitális aláírások
-	The key is in the macOS Keychain, which may ask to allow PdfCraft to use it.	A kulcs a macOS Kulcskarikában van, amely megkérdezheti, engedélyezed-e a PdfCraftnak a használatát.
-	The key is in the Windows certificate store, which may ask to allow PdfCraft to use it.	A kulcs a Windows tanúsítványtárolójában van, amely megkérdezheti, engedélyezed-e a PdfCraftnak a használatát.
+	The key is in the macOS Keychain, which may ask to allow Pdf to use it.	A kulcs a macOS Kulcskarikában van, amely megkérdezheti, engedélyezed-e a Pdfnak a használatát.
+	The key is in the Windows certificate store, which may ask to allow Pdf to use it.	A kulcs a Windows tanúsítványtárolójában van, amely megkérdezheti, engedélyezed-e a Pdfnak a használatát.
 	Digital ID password	A digitális azonosító jelszava
 	Back	Vissza
 	Validate all	Összes ellenőrzése
@@ -1117,6 +1126,7 @@
 	Redaction code:	Kitakarási kód:
 	Font:	Betűtípus:
 	Font size:	Betűméret:
+	Font size	Betűméret
 	Auto-size text to fit redaction region	A szöveg automatikus méretezése a kitakarási területhez
 	Font colour:	Betű színe:
 	Repeat overlay text	Fedőszöveg ismétlése
@@ -1218,7 +1228,7 @@
 	Downsample to	Feloldás csökkentése erre
 	Also recognize pages that already have text	A már szöveget tartalmazó oldalak felismerése is
 	Pictures on those pages are recognized too; words already in the page's text are not added again	Az ezeken az oldalakon lévő képeket is felismeri; az oldal szövegében már szereplő szavakat nem adja hozzá újra
-	Text recognition isn't installed: its model files are missing. Reinstall PdfCraft, or set PDFCRAFT_MODELS to the folder that holds them.	A szövegfelismerés nincs telepítve: hiányoznak a modellfájljai. Telepítsd újra a PdfCraftot, vagy állítsd a PDFCRAFT_MODELS változót az őket tartalmazó mappára.
+	Text recognition isn't installed: its model files are missing. Reinstall Pdf, or set PDFCRAFT_MODELS to the folder that holds them.	A szövegfelismerés nincs telepítve: hiányoznak a modellfájljai. Telepítsd újra a Pdfot, vagy állítsd a PDFCRAFT_MODELS változót az őket tartalmazó mappára.
 	Settings	Beállítások
 	Optional	Nem kötelező
 	Planned · {m}	Tervezett · {m}
@@ -1257,6 +1267,7 @@
 	Copy text	Szöveg másolása
 	Properties…	Tulajdonságok…
 	Make Current Properties Default	A jelenlegi tulajdonságok legyenek az alapértelmezettek
+	Make Properties Default	A tulajdonságok legyenek az alapértelmezettek
 	More options	További beállítások
 	Sort by	Rendezés szempontja
 	Author	Szerző
@@ -1361,7 +1372,7 @@
 	Anyone opening the document will need this password. It's applied when you save.	A dokumentumot megnyitóknak erre a jelszóra lesz szükségük. Mentéskor lép életbe.
 	The document opens without a password; this password is needed to change the restrictions. It's applied when you save.	A dokumentum jelszó nélkül nyílik meg; ez a jelszó a korlátozások módosításához kell. Mentéskor lép életbe.
 	Recover unsaved documents?	Visszaállítod a nem mentett dokumentumokat?
-	PdfCraft didn't shut down normally. These documents had changes that were autosaved:	A PdfCraft nem szabályosan állt le. Ezekben a dokumentumokban automatikusan mentett módosítások voltak:
+	Pdf didn't shut down normally. These documents had changes that were autosaved:	A Pdf nem szabályosan állt le. Ezekben a dokumentumokban automatikusan mentett módosítások voltak:
 	just now	épp most
 	{n} min ago	{n} perce
 	{n} h ago	{n} órája
@@ -1377,6 +1388,9 @@
 	Sort comments by:	Megjegyzések rendezése eszerint:
 	Create PDF Comment Summary	PDF-megjegyzésösszefoglaló létrehozása
 	Revert to the previously saved version of “{name}”? Changes since then can't be undone afterwards.	Visszatérsz „{name}” előzőleg mentett változatához? Az azóta tett módosítások utána nem vonhatók vissza.
+	Save over the changed file?	Felülírja a megváltozott fájlt?
+	“{name}” changed on disk after it was opened or last saved. Saving now replaces that newer version with this one.	A(z) „{name}” megváltozott a lemezen a megnyitás vagy az utolsó mentés óta. A mentés most ezt az újabb változatot cseréli le erre.
+	Save anyway	Mentés mindenképp
 	Number pages	Oldalak számozása
 	Style	Stílus
 	None (prefix only)	Nincs (csak előtag)
@@ -1519,10 +1533,10 @@
 	On the web, open or drop an image to convert it	A weben nyiss meg vagy húzz ide egy képet a konvertáláshoz
 	Couldn't optimize the file: {e}	A fájlt nem sikerült optimalizálni: {e}
 	Couldn't write {path}: {e}	Nem sikerült írni ide: {path}: {e}
-	The form asks to be submitted to {u}; PdfCraft doesn't send form data. Save the document to keep your entries.	Az űrlap ide kéri a beküldést: {u}; a PdfCraft nem küld űrlapadatot. Mentsd a dokumentumot, hogy megmaradjanak a beírásaid.
+	The form asks to be submitted to {u}; Pdf doesn't send form data. Save the document to keep your entries.	Az űrlap ide kéri a beküldést: {u}; a Pdf nem küld űrlapadatot. Mentsd a dokumentumot, hogy megmaradjanak a beírásaid.
 	This PDF uses the unsupported {s} action.	Ez a PDF nem támogatott {s} műveletet használ.
 	{name}: the {other} action isn't supported yet	{name}: ez a művelet még nem támogatott ({other})
-	{name} submits the form to {url}; PdfCraft doesn't send form data. Save the document to keep your entries.	{name} ide küldi az űrlapot: {url}; a PdfCraft nem küld űrlapadatot. Mentsd a dokumentumot, hogy megmaradjanak a beírásaid.
+	{name} submits the form to {url}; Pdf doesn't send form data. Save the document to keep your entries.	{name} ide küldi az űrlapot: {url}; a Pdf nem küld űrlapadatot. Mentsd a dokumentumot, hogy megmaradjanak a beírásaid.
 	Export stopped: {e}	Az exportálás leállt: {e}
 	Exported 1 image	1 kép exportálva
 	Exported {n} images	{n} kép exportálva
@@ -1582,6 +1596,8 @@
 	Sent to {printer}	Elküldve ide: {printer}
 	Sent to {printer}: {msg}	Elküldve ide: {printer}: {msg}
 	Looking for printers…	Nyomtatók keresése…
+	Sending sheet {s} of {n} to {printer}…	{s}. lap / {n} küldése ide: {printer}…
+	No printers were found. Check that the printer is installed and the print spooler is running, then open Print again.	Nem található nyomtató. Ellenőrizze, hogy a nyomtató telepítve van-e, és fut-e a nyomtatási sorkezelő, majd nyissa meg újra a Nyomtatást.
 	Sending to {printer}…	Küldés ide: {printer}…
 	Choose a folder for the searchable files	Válassz mappát a kereshető fájloknak
 	Files are combined in this order. Leave Pages empty to take every page.	A fájlok ebben a sorrendben egyesülnek. Hagyd üresen az Oldalak mezőt, ha minden oldalt kéred.
@@ -1606,6 +1622,7 @@
 	Couldn't use {name}: {e}	{name} használata nem sikerült: {e}
 	Couldn't extract pages: {e}	Az oldalakat nem sikerült kinyerni: {e}
 	Couldn't write {name}: {e}	{name} írása nem sikerült: {e}
+	the name is not a plain file name	a név nem egyszerű fájlnév
 	Wrote 1 file to {dir}	1 fájl ide írva: {dir}
 	Wrote {n} files to {dir}	{n} fájl ide írva: {dir}
 	No pages match those choices	Egy oldal sem felel meg ezeknek a választásoknak
@@ -1624,7 +1641,7 @@
 	Couldn't open {name}: {e}	{name} megnyitása nem sikerült: {e}
 	Couldn't read {name}: {e}	{name} olvasása nem sikerült: {e}
 	Portable mode is off: {folder} can't be written ({error}). Settings are kept in your user folder instead.	A hordozható mód ki van kapcsolva: {folder} nem írható ({error}). A beállítások helyette a felhasználói mappádban maradnak.
-	PdfCraft is drawing without a graphics processor, so it may be slow. Updating the graphics driver may help.	A PdfCraft grafikus processzor nélkül rajzol, ezért lassú lehet. A grafikus illesztőprogram frissítése segíthet.
+	Pdf is drawing without a graphics processor, so it may be slow. Updating the graphics driver may help.	A Pdf grafikus processzor nélkül rajzol, ezért lassú lehet. A grafikus illesztőprogram frissítése segíthet.
 	Couldn't save: {e}	A mentés nem sikerült: {e}
 	Downloading attachments on the web arrives with M3.10 ({n} bytes ready)	A mellékletek letöltése a weben az M3.10-zel érkezik ({n} bájt kész)
 	`{command}` {when}	`{command}` {when}
@@ -1698,8 +1715,8 @@
 	Signed and all signatures are valid.	Aláírva, és minden aláírás érvényes.
 	At least one signature has problems.	Legalább egy aláírásnak problémája van.
 	This document is secured. Some changes are restricted by its security settings.	Ez a dokumentum védett. Egyes módosításokat a biztonsági beállításai korlátoznak.
-	This is a dynamic XFA form, which PdfCraft can't display yet. What you see is the file's placeholder page.	Ez egy dinamikus XFA-űrlap, amelyet a PdfCraft még nem tud megjeleníteni. Amit látsz, a fájl helyőrző oldala.
-	This form also contains XFA data, which PdfCraft doesn't read yet. You can fill its fields, but Acrobat may show the XFA values instead.	Ez az űrlap XFA-adatokat is tartalmaz, amelyeket a PdfCraft még nem olvas. Kitöltheted a mezőit, de az Acrobat helyettük az XFA-értékeket mutathatja.
+	This is a dynamic XFA form, which Pdf can't display yet. What you see is the file's placeholder page.	Ez egy dinamikus XFA-űrlap, amelyet a Pdf még nem tud megjeleníteni. Amit látsz, a fájl helyőrző oldala.
+	This form also contains XFA data, which Pdf doesn't read yet. You can fill its fields, but Acrobat may show the XFA values instead.	Ez az űrlap XFA-adatokat is tartalmaz, amelyeket a Pdf még nem olvas. Kitöltheted a mezőit, de az Acrobat helyettük az XFA-értékeket mutathatja.
 	This document contains {n} interactive form fields.	Ez a dokumentum {n} interaktív űrlapmezőt tartalmaz.
 	This file was damaged and has been repaired. Saving keeps the repaired version.	Ez a fájl sérült volt, és javítottuk. A mentés megtartja a javított változatot.
 	Dismiss	Elvetés
@@ -1748,7 +1765,7 @@
 	there are no pages to print	nincs nyomtatható oldal
 	the document has no tags	a dokumentumnak nincs címkéje
 	{0}: {1}	{0}: {1}
-	the text recognition models are not installed (reinstall PdfCraft, or set PDFCRAFT_MODELS to the folder that holds them)	a szövegfelismerés modelljei nincsenek telepítve (telepítsd újra a PdfCraftot, vagy állítsd a PDFCRAFT_MODELS változót az őket tartalmazó mappára)
+	the text recognition models are not installed (reinstall Pdf, or set PDFCRAFT_MODELS to the folder that holds them)	a szövegfelismerés modelljei nincsenek telepítve (telepítsd újra a Pdfot, vagy állítsd a PDFCRAFT_MODELS változót az őket tartalmazó mappára)
 	the image is empty	a kép üres
 	this file isn't XFDF, FDF, XML or text form data	ez a fájl nem XFDF, FDF, XML vagy szöveges űrlapadat
 	nothing in the file matches this document	a fájlban semmi sem illeszkedik ehhez a dokumentumhoz
@@ -2112,7 +2129,7 @@ comment menu	Edit	Szerkesztés
 	Redo {action}	{action} megismétlése
 signature pad	Type	Gépelés
 action wizard	Start	Indítás
-	Reopen the files that were open when PdfCraft last closed	A PdfCraft legutóbbi bezárásakor megnyitott fájlok újranyitása
+	Reopen the files that were open when Pdf last closed	A Pdf legutóbbi bezárásakor megnyitott fájlok újranyitása
 	Clear Recent Files	Legutóbbi fájlok listájának törlése
 	Remove from Recent	Eltávolítás a legutóbbiak közül
 	Remove {name} from Recent	{name} eltávolítása a legutóbbiak közül
@@ -2125,8 +2142,8 @@ action wizard	Start	Indítás
 	A link	Egy hivatkozás
 	A button	Egy gomb
 	A script	Egy szkript
-	{who} in this document tried to open an address PdfCraft won't open: {e}.	{who} ebben a dokumentumban olyan címet próbált megnyitni, amelyet a PdfCraft nem nyit meg: {e}.
-	{who} in this document tried to open an address PdfCraft won't open: {e}. Only web (http, https) and email (mailto) links open from documents.	{who} ebben a dokumentumban olyan címet próbált megnyitni, amelyet a PdfCraft nem nyit meg: {e}. Dokumentumokból csak webes (http, https) és e-mail (mailto) hivatkozások nyílnak meg.
+	{who} in this document tried to open an address Pdf won't open: {e}.	{who} ebben a dokumentumban olyan címet próbált megnyitni, amelyet a Pdf nem nyit meg: {e}.
+	{who} in this document tried to open an address Pdf won't open: {e}. Only web (http, https) and email (mailto) links open from documents.	{who} ebben a dokumentumban olyan címet próbált megnyitni, amelyet a Pdf nem nyit meg: {e}. Dokumentumokból csak webes (http, https) és e-mail (mailto) hivatkozások nyílnak meg.
 	Another file dialog is still open. Finish with it first.	Egy másik fájlpárbeszédablak még nyitva van. Előbb fejezd be azt.
 	Couldn't show the file picker. Please try again.	Nem sikerült megjeleníteni a fájlválasztót. Próbáld újra.
 	The document changed while you were choosing a file, so nothing was changed.	A dokumentum megváltozott, amíg fájlt választottál, ezért semmi sem módosult.
@@ -2160,8 +2177,8 @@ action wizard	Start	Indítás
 	Slash	Perjel
 	The PDF text fonts can't draw “{c}” ({code}). Choose supported text.	A PDF szövegének betűtípusai nem tudják megjeleníteni ezt: „{c}” ({code}). Válasszon támogatott szöveget.
 	The standard fonts can't draw “{c}” ({code}). Only Western European characters can be added as text for now.	A szabványos betűtípusok nem tudják megjeleníteni ezt: „{c}” ({code}). Egyelőre csak nyugat-európai karakterek adhatók hozzá szövegként.
-	This field's font can't draw “{c}” ({code}), so PdfCraft shows ? in its place. The value is saved, and other PDF viewers redraw the field from it.	A mező betűtípusa nem tudja megjeleníteni ezt: „{c}” ({code}), ezért a PdfCraft ? jelet mutat a helyén. Az érték mentve van, és a többi PDF-megjelenítő ebből rajzolja újra a mezőt.
-	The fonts PdfCraft writes with can't draw “{c}” ({code}), so it shows as ? in every PDF viewer. The text is saved.	A PdfCraft által íráshoz használt betűtípusok nem tudják megjeleníteni ezt: „{c}” ({code}), ezért minden PDF-megjelenítőben ? látszik a helyén. A szöveg mentve van.
+	This field's font can't draw “{c}” ({code}), so Pdf shows ? in its place. The value is saved, and other PDF viewers redraw the field from it.	A mező betűtípusa nem tudja megjeleníteni ezt: „{c}” ({code}), ezért a Pdf ? jelet mutat a helyén. Az érték mentve van, és a többi PDF-megjelenítő ebből rajzolja újra a mezőt.
+	The fonts Pdf writes with can't draw “{c}” ({code}), so it shows as ? in every PDF viewer. The text is saved.	A Pdf által íráshoz használt betűtípusok nem tudják megjeleníteni ezt: „{c}” ({code}), ezért minden PDF-megjelenítőben ? látszik a helyén. A szöveg mentve van.
 	Larger pages	Nagyobb oldalak
 	Smaller pages	Kisebb oldalak
 	Reset page size	Oldalméret visszaállítása
@@ -2239,6 +2256,8 @@ key	Space	Szóköz
 	Switch to List view to change the pages it takes.	Válts listanézetre, ha módosítanád, mely oldalak kerüljenek bele.
 	Expand all	Összes kibontása
 	Collapse all	Összes összecsukása
+	Collapse all pages	Összes oldal összecsukása
+	Expand all pages	Összes oldal kibontása
 	Remove page	Oldal eltávolítása
 	Remove {n} pages	{n} oldal eltávolítása
 
@@ -2259,14 +2278,14 @@ key	Space	Szóköz
 	Printer paper and scaling may differ. Check driver settings.	A nyomtató papírja és méretezése eltérhet. Ellenőrizze az illesztőprogram beállításait.
 	Drawing scale changes. Use Actual size for full-scale plans.	A rajz méretaránya változik. Méretarányos tervekhez használja a Tényleges méret beállítást.
 	Reload documents when their files change on disk	Dokumentumok újratöltése, ha a fájljuk megváltozik a lemezen
-	This file changed on disk. Reload it to see the new version; your unsaved changes will be lost.	Ez a fájl megváltozott a lemezen. Töltsd újra az új változat megtekintéséhez; a nem mentett módosításaid elvesznek.
+	This file changed on disk. Reload shows the new version and drops your unsaved changes; Save replaces it with this version.	Ez a fájl megváltozott a lemezen. Az Újratöltés az új változatot mutatja, és eldobja a nem mentett módosításokat; a Mentés erre a változatra cseréli le.
 	Reload	Újratöltés
 	Couldn't reload {name}: {e}	{name} újratöltése nem sikerült: {e}
 	Select page {label}	{label}. oldal kijelölése
 	Rotate page {label} counterclockwise	{label}. oldal elforgatása az óramutató járásával ellentétesen
 	Rotate page {label} clockwise	{label}. oldal elforgatása az óramutató járásával megegyezően
 	Delete page {label}	{label}. oldal törlése
-	Mouse wheel scroll speed	Egérgörgő görgetési sebessége
+	Scroll speed (mouse wheel and arrow keys)	Görgetési sebesség (egérgörgő és nyílbillentyűk)
 scroll speed	Slow	Lassú
 scroll speed	Normal	Normál
 scroll speed	Fast	Gyors
@@ -2321,7 +2340,7 @@ animation effects	Off	Ki
 	no output folder was chosen	nincs kiválasztva kimeneti mappa
 @plural	Downloaded {n} PDF|Downloaded {n} PDFs	{n} PDF letöltve|{n} PDF letöltve
 	Scan	Beolvasás
-	Sign a sheet of white paper and take a photo of it in bright, even light (use the flash). Choose the photo or drop it here: PdfCraft finds the signature and removes the paper.	Írja alá a nevét egy fehér papírlapon, és fényképezze le erős, egyenletes fényben (vakuval). Válassza ki a fényképet, vagy húzza ide: a PdfCraft megkeresi az aláírást, és eltávolítja a papírt.
+	Sign a sheet of white paper and take a photo of it in bright, even light (use the flash). Choose the photo or drop it here: Pdf finds the signature and removes the paper.	Írja alá a nevét egy fehér papírlapon, és fényképezze le erős, egyenletes fényben (vakuval). Válassza ki a fényképet, vagy húzza ide: a Pdf megkeresi az aláírást, és eltávolítja a papírt.
 	Choose photo…	Fénykép kiválasztása…
 	No photo chosen	Nincs kiválasztott fénykép
 	Photo	Fénykép
@@ -2340,6 +2359,10 @@ animation effects	Off	Ki
 	The linked PDF opened, but its named destination was not applied.	A hivatkozott PDF megnyílt, de a nevesített cél nem lett alkalmazva.
 	The linked PDF opened, but its page destination was out of range.	A hivatkozott PDF megnyílt, de a céloldal a tartományon kívül esik.
 	Local cross-PDF links require the desktop app	A PDF-ek közötti helyi hivatkozásokhoz az asztali alkalmazás szükséges
+	Cut Image	Kép kivágása
+	Redact Image	Kép kitakarása
+	Create Link…	Hivatkozás létrehozása…
+	Recognize Text…	Szövegfelismerés…
 	Minimize	Minimalizálás
 	Maximize	Maximalizálás
 	Restore	Visszaállítás
@@ -2349,7 +2372,63 @@ animation effects	Off	Ki
 # Absolute local GoToR confirmation (#1364).
 	Allow	Engedélyezés
 	Only allow this if you trust the source document.	Csak akkor engedélyezze ezt, ha megbízik a forrásdokumentumban.
+	Open in Full Screen mode?	Megnyitás teljes képernyős módban?
+	This document asks to open in Full Screen mode: the page fills the screen and nothing else shows. Press Esc at any time to leave it.	Ez a dokumentum teljes képernyős módban kér megnyitást: az oldal kitölti a képernyőt, és semmi más nem látszik. Az Esc billentyűvel bármikor kiléphet.
+	Full Screen	Teljes képernyő
+	Not now	Most nem
 	Open this local PDF?	Megnyitja ezt a helyi PDF-fájlt?
 	This document is trying to open a local file:	Ez a dokumentum egy helyi fájlt próbál megnyitni:
 	Move tag earlier	Címke korábbra helyezése
 	Move tag later	Címke későbbre helyezése
+
+# Historical snapshot notice bar (View signed version / View revision).
+	You are viewing the signed version of “{from}” (revision {rev}). It is a snapshot: changes here won't affect the original.	A(z) „{from}“ aláírt változatát (a {rev}. változatot) tekinti meg. Ez egy pillanatkép: az itteni módosítások nem érintik az eredetit.
+	You are viewing revision {rev} of “{from}”. It is a snapshot: changes here won't affect the original.	A(z) „{from}“ {rev}. változatát tekinti meg. Ez egy pillanatkép: az itteni módosítások nem érintik az eredetit.
+	Turn upside down (180°)	Fejjel lefelé fordítás (180°)
+	4 x 6 in label (101.6 x 152.4 mm)	4 × 6 hüvelykes címke (101,6 × 152,4 mm)
+	Cuts each page to its printed area, turns it upright and fits it to the sheet without stretching. One label per sheet.	Minden oldalt a nyomtatott területére vág, függőlegesre fordítja, és torzítás nélkül a laphoz igazítja. Laponként egy címke.
+	Find untagged content	Címkézetlen tartalom keresése
+	No untagged content was found.	Nem található címkézetlen tartalom.
+	Found {n} untagged content problems.	{n} címkézetlen tartalmi probléma található.
+	Tag form fields	Űrlapmezők címkézése
+	Mark as artifact	Megjelölés műtárgyként
+	Remove this leaf tag from reading order and mark its direct content as an artifact	Távolítsa el ezt a levélcímkét az olvasási sorrendből, és jelölje meg a közvetlen tartalmát műtárgyként
+	Mark content as artifact	Tartalom megjelölése műtárgyként
+	Word count	Szavak száma
+	Current page only	Csak az aktuális oldal
+	Exclude tagged tables	Címkézett táblázatok kizárása
+	Exclude tagged code blocks	Címkézett kódblokkok kizárása
+	Exclude image/OCR text	Képek és OCR szövegének kizárása
+	Exclusions use PDF tags. Untagged tables and code remain included. Image exclusion also removes invisible text.	A kizárások PDF-címkéket használnak. A címkézetlen táblázatok és kódok továbbra is beleszámítanak. A képek kizárása a láthatatlan szöveget is eltávolítja.
+	Words	Szavak
+	Characters	Karakterek
+	Characters without spaces	Karakterek szóközök nélkül
+	Pages counted	Megszámolt oldalak
+	Some pages contain no countable text. Scanned images need OCR first.	Egyes oldalakon nincs megszámolható szöveg. A beolvasott képeken először OCR-t kell futtatni.
+	Some content could not be classified safely and was kept in the count.	Egyes tartalmakat nem lehetett megbízhatóan besorolni, ezért beleszámítanak az eredménybe.
+	Counting words… {n} pages read	Szavak számlálása… {n} oldal beolvasva
+	Word counting stopped unexpectedly.	A szavak számlálása váratlanul leállt.
+	Word count…	Szavak száma…
+@id	file.word_count	Szavak száma…
+	Standard	Normál
+	Mobile	Mobil
+	Merge image fragments	Képtöredékek egyesítése
+	Optimizing… merging image fragments	Optimalizálás… képtöredékek egyesítése
+	Side by side	Egymás mellett
+	New file only	Csak az új fájl
+	Old file: {name}	Régi fájl: {name}
+	New file: {name}	Új fájl: {name}
+	Print as image	Nyomtatás képként
+	Resolution:	Felbontás:
+	Use it when a printer skips text, shading or transparency. The print is no longer searchable text; with Print in grayscale, the pictures are grey.	Akkor használja, ha a nyomtató kihagy szöveget, árnyékolást vagy átlátszóságot. A nyomat már nem kereshető szöveg; szürkeárnyalatos nyomtatással a képek szürkék.
+	Crop Image	Kép körülvágása
+	Remove Crop	Körülvágás eltávolítása
+	Trim the picture with its handles; Enter or Done applies	Vágja körül a képet a fogantyúival; Enter vagy Kész alkalmazza
+	Redaction mark appearance	Kitakarási jelölés megjelenése
+	Outline colour:	Körvonal színe:
+	Fill colour:	Kitöltés színe:
+	Shown while the pointer is over a mark.	Akkor látszik, amikor a mutató egy jelölés fölött van.
+	Opacity:	Átlátszatlanság:
+	Make properties default	Tulajdonságok beállítása alapértelmezettként
+	Pages selected	Kijelölt oldalak
+	Page properties	Oldaltulajdonságok

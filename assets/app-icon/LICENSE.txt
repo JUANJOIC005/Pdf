@@ -1,12 +1,5 @@
-PdfCraft app icon (pdfcraft.svg, pdfcraft-small.svg and every file derived from them in this
-directory: pdfcraft-1024.png, pdfcraft.icns, pdfcraft.ico, hicolor/).
+Pdf app icon (`pdf-icon-source.png` and the Windows/Linux files derived from it).
 
-Original artwork made for this project by the project owner, drawn in ArtCraft and vectorised for
-PdfCraft (no third-party material). Licensed like the rest of PdfCraft, under either of
-
-  * Apache License, Version 2.0 (https://www.apache.org/licenses/LICENSE-2.0)
-  * MIT license (https://opensource.org/licenses/MIT)
-
-at your option.
-
-Regenerate the derived files with packaging/icons.sh.
+Original artwork generated specifically for the Pdf private fork. It contains no Adobe Acrobat,
+Adobe PDF, ArtCraft or PdfCraft logo. Licensed with this fork under either the Apache License,
+Version 2.0, or the MIT License, at your option.

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- AppStream metadata (software centres, Flathub). Template: package.sh and the Flatpak
+     manifest substitute @VERSION@ and @DATE@ from Cargo.toml and the build date. -->
+<component type="desktop-application">
+  <id>io.github.juanjoic005.pdf</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT OR Apache-2.0</project_license>
+  <name>Pdf</name>
+  <summary>Read, organize, combine, split and secure PDFs</summary>
+  <developer id="io.github.juanjoic005">
+    <name>JUANJOIC005</name>
+  </developer>
+  <description>
+    <p>
+      Pdf is an open-source PDF workbench. Read, comment on, fill in and sign PDFs;
+      organize, combine and split pages; edit, redact, protect and export documents.
+    </p>
+  </description>
+  <launchable type="desktop-id">io.github.juanjoic005.pdf.desktop</launchable>
+  <icon type="stock">io.github.juanjoic005.pdf</icon>
+  <!-- Only url types known to appstream 0.15 (Ubuntu 22.04, where CI validates): no vcs-browser. -->
+  <url type="homepage">https://github.com/JUANJOIC005/Pdf</url>
+  <url type="bugtracker">https://github.com/JUANJOIC005/Pdf/issues</url>
+  <url type="help">https://github.com/JUANJOIC005/Pdf</url>
+  <categories>
+    <category>Office</category>
+    <category>Viewer</category>
+  </categories>
+  <keywords>
+    <keyword>pdf</keyword>
+    <keyword>viewer</keyword>
+    <keyword>annotate</keyword>
+    <keyword>forms</keyword>
+  </keywords>
+  <branding>
+    <color type="primary" scheme_preference="light">#9fd0ff</color>
+    <color type="primary" scheme_preference="dark">#1f64ba</color>
+  </branding>
+  <requires>
+    <display_length compare="ge">760</display_length>
+  </requires>
+  <supports>
+    <control>keyboard</control>
+    <control>pointing</control>
+    <control>tablet</control>
+  </supports>
+  <provides>
+    <binary>pdf</binary>
+    <mediatype>application/pdf</mediatype>
+  </provides>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="@VERSION@" date="@DATE@"/>
+  </releases>
+</component>
