@@ -1,10 +1,10 @@
-name: Release Pdf for Windows and Linux
+name: Release Pdf Linux x86_64 DEB
 
 on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Version override, for example 0.8.1 (empty: Cargo.toml)"
+        description: "Release version without v (empty: Cargo.toml)"
         type: string
         default: ""
   push:
@@ -15,120 +15,117 @@ permissions:
   contents: write
 
 concurrency:
-  group: release-${{ github.ref }}
+  group: release-linux-deb-${{ github.ref }}
   cancel-in-progress: false
 
+env:
+  CARGO_TERM_COLOR: always
+  CARGO_INCREMENTAL: 0
+  RUST_BACKTRACE: 1
+
 jobs:
-  version:
-    name: Resolve version
-    runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.version.outputs.version }}
-      date: ${{ steps.version.outputs.date }}
-      prerelease: ${{ steps.version.outputs.prerelease }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - id: version
-        uses: storytold/craft-common-actions/actions/resolve-version@main
-        with:
-          input-version: ${{ inputs.version }}
-          app-title: Pdf
-
-  windows:
-    name: Windows x64
-    needs: version
-    runs-on: windows-latest
-    env:
-      CARGO_TERM_COLOR: always
-      CARGO_INCREMENTAL: 0
-      RUST_BACKTRACE: 1
-      PDFCRAFT_VERSION: ${{ needs.version.outputs.version }}
-      PDFCRAFT_BUILD_DATE: ${{ needs.version.outputs.date }}
-      PDFCRAFT_BUILD_SHA: ${{ github.sha }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: storytold/craft-common-actions/actions/checkout-craft-fonts@main
-        with:
-          ref: 3d9ab3a132ed0eff457e424226a435a901da30d3
-      - uses: dtolnay/rust-toolchain@e2a55d2ffb04f378e9626c28d38b36d230d1e12f # v1
-        with:
-          toolchain: stable
-          targets: x86_64-pc-windows-msvc
-      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
-        with:
-          key: release-windows-x64
-      - name: Apply version override
-        if: inputs.version != ''
-        shell: bash
-        run: cargo xtask version set "$PDFCRAFT_VERSION"
-      - uses: storytold/craft-common-actions/actions/install-wix@main
-        with:
-          wix-version: 5.0.2
-      - name: Build and package
-        shell: pwsh
-        env:
-          WINDOWS_CERTIFICATE: ${{ secrets.WINDOWS_CERTIFICATE }}
-          WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
-          CRAFT_FONTS_DIR: ${{ github.workspace }}/craft-fonts
-          CRAFT_FONTS_REQUIRED: "1"
-        run: ./packaging/windows/package.ps1 -Arch x64
-      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: release-windows-x64
-          path: dist/release/*
-          if-no-files-found: error
-
-  linux:
-    name: Linux x86_64
-    needs: version
+  linux-deb:
+    name: Linux x86_64 .deb
     runs-on: ubuntu-22.04
-    env:
-      CARGO_TERM_COLOR: always
-      CARGO_INCREMENTAL: 0
-      RUST_BACKTRACE: 1
-      VERSION: ${{ needs.version.outputs.version }}
-      PDFCRAFT_VERSION: ${{ needs.version.outputs.version }}
-      PDFCRAFT_BUILD_DATE: ${{ needs.version.outputs.date }}
-      PDFCRAFT_BUILD_SHA: ${{ github.sha }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
       - uses: storytold/craft-common-actions/actions/checkout-craft-fonts@main
         with:
           ref: 3d9ab3a132ed0eff457e424226a435a901da30d3
+
       - uses: storytold/craft-common-actions/actions/install-linux-deps@main
         with:
           deb-arch: amd64
           nfpm-version: 2.47.0
-      - uses: dtolnay/rust-toolchain@e2a55d2ffb04f378e9626c28d38b36d230d1e12f # v1
+
+      - name: Install Rust 1.95
+        uses: dtolnay/rust-toolchain@e2a55d2ffb04f378e9626c28d38b36d230d1e12f # v1
         with:
-          toolchain: stable
-      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
+          toolchain: "1.95"
+
+      - name: Cache Cargo
+        uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
         with:
-          key: release-linux-x86_64
-      - name: Apply version override
-        if: inputs.version != ''
-        run: cargo xtask version set "$PDFCRAFT_VERSION"
-      - name: Build and package
+          key: release-linux-deb-x86_64-rust-1.95
+
+      - name: Resolve release metadata
+        id: metadata
+        shell: bash
         env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          cargo_version="$(cargo metadata --no-deps --format-version 1 | jq -r '.packages[] | select(.name == "pdfcraft") | .version' | head -n1)"
+          if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then
+            tag="$GITHUB_REF_NAME"
+            version="${tag#v}"
+          elif [[ -n "$INPUT_VERSION" ]]; then
+            version="${INPUT_VERSION#v}"
+            tag="v$version"
+          else
+            version="$cargo_version"
+            tag="v$version"
+          fi
+
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z.-]+)?$ ]]; then
+            echo "::error::Invalid release version: $version"
+            exit 1
+          fi
+
+          {
+            echo "version=$version"
+            echo "tag=$tag"
+            echo "build_date=$(date -u +%F)"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Build release and package DEB
+        env:
+          VERSION: ${{ steps.metadata.outputs.version }}
+          PDFCRAFT_VERSION: ${{ steps.metadata.outputs.version }}
+          PDFCRAFT_BUILD_DATE: ${{ steps.metadata.outputs.build_date }}
+          PDFCRAFT_BUILD_SHA: ${{ github.sha }}
           CRAFT_FONTS_DIR: ${{ github.workspace }}/craft-fonts
           CRAFT_FONTS_REQUIRED: "1"
-        run: packaging/linux/package.sh
-      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        run: packaging/linux/package.sh --formats "deb"
+
+      - name: Upload DEB workflow artifact
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: release-linux-x86_64
-          path: dist/release/*
+          name: Pdf-${{ steps.metadata.outputs.version }}-linux-x86_64-deb
+          path: dist/release/*.deb
           if-no-files-found: error
 
-  release:
-    name: Draft GitHub release
-    needs: [version, windows, linux]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: storytold/craft-common-actions/actions/draft-release@main
-        with:
-          version: ${{ needs.version.outputs.version }}
-          app-title: Pdf
-          prerelease: ${{ needs.version.outputs.prerelease }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish DEB as GitHub Release asset
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ steps.metadata.outputs.tag }}
+          RELEASE_VERSION: ${{ steps.metadata.outputs.version }}
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          debs=(dist/release/*.deb)
+          if (( ${#debs[@]} != 1 )); then
+            echo "::error::Expected exactly one .deb, found ${#debs[@]}"
+            exit 1
+          fi
+
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release upload "$RELEASE_TAG" "${debs[0]}" --clobber
+          else
+            gh release create "$RELEASE_TAG" "${debs[0]}" \
+              --target "$GITHUB_SHA" \
+              --title "Pdf v$RELEASE_VERSION" \
+              --generate-notes
+          fi
+
+          release_url="$(gh release view "$RELEASE_TAG" --json url --jq .url)"
+          asset_url="$(gh release view "$RELEASE_TAG" --json assets --jq '.assets[] | select(.name | endswith(".deb")) | .url' | head -n1)"
+          {
+            echo "## Pdf Linux x86_64"
+            echo
+            echo "- Release: $release_url"
+            echo "- DEB: $asset_url"
+          } >> "$GITHUB_STEP_SUMMARY"

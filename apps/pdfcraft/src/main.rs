@@ -86,7 +86,8 @@ fn migrate_legacy_folders() {
     if pdfcraft_ui_egui::portable::data_dir().is_some() {
         return;
     }
-    let mut moves = vec![(eframe::storage_dir("PrintCraft"), eframe::storage_dir("Pdf")), (eframe::storage_dir("PdfCraft"), eframe::storage_dir("Pdf"))];
+    let mut moves =
+        vec![(eframe::storage_dir("PrintCraft"), eframe::storage_dir("Pdf")), (eframe::storage_dir("PdfCraft"), eframe::storage_dir("Pdf"))];
     // Recovery lives in the settings folder except on Windows, where it is under %LOCALAPPDATA%.
     if cfg!(windows) {
         let local = std::env::var_os("LOCALAPPDATA").filter(|v| !v.is_empty()).map(std::path::PathBuf::from);
