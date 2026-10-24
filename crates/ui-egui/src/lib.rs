@@ -3431,6 +3431,18 @@ impl eframe::App for PdfCraftApp {
         // Notices raised outside `ui` (opened files, OS events, the control channel) translate too.
         let lang = i18n::Lang::from_pref(&self.language);
         i18n::set_current(lang);
+        // Handle a native close before polling workers or doing the rest of the frame. Window
+        // manager shortcuts (for example Super+W) should not wait for file watching, background
+        // jobs and another complete render when there is no save question to show. A dirty
+        // document still cancels the close and continues below so its save prompt is drawn.
+        let native_close = ctx.input(|i| i.viewport().close_requested());
+        if native_close {
+            self.guard_quit(ctx);
+            craft_quit::on_close_request(ctx);
+            if self.close_request.is_none() {
+                return;
+            }
+        }
         #[cfg(not(target_arch = "wasm32"))]
         {
             if let Some(worker) = &self.open_worker {
@@ -3544,9 +3556,11 @@ impl eframe::App for PdfCraftApp {
             control.tick(ctx, self);
             self.control = Some(control);
         }
-        self.guard_quit(ctx);
-        // macOS: quit through `terminate:` instead of dropping the window (Touch Bar crash, #1136).
-        craft_quit::on_close_request(ctx);
+        if !native_close {
+            self.guard_quit(ctx);
+            // macOS: quit through `terminate:` instead of dropping the window (Touch Bar crash, #1136).
+            craft_quit::on_close_request(ctx);
+        }
         let now = ctx.input(|i| i.time);
         self.autosave_tick(ctx, now);
         // Reload documents whose files a build rewrote (#431).
@@ -3597,6 +3611,11 @@ impl eframe::App for PdfCraftApp {
     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
         let ctx = ui.ctx().clone();
         i18n::set_current(i18n::Lang::from_pref(&self.language));
+        // `logic` accepted this native close. Avoid building and painting one last full frame;
+        // dirty documents have a close request and still render their save prompt instead.
+        if ctx.input(|i| i.viewport().close_requested()) && self.close_request.is_none() {
+            return;
+        }
         // Fonts registered via set_fonts only take effect next frame; named families would panic now.
         if !self.fonts_ready {
             ctx.request_repaint();

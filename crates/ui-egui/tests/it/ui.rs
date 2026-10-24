@@ -969,6 +969,24 @@ fn files_and_quit_from_the_operating_system() {
 }
 
 #[test]
+fn a_clean_native_close_skips_the_rest_of_the_frame() {
+    // Closing through the window manager (including Super+W) must not wait for routine work
+    // which cannot affect a clean close. A dirty close is covered by the save-prompt tests.
+    let polls = std::rc::Rc::new(std::cell::Cell::new(0));
+    let seen = polls.clone();
+    let mut h = harness(move |app| {
+        app.os_events = Some(Box::new(move || {
+            seen.set(seen.get() + 1);
+            Vec::new()
+        }));
+    });
+    polls.set(0);
+    h.input_mut().viewports.entry(egui::ViewportId::ROOT).or_default().events.push(egui::ViewportEvent::Close);
+    h.step();
+    assert_eq!(polls.get(), 0, "native close returns before polling ordinary OS work");
+}
+
+#[test]
 fn default_workspace_mode_persists_and_tolerates_invalid_settings() {
     use pdfcraft_ui_egui::Mode;
     for mode in [Mode::AllTools, Mode::Read, Mode::Edit, Mode::Convert, Mode::Sign] {
