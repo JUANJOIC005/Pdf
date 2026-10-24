@@ -9,7 +9,7 @@ merged with fewer conflicts.
 
 ## Current status
 
-This project follows PdfCraft upstream, which is alpha software. Keep backups of important files
+This project is synchronized with PdfCraft 0.13.0 upstream, which is alpha software. Keep backups of important files
 and verify exported documents before using them in production.
 
 ## Build
