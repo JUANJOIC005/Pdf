@@ -300,6 +300,7 @@ impl PdfCraftApp {
             "view.theme.light" => self.set_theme_preference(ThemePreference::Light),
             "view.theme.dark" => self.set_theme_preference(ThemePreference::Dark),
             "comment.list" => self.choose_right_panel(Some(RightPanel::Comments)),
+            "ai.open" | "ai.summary" | "ai.ask" | "ai.translate" => crate::ai_ui::command(self, id),
             tool if crate::comments::CommentTool::from_command(tool).is_some() => {
                 let Some(tool) = crate::comments::CommentTool::from_command(tool) else { return false };
                 self.comment_prefs.group_tool[tool.group()] = tool;

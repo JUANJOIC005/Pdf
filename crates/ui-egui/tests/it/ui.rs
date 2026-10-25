@@ -40,6 +40,22 @@ fn home_shows_welcome_and_tools() {
 }
 
 #[test]
+fn ai_command_opens_the_markitdown_reading_panel() {
+    use pdfcraft_ui_egui::RightPanel;
+
+    let mut h = harness(|app| app.open_bytes("fixture.pdf", None, FIXTURE.to_vec()).expect("fixture opens"));
+    assert!(h.state_mut().execute("ai.open"));
+    h.run_steps(3);
+    assert_eq!(h.state().right, Some(RightPanel::Ai));
+    h.get_by_label("The current PDF is converted locally with MarkItDown for every request.");
+    h.get_by_label("Summarize");
+    h.get_by_label("Key points");
+    h.get_by_label("Explain simply");
+    h.get_by_label("Actions and risks");
+    h.get_by_label("Ask about this PDF");
+}
+
+#[test]
 fn tools_panel_side_preference_moves_and_persists() {
     use pdfcraft_ui_egui::Dialog;
 

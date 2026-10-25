@@ -164,7 +164,8 @@ fn check(h: &Harness<'static, PdfCraftApp>, name: &str) -> Result<(), String> {
 }
 
 /// Every panel, in the order of the rail.
-const ALL: [RightPanel; 11] = [
+const ALL: [RightPanel; 12] = [
+    RightPanel::Ai,
     RightPanel::Comments,
     RightPanel::Bookmarks,
     RightPanel::Pages,
@@ -182,6 +183,7 @@ const ALL: [RightPanel; 11] = [
 /// `RightPanel` stops this file compiling until it is set up here (and listed in [`ALL`]).
 fn open(p: RightPanel) -> (Harness<'static, PdfCraftApp>, &'static str) {
     let name = match p {
+        RightPanel::Ai => "ai",
         RightPanel::Comments => "comments",
         RightPanel::Bookmarks => "bookmarks",
         RightPanel::Pages => "pages",

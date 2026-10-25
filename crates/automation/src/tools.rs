@@ -194,6 +194,9 @@ pub fn tools() -> Vec<ToolDef> {
                 }),
                 &["doc"],
             )),
+        t("doc_markdown", "Prepare document for AI", "Convert the current working PDF to structured Markdown with the locally installed MarkItDown command. This is the same document preparation used by the optional AI assistant. Does not contact an AI provider or modify the PDF; output is capped at 2 MiB and reports whether it was truncated.")
+            .ro()
+            .with(schema(json!({ "doc": doc() }), &["doc"])),
         t("text_find", "Find text", "Find a phrase (case-insensitive, whitespace-normalised) and return matches in page order with page and line rectangles in points (origin top-left). Reads growing batches, looking one match past the limit for a continuation. Failed pages do not discard readable matches: warnings contains up to 100 {page, error, error_truncated} entries (errors capped at 1024 UTF-8 bytes), warning_count counts failed pages, and warnings_truncated reports a capped list. complete is false after a page failure or when more matches exist; next is present only for a match-limit continuation.")
             .ro()
             .cmd("edit.find")
