@@ -210,7 +210,7 @@ fn a_value_an_option_cannot_hold_is_named_before_the_file_is_opened() {
     ] {
         let out = Command::new(BIN).current_dir(&dir).args(["edit", "missing.pdf", "--out", "out.pdf", option, value]).output().unwrap();
         assert_eq!(out.status.code(), Some(1), "{option} {value}");
-        assert_eq!(out.stderr, format!("pdfcraft-cli: {diagnostic}\n").as_bytes(), "{option} {value}");
+        assert_eq!(out.stderr, format!("pdf-cli: {diagnostic}\n").as_bytes(), "{option} {value}");
         assert!(out.stdout.is_empty(), "{option} {value}");
         assert!(!dir.join("out.pdf").exists(), "{option} {value}: no output may be written");
     }
