@@ -47,12 +47,15 @@ fn ai_command_opens_the_markitdown_reading_panel() {
     assert!(h.state_mut().execute("ai.open"));
     h.run_steps(3);
     assert_eq!(h.state().right, Some(RightPanel::Ai));
-    h.get_by_label("The current PDF is converted locally with MarkItDown for every request.");
+    h.get_by_label("Chat with the current PDF");
+    h.get_by_label("MarkItDown · PDF");
     h.get_by_label("Summarize");
     h.get_by_label("Key points");
-    h.get_by_label("Explain simply");
-    h.get_by_label("Actions and risks");
-    h.get_by_label("Ask about this PDF");
+    h.get_by_label("Explain");
+    h.get_by_label("Actions & risks");
+    h.get_by_label("What would you like to know?");
+    h.get_by_label("Ctrl/⌘ + Enter to send");
+    h.get_by_label("Send");
 }
 
 #[test]
