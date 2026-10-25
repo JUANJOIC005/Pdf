@@ -32,6 +32,7 @@ macro_rules! tl_ctx {
 
 mod a11y_ui;
 mod actions_ui;
+mod ai_ui;
 mod appearance;
 mod calc_order_ui;
 pub mod canvas;
@@ -202,6 +203,8 @@ pub enum LeftPanel {
 /// Right-hand panels, opened from the rail.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub enum RightPanel {
+    /// Optional local-MarkItDown reading assistant.
+    Ai,
     Comments,
     Bookmarks,
     Pages,
@@ -644,6 +647,7 @@ pub struct PdfCraftApp {
     pub left: LeftPanel,
     pub left_open: bool,
     pub right: Option<RightPanel>,
+    pub(crate) ai: ai_ui::AiPane,
     /// The right panel that was open when the user switched to Read mode, which starts with the
     /// panes closed; leaving Read mode brings it back unless the user opened or closed a pane in
     /// Read mode meanwhile.
@@ -1094,6 +1098,7 @@ impl PdfCraftApp {
             pending_panel_reveals: Vec::new(),
             left_open: true,
             right: None,
+            ai: Default::default(),
             right_before_read: None,
             comments_panel_closed: false,
             right_panel_closed: false,
@@ -2866,6 +2871,7 @@ impl PdfCraftApp {
             }
             ("panel", _) => {
                 self.right = match value {
+                    "ai" => Some(RightPanel::Ai),
                     "comments" => Some(RightPanel::Comments),
                     "bookmarks" => Some(RightPanel::Bookmarks),
                     "pages" => Some(RightPanel::Pages),
@@ -3611,11 +3617,9 @@ impl eframe::App for PdfCraftApp {
     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
         let ctx = ui.ctx().clone();
         i18n::set_current(i18n::Lang::from_pref(&self.language));
-        // `logic` accepted this native close. Avoid building and painting one last full frame;
-        // dirty documents have a close request and still render their save prompt instead.
-        if ctx.input(|i| i.viewport().close_requested()) && self.close_request.is_none() {
-            return;
-        }
+        // `logic` has already skipped background work for an accepted native close. Keep drawing
+        // this last frame until the compositor removes the window: presenting an empty frame here
+        // intermittently flashed black before Super+W finished closing the window.
         // Fonts registered via set_fonts only take effect next frame; named families would panic now.
         if !self.fonts_ready {
             ctx.request_repaint();

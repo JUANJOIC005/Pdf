@@ -228,6 +228,10 @@ impl Automation {
             "page_render" => return self.page_render(&a).map(|c| vec![c]),
             "comment_image_preview" => return self.comment_image_preview(&a),
             "text_extract" => self.text_extract(&a)?,
+            "doc_markdown" => {
+                let prepared = pdfcraft_ai::markdown_from_pdf(&self.doc(&a)?.bytes).map_err(failed)?;
+                json!({ "markdown": prepared.text, "truncated": prepared.truncated })
+            }
             "text_word_count" => self.text_word_count(&a)?,
             "text_find" => self.text_find(&a)?,
             "page_rotate" => {

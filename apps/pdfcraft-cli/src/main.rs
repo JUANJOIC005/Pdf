@@ -60,6 +60,9 @@ pdf-cli info   <file.pdf> [--password PW]            document summary as JSON
                                                           (includes any declared PDF/A or PDF/UA level)
 pdf-cli render <file.pdf> --page N [--dpi 96] --out x.png   (.png, .jpg, .tif or .pam)
 pdf-cli text   <file.pdf> [--page N]                  extracted text (pages separated by form feeds)
+pdf-cli ai     <file.pdf> --task summary|key-points|explain|actions|translate|ask
+                      [--language Spanish] [--question TEXT] [--provider codex|claude]
+                      convert locally with MarkItDown, then analyse with an installed agent
 pdf-cli edit   <in.pdf> --out out.pdf [--rotate 1,3:90] [--delete 2,4] [--move 5:1]
                       [--insert-blank 1] [--title T] [--author A] [--full]
                       (options run in order; page numbers refer to the document after the earlier options)
@@ -113,6 +116,7 @@ fn main() -> ExitCode {
         Some("info") => info(&args[1..]),
         Some("render") => render(&args[1..]),
         Some("text") => text(&args[1..]),
+        Some("ai") => ai(&args[1..]),
         Some("edit") => edit(&args[1..]),
         Some("combine") => combine(&args[1..]),
         Some("extract") => extract(&args[1..]),
@@ -290,6 +294,12 @@ fn validate_options(command: &str, args: &[String], specs: &[OptionSpec]) -> Res
 const INFO_OPTIONS: &[OptionSpec] = &[OptionSpec { name: "--password", takes_value: true }];
 const AUDIT_OPTIONS: &[OptionSpec] = &[OptionSpec { name: "--password", takes_value: true }];
 const TEXT_OPTIONS: &[OptionSpec] = &[OptionSpec { name: "--page", takes_value: true }, OptionSpec { name: "--password", takes_value: true }];
+const AI_OPTIONS: &[OptionSpec] = &[
+    OptionSpec { name: "--task", takes_value: true },
+    OptionSpec { name: "--language", takes_value: true },
+    OptionSpec { name: "--question", takes_value: true },
+    OptionSpec { name: "--provider", takes_value: true },
+];
 const COMBINE_OPTIONS: &[OptionSpec] = &[OptionSpec { name: "--out", takes_value: true }];
 const EXTRACT_OPTIONS: &[OptionSpec] = &[
     OptionSpec { name: "--out", takes_value: true },
@@ -472,6 +482,26 @@ fn text(args: &[String]) -> Result<(), CliError> {
     } else {
         Err(format!("text: page(s) {} could not be read", failed.iter().map(usize::to_string).collect::<Vec<_>>().join(", ")).into())
     }
+}
+
+fn ai(args: &[String]) -> Result<(), CliError> {
+    validate_options("ai", args, AI_OPTIONS)?;
+    let path = *positional(args, AI_OPTIONS).first().ok_or("ai: missing file")?;
+    let task = flag(args, "--task").ok_or("ai: missing --task")?;
+    let request = match task {
+        "summary" => pdfcraft_ai::Request::Summary,
+        "key-points" => pdfcraft_ai::Request::KeyPoints,
+        "explain" => pdfcraft_ai::Request::Explain,
+        "actions" => pdfcraft_ai::Request::ActionItems,
+        "translate" => pdfcraft_ai::Request::Translate { language: flag(args, "--language").unwrap_or("Spanish").to_string() },
+        "ask" => pdfcraft_ai::Request::Ask(flag(args, "--question").ok_or("ai: --task ask needs --question")?.to_string()),
+        other => return Err(format!("ai: unknown task {other:?} (summary, key-points, explain, actions, translate or ask)").into()),
+    };
+    let provider_name = flag(args, "--provider").unwrap_or("codex");
+    let provider = pdfcraft_ai::Provider::parse(provider_name).ok_or("ai: --provider must be codex or claude")?;
+    let bytes = read(path)?;
+    let answer = pdfcraft_ai::analyse_pdf(&bytes, provider, &request).map_err(|e| format!("ai: {e}"))?;
+    stdout_line(format_args!("{answer}"))
 }
 
 /// The most pages one `A-B` range may name: a bound on what a typed range can allocate.

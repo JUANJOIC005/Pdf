@@ -1,0 +1,17 @@
+Image
+Label = "AI assistant"
+Button "Close" [off]
+Label = "The current PDF is converted locally with MarkItDown for every request."
+Label = "Agent"
+ComboBox = "codex"
+Button "Summarize"
+Button "Explain simply"
+Button "Key points"
+Button "Actions and risks"
+Label = "Translate"
+TextInput = "español"
+Button "Translate"
+Label = "Ask about this PDF"
+MultilineTextInput
+Button "Ask"
+Label = "Choose an action. The PDF is not sent anywhere until you do."

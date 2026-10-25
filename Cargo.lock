@@ -3971,6 +3971,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "pdfcraft-ai"
+version = "0.13.0"
+dependencies = [
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "pdfcraft-annot"
 version = "0.13.0"
 dependencies = [
@@ -3999,6 +4007,7 @@ dependencies = [
  "base64 0.22.1",
  "flate2",
  "image",
+ "pdfcraft-ai",
  "pdfcraft-cos",
  "pdfcraft-engine",
  "pdfcraft-fonts",
@@ -4019,6 +4028,7 @@ name = "pdfcraft-cli"
 version = "0.13.0"
 dependencies = [
  "base64 0.22.1",
+ "pdfcraft-ai",
  "pdfcraft-audit",
  "pdfcraft-automation",
  "pdfcraft-cos",
@@ -4386,6 +4396,7 @@ dependencies = [
  "objc2 0.6.4",
  "objc2-app-kit 0.3.2",
  "objc2-foundation 0.3.2",
+ "pdfcraft-ai",
  "pdfcraft-cos",
  "pdfcraft-engine",
  "pdfcraft-fonts",

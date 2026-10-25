@@ -21,6 +21,7 @@ pdfcraft-cos = { workspace = true }
 pdfcraft-preflight = { workspace = true }
 pdfcraft-automation = { workspace = true }
 pdfcraft-platform = { workspace = true }
+pdfcraft-ai = { workspace = true }
 base64 = "0.22"
 
 [dev-dependencies]
