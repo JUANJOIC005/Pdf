@@ -118,13 +118,13 @@ fn check_follows_directory_and_file_symlinks() {
 fn a_bad_timeout_or_dpi_is_refused_before_scanning() {
     let out = Command::new(BIN).args(["check", "no-such-input", "--timeout", "0"]).output().unwrap();
     assert_eq!(out.status.code(), Some(1));
-    assert_eq!(out.stderr, b"pdfcraft-cli: bad --timeout: expected a positive whole number of seconds, got \"0\"\n");
+    assert_eq!(out.stderr, b"pdf-cli: bad --timeout: expected a positive whole number of seconds, got \"0\"\n");
     for value in ["abc", "0", "-3", "NaN"] {
         let out = Command::new(BIN).args(["check", "no-such-input", "--dpi", value]).output().unwrap();
         assert_eq!(out.status.code(), Some(1), "--dpi {value}");
         assert_eq!(
             out.stderr,
-            format!("pdfcraft-cli: bad --dpi: expected a positive number of dots per inch, got {value:?}\n").as_bytes(),
+            format!("pdf-cli: bad --dpi: expected a positive number of dots per inch, got {value:?}\n").as_bytes(),
             "--dpi {value}"
         );
     }

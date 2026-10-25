@@ -108,7 +108,7 @@ fn a_page_or_dpi_the_renderer_cannot_use_is_refused_before_reading_the_file() {
         // `missing.pdf` is never read: the option's own message is the error.
         let r = Command::new(BIN).args(["render", "missing.pdf", "--out", out.to_str().unwrap(), option, value]).output().unwrap();
         assert_eq!(r.status.code(), Some(1), "{option} {value}");
-        assert_eq!(r.stderr, format!("pdfcraft-cli: {diagnostic}\n").as_bytes(), "{option} {value}");
+        assert_eq!(r.stderr, format!("pdf-cli: {diagnostic}\n").as_bytes(), "{option} {value}");
         assert!(!out.exists(), "{option} {value}: no output may be written");
     }
 }
