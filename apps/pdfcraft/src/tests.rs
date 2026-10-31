@@ -422,7 +422,7 @@ fn winit_carries_the_windows_11_monitor_scale_fix() {
     // The audited W1 hunk itself, not merely the file's presence: Windows 11 applies the
     // rect Windows suggests, while Windows 10 keeps the old adjustment.
     for marker in [
-        "PdfCraft patch: from Windows 11 (build 22000) on, apply the rect Windows suggests",
+        "Pdf patch: from Windows 11 (build 22000) on, apply the rect Windows suggests",
         "if !WIN10_BUILD_VERSION.is_some_and(|build| build < 22000) {",
         "new_outer_rect = suggested_rect;",
     ] {

@@ -42,7 +42,7 @@ impl PdfCraftApp {
         let mark = if dirty { " •" } else { "" };
         let titled = |name: Option<String>| {
             name.or_else(|| self.combine_showing().then(|| tl!("Combine files").to_owned()))
-                .map_or_else(|| "PdfCraft".to_owned(), |name| format!("{name}{mark} — PdfCraft"))
+                .map_or_else(|| "Pdf".to_owned(), |name| format!("{name}{mark} — Pdf"))
         };
         let title = titled(self.active.and_then(|i| crate::canvas::tab_label(self, i)));
         // The web page's title is what an embedding host reads to tell which file opened, so it
@@ -79,6 +79,7 @@ impl PdfCraftApp {
             side_panels: Default::default(),
             left_open: true,
             right: None,
+            ai: Default::default(),
             last_right: RightPanel::Comments,
             right_before_read: None,
             comments_panel_closed: false,
@@ -392,6 +393,16 @@ impl eframe::App for PdfCraftApp {
         // Notices raised outside `ui` (opened files, OS events, the control channel) translate too.
         let lang = i18n::Lang::from_pref(&self.language);
         i18n::set_current(lang);
+        // Handle an accepted native close before workers and rendering. This avoids a final empty
+        // frame (seen as a brief black flash with Super+W) while preserving the save prompt for
+        // documents with unsaved work.
+        let native_close = ctx.input(|i| i.viewport().close_requested());
+        if native_close {
+            self.guard_quit(ctx);
+            if self.close_request.is_none() {
+                return;
+            }
+        }
         #[cfg(not(target_arch = "wasm32"))]
         {
             if let Some(worker) = &self.open_worker {
@@ -505,7 +516,9 @@ impl eframe::App for PdfCraftApp {
             control.tick(ctx, self);
             self.control = Some(control);
         }
-        self.guard_quit(ctx);
+        if !native_close {
+            self.guard_quit(ctx);
+        }
         // macOS: quit through `terminate:` instead of dropping the window (Touch Bar crash, #1136).
         #[cfg(target_os = "macos")]
         craft_quit::on_close_request(ctx);

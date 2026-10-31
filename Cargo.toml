@@ -5,11 +5,11 @@ exclude = ["vendor"]
 default-members = ["crates/*", "apps/pdfcraft", "apps/pdfcraft-cli", "xtask"]
 
 [workspace.package]
-version = "0.16.1"
+version = "0.16.2"
 edition = "2024"
 license = "MIT OR Apache-2.0"
 rust-version = "1.95"
-repository = "https://github.com/storytold/pdfcraft"
+repository = "https://github.com/JUANJOIC005/Pdf"
 
 [workspace.dependencies]
 # Shared frontend components; engines remain independent of egui.
@@ -59,6 +59,7 @@ pdfcraft-engine = { path = "crates/engine", version = "0.16.1" }
 pdfcraft-platform = { path = "crates/platform", version = "0.16.1" }
 pdfcraft-ui-egui = { path = "crates/ui-egui", version = "0.16.1" }
 pdfcraft-automation = { path = "crates/automation", version = "0.16.1", default-features = false }
+pdfcraft-ai = { path = "crates/ai", version = "0.16.2" }
 
 # pdf
 hayro = "0.7.1"

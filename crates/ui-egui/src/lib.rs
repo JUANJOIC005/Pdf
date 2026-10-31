@@ -13,9 +13,15 @@
 /// prompt shows both, and an AppImage's menu entry gets the icon.
 #[cfg(not(target_arch = "wasm32"))]
 pub const UPDATE_APP: craft_update::app::App = craft_update::app::App {
-    icon_png: Some(include_bytes!("../../../assets/app-icon/hicolor/128x128/apps/ai.storyteller.pdfcraft.png")),
+    id: "Pdf",
+    name: "Pdf",
+    tagline: "Read, organize and understand PDFs",
+    repo: "JUANJOIC005/Pdf",
+    former_ids: &[],
+    former_names: &[],
+    icon_png: Some(include_bytes!("../../../assets/app-icon/hicolor/128x128/apps/io.github.juanjoic005.pdf.png")),
     accent: Some([0xb7, 0x02, 0x28]),
-    ..craft_update::suite::PDFCRAFT
+    developer: "JUANJOIC005",
 };
 
 use crate::control::Host as _;
@@ -34,6 +40,7 @@ macro_rules! tl_ctx {
         $crate::i18n::tr_ctx($crate::i18n::current(), $context, $s)
     };
 }
+mod ai_ui;
 pub mod canvas;
 mod chrome;
 pub use combine_grid::ThumbState as CombineThumb;
@@ -266,6 +273,8 @@ pub struct PdfCraftApp {
     pub left: LeftPanel,
     pub left_open: bool,
     pub right: Option<RightPanel>,
+    /// This fork's local MarkItDown reading and translation assistant.
+    pub(crate) ai: ai_ui::AiPane,
     /// The side panel F4 reopens: the one open last.
     pub(crate) last_right: RightPanel,
     /// The right panel that was open when the user switched to Read mode, which starts with the

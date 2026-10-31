@@ -337,7 +337,7 @@ mod tests {
     #[test]
     fn untrusted_bundle_aliases_are_skipped_without_resolving_them() {
         let dir = directory();
-        let app = dir.join("PdfCraft.app");
+        let app = dir.join("Pdf.app");
         std::fs::create_dir(&app).unwrap();
         let alias = dir.join("alias.app");
         std::os::unix::fs::symlink(&app, &alias).unwrap();

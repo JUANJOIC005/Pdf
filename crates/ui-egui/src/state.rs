@@ -37,6 +37,8 @@ pub enum LeftPanel {
 /// Right-hand panels, opened from the rail.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
 pub enum RightPanel {
+    /// Local MarkItDown reading assistant.
+    Ai,
     Comments,
     Bookmarks,
     Pages,

@@ -155,6 +155,10 @@ impl PdfCraftApp {
     }
 
     fn execute_unguarded(&mut self, id: &str) -> bool {
+        if matches!(id, "ai.open" | "ai.summary" | "ai.ask" | "ai.translate") {
+            crate::ai_ui::command(self, id);
+            return true;
+        }
         let Some(spec) = commands::command(id) else { return false };
         if !self.command_enabled(spec) {
             let why = self.disabled_reason(spec);
