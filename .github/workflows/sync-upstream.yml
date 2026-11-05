@@ -47,6 +47,14 @@ jobs:
             done < <(git diff --name-only --diff-filter=U)
             git commit -m "Merge PdfCraft ${UPSTREAM_TAG} preserving Pdf customizations"
           fi
+          # GitHub's Actions token cannot push changes to workflow files. Keep this fork's
+          # reviewed Linux-only workflows exactly as they are on main.
+          git rm -r --ignore-unmatch .github/workflows
+          git checkout origin/main -- .github/workflows
+          git add .github/workflows
+          if ! git diff --cached --quiet; then
+            git commit --amend --no-edit
+          fi
           sed -i -E '0,/^version = "[0-9]+\.[0-9]+\.[0-9]+"/s//version = "'"${FORK_VERSION}"'"/' Cargo.toml
           cargo metadata --format-version 1 --no-deps >/dev/null
           git add Cargo.toml Cargo.lock
