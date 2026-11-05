@@ -26,6 +26,7 @@ jobs:
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: "1.95"
+          components: rustfmt
       - name: Cache Cargo
         uses: Swatinem/rust-cache@v2
       - name: Merge official release and preserve fork customizations
@@ -47,20 +48,21 @@ jobs:
             done < <(git diff --name-only --diff-filter=U)
             git commit -m "Merge PdfCraft ${UPSTREAM_TAG} preserving Pdf customizations"
           fi
-          # GitHub's Actions token cannot push changes to workflow files. Keep this fork's
-          # reviewed Linux-only workflows exactly as they are on main.
           git rm -r --ignore-unmatch .github/workflows
           git checkout origin/main -- .github/workflows
           git add .github/workflows
           if ! git diff --cached --quiet; then
             git commit --amend --no-edit
           fi
+          # The official root manifests know every newly added crate. Restore them, then add
+          # this fork's AI crate and repository identity.
+          git checkout "refs/tags/upstream-${UPSTREAM_TAG}" -- Cargo.toml Cargo.lock
+          sed -i 's|repository = "https://github.com/storytold/pdfcraft"|repository = "https://github.com/JUANJOIC005/Pdf"|' Cargo.toml
           sed -i -E '0,/^version = "[0-9]+\.[0-9]+\.[0-9]+"/s//version = "'"${FORK_VERSION}"'"/' Cargo.toml
+          sed -i '/^# pdf$/i pdfcraft-ai = { path = "crates/ai", version = "'"${FORK_VERSION}"'" }\n' Cargo.toml
           cargo metadata --format-version 1 --no-deps >/dev/null
           git add Cargo.toml Cargo.lock
-          if ! git diff --cached --quiet; then
-            git commit -m "Prepare Pdf ${FORK_VERSION}"
-          fi
+          git commit -m "Prepare Pdf ${FORK_VERSION}"
           git push --force-with-lease origin "HEAD:$branch"
       - name: Format
         run: cargo fmt --all -- --check
