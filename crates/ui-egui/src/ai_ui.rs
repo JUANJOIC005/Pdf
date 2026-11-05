@@ -17,7 +17,7 @@ mod native {
     use egui::{Align, CornerRadius, Layout, Stroke};
     use pdfcraft_ai::{Provider, Request};
 
-    use super::*;
+    use super::{PdfCraftApp, RightPanel, Tokens, icons, theme};
 
     const MAX_MESSAGES: usize = 40;
 
@@ -142,7 +142,7 @@ mod native {
                 });
             });
             ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-                egui::ComboBox::from_id_salt("pdf-ai-provider").selected_text(app.ai.provider.id()).show_ui(ui, |ui| {
+                craft_ui::ComboBox::from_id_salt("pdf-ai-provider").selected_text(app.ai.provider.id()).show_ui(ui, |ui| {
                     for provider in Provider::ALL {
                         ui.selectable_value(&mut app.ai.provider, provider, provider.id());
                     }
