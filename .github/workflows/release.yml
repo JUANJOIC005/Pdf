@@ -34,6 +34,13 @@ jobs:
         with:
           ref: b076417b5880bd4154bd22f00695b1d28c6bea83
 
+      - name: Check out interface translations
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: storytold/craft-i18n
+          ref: 575cfdef63227b14daf173b8cc87928bfdfa325e
+          path: craft-i18n
+
       - uses: storytold/craft-common-actions/actions/install-linux-deps@main
         with:
           deb-arch: amd64
@@ -87,6 +94,8 @@ jobs:
           PDFCRAFT_BUILD_SHA: ${{ github.sha }}
           CRAFT_FONTS_DIR: ${{ github.workspace }}/craft-fonts
           CRAFT_FONTS_REQUIRED: "1"
+          CRAFT_I18N_DIR: ${{ github.workspace }}/craft-i18n
+          CRAFT_I18N_REQUIRED: "1"
         run: packaging/linux/package.sh --formats "deb"
 
       - name: Upload DEB workflow artifact
