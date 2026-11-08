@@ -1211,6 +1211,54 @@ fn preferences_turn_on_always_use_my_default_zoom_and_page_layout() {
 }
 
 #[test]
+fn force_continuous_overrides_the_pdf_and_the_remembered_view() {
+    use pdfcraft_ui_egui::canvas::PageLayout;
+    // A PDF that asks for one page at a time, like the AWS course files.
+    let asks = String::from_utf8_lossy(PAGES).replace("/Pages 2 0 R >>", "/Pages 2 0 R /PageLayout /SinglePage >>");
+    let open = |force: Option<&str>| {
+        let mut app = PdfCraftApp::new();
+        app.set_option("language", "en").unwrap();
+        if let Some(on) = force {
+            app.set_option("force-continuous", on).unwrap();
+        }
+        app.open_bytes("asks.pdf", None, asks.clone().into_bytes()).expect("opens");
+        (app.views[0].layout, app.views[0].continuous)
+    };
+    assert_eq!(open(None), (PageLayout::Single, false), "off by default: the document's view wins");
+    assert_eq!(open(Some("off")), (PageLayout::Single, false));
+    assert_eq!(open(Some("on")), (PageLayout::Single, true));
+    assert!(PdfCraftApp::new().set_option("force-continuous", "yes").is_err());
+}
+
+#[test]
+fn force_continuous_survives_a_restart() {
+    let mut app = PdfCraftApp::new();
+    assert!(!app.force_continuous, "off by default");
+    app.force_continuous = true;
+    let mut restarted = PdfCraftApp::new();
+    restarted.restore(&app.persist());
+    assert!(restarted.force_continuous, "the choice is kept");
+    restarted.restore(r#"{"force_continuous":"bogus"}"#);
+    assert!(restarted.force_continuous, "garbage leaves it alone");
+    let mut legacy = PdfCraftApp::new();
+    legacy.restore("{}");
+    assert!(!legacy.force_continuous, "a legacy file without the key keeps it off");
+}
+
+#[test]
+fn preferences_turn_on_force_continuous() {
+    use egui_kittest::kittest::Queryable;
+    let mut h = harness(&[]);
+    assert!(h.state_mut().execute("app.preferences"));
+    h.run_steps(3);
+    h.get_by_label("Always open documents with continuous scrolling").scroll_to_me();
+    h.run_steps(4);
+    h.get_by_label("Always open documents with continuous scrolling").click();
+    h.run_steps(2);
+    assert!(h.state().force_continuous);
+}
+
+#[test]
 fn preferences_set_the_default_zoom() {
     use egui_kittest::kittest::Queryable;
     let mut h = harness(&[]);

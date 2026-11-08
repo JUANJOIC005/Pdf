@@ -5,3 +5,4 @@
 
 - 2026-11-08: La Release Linux incorpora las traducciones de `craft-i18n` y publica el DEB aunque la cuota de artifacts temporales esté llena.
 - 2026-11-08: Los paquetes de Pdf usan el logotipo de Adobe Acrobat solicitado para el lanzador y la ventana.
+- 2026-11-09: Nuevo ajuste «Always open documents with continuous scrolling» (`force_continuous`): abre siempre en desplazamiento continuo, por encima de `/PageLayout` del PDF y de la última vista recordada; documentado en `docs/page-display.md`.
