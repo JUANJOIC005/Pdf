@@ -1,5 +1,7 @@
 # Documentación
 
+- [Identidad visual](branding.md): iconos incluidos en los paquetes y atribución.
+
 - [Arquitectura](architecture.md): estructura y límites del proyecto.
 - [CLI por lotes](cli-batch.md): uso de la interfaz de línea de comandos.
 - [Contribuidores](contributors.md): gestión de créditos.
