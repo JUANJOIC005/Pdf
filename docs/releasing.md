@@ -286,3 +286,6 @@ a match of the `CobaltStrikeBeacon` family rule.
 7. **Report.** To the scanner, send the file's SHA-256, the release URL, the rule name and revision,
    and the matched identifiers and offsets. Report PdfCraft problems at
    <https://github.com/storytold/pdfcraft/issues> with the same facts.
+## Fork release: Linux DEB
+
+The fork workflow `.github/workflows/release.yml` runs for `v*` tags and manual dispatches. It builds only the Linux x86_64 DEB, embeds the `craft-i18n` revision pinned by `craft-i18n.rev`, uploads the DEB to the GitHub Release, and also attempts to retain it as a temporary Actions artifact. The Release upload is authoritative: an exhausted Actions artifact quota is non-fatal so it cannot prevent publication of the permanent Release asset.
