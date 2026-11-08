@@ -35,8 +35,8 @@ jobs:
           FORK_VERSION: ${{ inputs.fork_version }}
         run: |
           set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR_ID+$GITHUB_ACTOR@users.noreply.github.com"
           branch="sync/upstream-${UPSTREAM_TAG#v}"
           git remote add upstream https://github.com/storytold/pdfcraft.git
           git fetch upstream "refs/tags/${UPSTREAM_TAG}:refs/tags/upstream-${UPSTREAM_TAG}"
