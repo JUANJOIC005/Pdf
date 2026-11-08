@@ -289,3 +289,7 @@ a match of the `CobaltStrikeBeacon` family rule.
 ## Fork release: Linux DEB
 
 The fork workflow `.github/workflows/release.yml` runs for `v*` tags and manual dispatches. It builds only the Linux x86_64 DEB, embeds the `craft-i18n` revision pinned by `craft-i18n.rev`, uploads the DEB to the GitHub Release, and also attempts to retain it as a temporary Actions artifact. The Release upload is authoritative: an exhausted Actions artifact quota is non-fatal so it cannot prevent publication of the permanent Release asset.
+
+## Sincronización con upstream
+
+El workflow .github/workflows/sync-upstream.yml integra una release estable oficial en una rama sync/upstream-*, conserva las personalizaciones del fork y ejecuta formato, compilación y validación de arquitectura antes de que esa rama se fusione en main. Los commits se atribuyen al usuario que lanza manualmente el workflow.
