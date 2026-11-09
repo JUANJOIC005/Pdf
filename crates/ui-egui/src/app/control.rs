@@ -62,6 +62,7 @@ impl PdfCraftApp {
             ("panel", _) => {
                 self.right = match value {
                     "ai" => Some(RightPanel::Ai),
+                    "translate" => Some(RightPanel::Translate),
                     "comments" => Some(RightPanel::Comments),
                     "bookmarks" => Some(RightPanel::Bookmarks),
                     "pages" => Some(RightPanel::Pages),

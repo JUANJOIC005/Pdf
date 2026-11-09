@@ -42,6 +42,10 @@ macro_rules! tl_ctx {
 }
 mod ai_ui;
 pub mod ai_model;
+#[cfg(not(target_arch = "wasm32"))]
+mod translate_ui;
+#[cfg(not(target_arch = "wasm32"))]
+pub use translate_ui::TranslatorFactory;
 pub use ai_ui::{ChatBackend, PdfAiBackend};
 pub mod canvas;
 mod chrome;
@@ -295,6 +299,9 @@ pub struct PdfCraftApp {
     pub(crate) ai: ai_ui::AiPane,
     /// The agent and model the AI panels use (Preferences-persisted; shared by every AI panel).
     pub ai_choice: ai_model::AiChoice,
+    /// The translation panel's state.
+    #[cfg(not(target_arch = "wasm32"))]
+    pub(crate) translate: translate_ui::TranslatePane,
     /// The side panel F4 reopens: the one open last.
     pub(crate) last_right: RightPanel,
     /// The right panel that was open when the user switched to Read mode, which starts with the
@@ -714,4 +721,18 @@ pub struct PdfCraftApp {
     pub pending_full_screen: Option<DocId>,
     /// An absolute GoToR target waiting for approval, before any target-file I/O (#1364).
     pub pending_remote_link: Option<PendingRemoteLink>,
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+pub(crate) use translate_ui::panel as translate_panel;
+
+/// The translation panel is desktop-only: on the web it is a stub.
+#[cfg(target_arch = "wasm32")]
+pub(crate) fn translate_panel(app: &mut PdfCraftApp, ui: &mut egui::Ui) {
+    let t = theme::Tokens::get(ui.ctx());
+    let (_, close) = panels::panel_header(ui, &t, "Translate", None);
+    ui.label(tl!("Translation is available in the desktop app."));
+    if close {
+        app.choose_right_panel(None);
+    }
 }

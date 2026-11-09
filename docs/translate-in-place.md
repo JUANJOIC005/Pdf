@@ -50,6 +50,6 @@ Styles are tried in three tiers: the run's own font resource, then the nearest s
 
 Design decisions: replace the text (not overlay it), save as a new copy, adaptive font size,
 retry what fails. Planned: a metrics harness over many PDFs, left/right/centre alignment per
-block, moving underlines and links with their text, the AI panel button.
+block, moving underlines and links with their text, (the panel button is done: see `translate-panel.md`).
 
 Revision history: 2026-11-09 — pilot added.

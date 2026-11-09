@@ -39,6 +39,8 @@ pub enum LeftPanel {
 pub enum RightPanel {
     /// Conversational AI assistant for the open document.
     Ai,
+    /// Translate pages into a new copy.
+    Translate,
     Comments,
     Bookmarks,
     Pages,

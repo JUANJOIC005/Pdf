@@ -82,6 +82,7 @@ mod stamps;
 mod text_select;
 mod theme;
 mod theme_button;
+mod translate_panel;
 mod trust_signer;
 mod ui;
 mod updates;

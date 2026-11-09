@@ -22,6 +22,7 @@
 - [Visualización de páginas](page-display.md): renderizado y presentación.
 - [Traducir una página en su sitio](translate-in-place.md): piloto de traducción con IA que conserva el formato.
 - [Panel de IA](ai-panel.md): disposición, decisiones y accesibilidad del chat sobre el PDF.
+- [Panel de traducción](translate-panel.md): traducir páginas a una copia nueva desde la barra lateral; flujo y decisiones.
 - [Paridad con la especificación PDF](pdf-spec-parity.md): cobertura del estándar.
 - [Publicación](releasing.md): compilación, paquetes y Releases.
 - [Hoja de ruta](roadmap.md): evolución prevista.
