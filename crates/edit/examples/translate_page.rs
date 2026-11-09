@@ -32,7 +32,8 @@ fn main() -> Result<(), String> {
     let mut doc = Document::open(Arc::new(bytes)).map_err(|e| format!("no se pudo abrir el PDF: {e}"))?;
     let blocks = text_blocks(&doc, page).map_err(|e| format!("no se pudo leer el texto de la página: {e}"))?;
     // Prose is sent as one flowing line: its breaks are only where the old width wrapped it. Code
-    // and lists keep the rows they had. A paragraph that mixes styles is sent with its runs marked.
+    // and lists keep the rows they had. A paragraph that mixes styles is sent with its runs marked, and hard breaks (list items,
+    // short sentence-ending rows) as `⟦br⟧`.
     let mut tagged = Vec::new();
     let mut sources: Vec<String> = Vec::new();
     for b in &blocks {
@@ -55,6 +56,8 @@ fn main() -> Result<(), String> {
         .iter()
         .zip(translated.iter().zip(&tagged))
         .map(|(b, (text, marked))| match marked {
+            // Only hard line breaks (`⟦br⟧`) to restore: the block keeps its own single style.
+            Some(m) if m.runs.is_empty() => BlockEdit::new(BlockKey::of(b), untag_runs(text, &m.runs).text),
             Some(m) => {
                 let done = untag_runs(text, &m.runs);
                 BlockEdit { key: BlockKey::of(b), text: done.text, style: done.exact, fallback: Some(done.standard) }

@@ -33,9 +33,66 @@ pub struct TaggedBlock {
 const OPEN: char = '⟦';
 const CLOSE: char = '⟧';
 
-/// `block` with its style runs marked, or `None` when it has a single style (nothing to keep).
-/// A line break between rows is kept only where the style changes size, a heading over its body;
-/// elsewhere it was the old width's wrap, and becomes a space.
+/// The literal mark for a hard line break inside the tagged text.
+const BREAK: &str = "⟦br⟧";
+
+/// A row boundary is a hard break when the next row opens with a list marker, or when the
+/// previous row ends a sentence and is clearly short (under 70 % of the longest row, in
+/// characters). A size change (decided by the caller) is a hard break too. Anything else was the
+/// old width's wrap.
+fn hard_breaks(editor_text: &str) -> Vec<bool> {
+    let rows: Vec<&str> = editor_text.split('\n').collect();
+    let widest = rows.iter().map(|r| r.trim().chars().count()).max().unwrap_or(0);
+    rows.windows(2)
+        .map(|pair| {
+            let (prev, next) = (pair[0].trim(), pair[1].trim());
+            let short = (prev.chars().count() as f64) < widest as f64 * 0.7;
+            starts_with_list_marker(next) || (short && prev.ends_with(['.', ':', ';', '?', '!']))
+        })
+        .collect()
+}
+
+/// Bullets and dashes followed by a space, `1.` / `12)` and `a)` at the start of a row.
+fn starts_with_list_marker(row: &str) -> bool {
+    let mut chars = row.chars();
+    let Some(first) = chars.next() else { return false };
+    if matches!(first, '•' | '·' | '◦' | '▪' | '‣' | '●' | '■' | '–' | '—' | '-' | '*') {
+        let rest = chars.as_str();
+        return rest.is_empty() || rest.starts_with(char::is_whitespace);
+    }
+    let digits = row.chars().take_while(char::is_ascii_digit).count();
+    if digits > 0 && digits <= 3 {
+        // ASCII digits are one byte each, so `digits` is a char boundary.
+        let after = row.get(digits..).unwrap_or("");
+        return after.starts_with(')') || after.strip_prefix('.').is_some_and(|t| t.starts_with(char::is_whitespace));
+    }
+    first.is_ascii_alphabetic() && chars.as_str().starts_with(')')
+}
+
+/// `gap` (the text between two spans of `editor_text`, `row` rows after its start) with each
+/// newline made a [`BREAK`] when it is hard or `force`d, and a space otherwise.
+fn render_gap(gap: &str, mut row: usize, hard: &[bool], force: bool) -> String {
+    let mut out = String::with_capacity(gap.len());
+    for c in gap.chars() {
+        if c == '\n' {
+            if force || hard.get(row).copied().unwrap_or(false) {
+                out.push_str(BREAK);
+            } else {
+                out.push(' ');
+            }
+            row = row.saturating_add(1);
+        } else {
+            out.push(c);
+        }
+    }
+    out
+}
+
+/// `block` with its style runs and hard line breaks marked. A single-style block without a hard
+/// break gives `None` (nothing to keep); with hard breaks it gives the text with `⟦br⟧` and no
+/// runs. A break between rows is kept (as `⟦br⟧`) where the style changes size, where the next
+/// row is a list item, or after a short sentence-ending row; elsewhere it was the old width's
+/// wrap and becomes a space.
 pub fn tag_runs(doc: &Document, page: usize, block: &TextBlock) -> Result<Option<TaggedBlock>, EditError> {
     let lines = text_lines(doc, page)?;
     let mut runs: Vec<RunStyle> = Vec::new();
@@ -52,17 +109,22 @@ pub fn tag_runs(doc: &Document, page: usize, block: &TextBlock) -> Result<Option
         };
         spans.push((range.clone(), id));
     }
+    let hard = hard_breaks(&block.editor_text);
     if runs.len() < 2 {
-        return Ok(None);
+        if !hard.iter().any(|h| *h) {
+            return Ok(None);
+        }
+        return Ok(Some(TaggedBlock { text: render_gap(&block.editor_text, 0, &hard, false), runs: Vec::new() }));
     }
     let mut text = String::new();
     let mut open: Option<usize> = None;
     let mut end = 0;
     for (range, id) in &spans {
         let (Some(piece), Some(gap)) = (block.editor_text.get(range.clone()), block.editor_text.get(end..range.start)) else { continue };
+        let row = block.editor_text.get(..end).map_or(0, |t| t.matches('\n').count());
         end = range.end;
         let previous = open;
-        let gap = if gap.contains('\n') && !size_changes(&runs, previous, *id) { gap.replace('\n', " ") } else { gap.to_string() };
+        let gap = render_gap(gap, row, &hard, size_changes(&runs, previous, *id));
         if open != Some(*id) {
             if let Some(n) = open {
                 text.push_str(&format!("{OPEN}/{}{CLOSE}", n + 1));
@@ -135,7 +197,12 @@ pub fn untag_runs(tagged: &str, runs: &[RunStyle]) -> Untagged {
         let whole = after.get(..close + CLOSE.len_utf8()).unwrap_or("");
         let inner = after.get(OPEN.len_utf8()..close).unwrap_or("");
         rest = after.get(close + CLOSE.len_utf8()..).unwrap_or("");
-        if let Some(number) = inner.strip_prefix('/') {
+        if inner == "br" {
+            // A hard line break; a leading or repeated one adds nothing.
+            if !text.is_empty() && !text.ends_with('\n') {
+                text.push('\n');
+            }
+        } else if let Some(number) = inner.strip_prefix('/') {
             if number.parse::<usize>().is_ok() {
                 flush(&mut current, &text, &mut stretches);
             } else {
@@ -149,7 +216,13 @@ pub fn untag_runs(tagged: &str, runs: &[RunStyle]) -> Untagged {
         }
     }
     text.push_str(rest);
+    // A trailing break is dropped; ranges that reached into it are clamped (and dropped if empty).
+    text.truncate(text.trim_end_matches('\n').len());
     flush(&mut current, &text, &mut stretches);
+    stretches.retain_mut(|(range, _)| {
+        range.end = range.end.min(text.len());
+        range.start < range.end
+    });
     let ranges = |standard: bool| BlockStyle {
         ranges: stretches
             .iter()
@@ -170,4 +243,34 @@ pub fn untag_runs(tagged: &str, runs: &[RunStyle]) -> Untagged {
         ..BlockStyle::default()
     };
     Untagged { exact: ranges(false), standard: ranges(true), text }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn list_items_are_hard_breaks_and_wrapped_prose_is_not() {
+        assert_eq!(hard_breaks("• Problem\n• Prioritize\n• Measure"), [true, true]);
+        assert_eq!(hard_breaks("1. One\n2) Two\na) Three"), [true, true]);
+        assert_eq!(hard_breaks("a long row of running text\nthat wraps on and on\nuntil it ends"), [false, false]);
+        // No space after the dash, a decimal and a word in brackets are not markers.
+        assert_eq!(hard_breaks("text here and there\n-5 degrees\n1.5 metres\nab) no"), [false, false, false]);
+    }
+
+    #[test]
+    fn a_short_sentence_end_breaks_only_when_the_row_is_short() {
+        assert_eq!(hard_breaks("A very long row of text ends here.\nShort.\nnext"), [false, true]);
+        assert_eq!(hard_breaks("A very long row of text ends here\nShort\nnext row"), [false, false]);
+        assert_eq!(hard_breaks(""), Vec::<bool>::new());
+        assert_eq!(hard_breaks("日本語。\n\n"), [false, false]);
+    }
+
+    #[test]
+    fn gaps_render_breaks_spaces_and_survive_out_of_range_rows() {
+        assert_eq!(render_gap("\n", 0, &[true], false), "⟦br⟧");
+        assert_eq!(render_gap("\n", 0, &[false], false), " ");
+        assert_eq!(render_gap("\n", 0, &[false], true), "⟦br⟧");
+        assert_eq!(render_gap(" \n\n é", 5, &[true], false), "    é");
+    }
 }

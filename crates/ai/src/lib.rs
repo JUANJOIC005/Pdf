@@ -175,7 +175,7 @@ pub fn translate_segments(provider: Provider, language: &str, segments: &[String
 fn translation_prompt(language: &str, segments: &[String]) -> String {
     let json = Value::Array(segments.iter().map(|s| Value::String(s.clone())).collect());
     format!(
-        "TAREA:\nTraduce al {language} cada texto del array JSON siguiente. Devuelve ÚNICAMENTE un array JSON de cadenas con exactamente {} elementos, en el mismo orden, sin texto antes ni después ni bloque de código. Conserva números, nombres propios, código, URLs y símbolos; mantén una longitud parecida al original. Un texto que no deba traducirse se devuelve igual. Si un texto lleva marcas de estilo ⟦n⟧…⟦/n⟧, devuélvelas intactas alrededor de la parte equivalente traducida (mismos números, sin añadir ni quitar marcas, aunque cambie el orden de las palabras) y conserva los saltos de línea \\n.\n\n--- INICIO DE LOS TEXTOS (JSON) ---\n{json}\n--- FIN DE LOS TEXTOS ---",
+        "TAREA:\nTraduce al {language} cada texto del array JSON siguiente. Devuelve ÚNICAMENTE un array JSON de cadenas con exactamente {} elementos, en el mismo orden, sin texto antes ni después ni bloque de código. Conserva números, nombres propios, código, URLs y símbolos; mantén una longitud parecida al original. Un texto que no deba traducirse se devuelve igual. Si un texto lleva marcas de estilo ⟦n⟧…⟦/n⟧, devuélvelas intactas alrededor de la parte equivalente traducida (mismos números, sin añadir ni quitar marcas, aunque cambie el orden de las palabras) y conserva los saltos de línea \\n. La marca ⟦br⟧ es un salto de línea obligatorio (elemento de lista, verso, dirección): déjala tal cual, una por cada una del original y en el mismo punto lógico entre las partes equivalentes; nunca la sustituyas por un espacio ni la traduzcas.\n\n--- INICIO DE LOS TEXTOS (JSON) ---\n{json}\n--- FIN DE LOS TEXTOS ---",
         segments.len()
     )
 }
@@ -298,6 +298,7 @@ mod tests {
     fn the_translation_prompt_carries_the_segments_as_data() {
         let prompt = translation_prompt("español", &["Hello \"world\"".into(), "Bye".into()]);
         assert!(prompt.contains("exactamente 2 elementos"));
+        assert!(prompt.contains("⟦br⟧"));
         assert!(prompt.contains("[\"Hello \\\"world\\\"\",\"Bye\"]"));
     }
 
