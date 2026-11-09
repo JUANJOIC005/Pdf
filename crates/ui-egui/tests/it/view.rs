@@ -1167,6 +1167,8 @@ fn always_use_my_default_zoom_and_page_layout_ignores_what_the_pdf_asks_for() {
     let open = |always: Option<&str>| {
         let mut app = PdfCraftApp::new();
         app.set_option("language", "en").unwrap();
+        // About the default view, not forced continuous scrolling (on by default).
+        app.force_continuous = false;
         if let Some(on) = always {
             app.set_option("always-default-view", on).unwrap();
         }
