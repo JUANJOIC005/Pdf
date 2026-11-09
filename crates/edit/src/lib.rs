@@ -58,6 +58,7 @@ pub mod text;
 pub use text::{
     BatchReport, BlockEdit, BlockKey, BlockOutcome, BlockStyle, LineEdit, MAX_FORM_DEPTH, MAX_FORM_VISITS, RangeStyle, ReadingBlocks, TextBlock, TextLine, TextSession, block_overlapping,
     clear_block, glyph_text_lines, reading_blocks, reading_blocks_checked, replace_block, replace_line, rewrite_block, rewrite_page_blocks, text_blocks, text_lines, RunStyle, TaggedBlock, Untagged, tag_runs, untag_runs,
+    PageReport, Progress, SkipReason, TranslateOptions, TranslationReport, Translator, looks_like_code, translate_document,
 };
 pub mod added;
 pub use added::{

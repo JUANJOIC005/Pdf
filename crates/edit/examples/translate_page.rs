@@ -2,16 +2,32 @@
 //!
 //! `cargo run -p pdfcraft-edit --example translate_page -- IN.pdf PAGE OUT.pdf [--lang español] [--provider codex|claude] [--mock]`
 //!
-//! Each paragraph of the page (`text_blocks`) goes to the model as one segment and its translation
-//! replaces the paragraph with `rewrite_page_blocks`, which finds each paragraph again by its key, keeps its font, colour and
-//! position, re-wraps it in the same frame and shrinks the size when the text doesn't fit. `--mock` skips the model and prefixes the text, to
+//! A thin wrapper over `translate_document`: the paragraphs of the page go to the model and their translation
+//! replaces them, keeping font, colour and position, re-wrapped in the same frame and shrunk when it doesn't fit. `--mock` skips the model and prefixes the text, to
 //! check the rewriting alone. The input file is never modified.
 
 use std::sync::Arc;
+use std::sync::atomic::AtomicBool;
 
 use pdfcraft_ai::Provider;
 use pdfcraft_cos::{Document, SaveOptions, write_full};
-use pdfcraft_edit::text::{BlockEdit, BlockKey, is_translatable, rewrite_page_blocks, tag_runs, text_blocks, untag_runs};
+use pdfcraft_edit::text::{TranslateOptions, Translator, translate_document};
+
+/// Sends the segments to the model, or just prefixes them with `--mock`.
+struct Ai {
+    provider: Provider,
+    mock: bool,
+}
+
+impl Translator for Ai {
+    fn translate(&self, language: &str, segments: &[String], _cancel: &AtomicBool) -> Result<Vec<String>, String> {
+        if self.mock {
+            Ok(segments.iter().map(|s| format!("[{language}] {s}")).collect())
+        } else {
+            pdfcraft_ai::translate_segments(self.provider, language, segments)
+        }
+    }
+}
 
 fn main() -> Result<(), String> {
     let mut args = std::env::args().skip(1);
@@ -30,69 +46,24 @@ fn main() -> Result<(), String> {
     }
     let bytes = std::fs::read(&input).map_err(|e| format!("no se pudo leer {input}: {e}"))?;
     let mut doc = Document::open(Arc::new(bytes)).map_err(|e| format!("no se pudo abrir el PDF: {e}"))?;
-    let blocks = text_blocks(&doc, page).map_err(|e| format!("no se pudo leer el texto de la página: {e}"))?;
-    // Prose is sent as one flowing line: its breaks are only where the old width wrapped it. Code
-    // and lists keep the rows they had. A paragraph that mixes styles is sent with its runs marked, and hard breaks (list items,
-    // short sentence-ending rows) as `⟦br⟧`.
-    let mut tagged = Vec::new();
-    let mut sources: Vec<String> = Vec::new();
-    for b in &blocks {
-        let code = looks_like_code(&b.text);
-        let marked = if code { None } else { tag_runs(&doc, page, b).map_err(|e| format!("no se pudieron leer los estilos: {e}"))? };
-        sources.push(match &marked {
-            Some(m) => m.text.clone(),
-            None if code => b.reflow_text.clone(),
-            None => b.text.clone(),
-        });
-        tagged.push(marked);
-    }
-    eprintln!("{} bloques de texto en la página {}", sources.len(), page + 1);
-    // Numbers, symbols and the like have no letters to translate: they never go to the model and
-    // their paragraphs stay as they are.
-    let wanted: Vec<usize> = (0..sources.len()).filter(|&i| blocks.get(i).is_some_and(|b| is_translatable(&b.text))).collect();
-    let to_send: Vec<String> = wanted.iter().filter_map(|&i| sources.get(i).cloned()).collect();
-    let done: Vec<String> = if mock {
-        to_send.iter().map(|s| format!("[{language}] {s}")).collect()
-    } else if to_send.is_empty() {
-        Vec::new()
-    } else {
-        pdfcraft_ai::translate_segments(provider, &language, &to_send)?
-    };
-    if done.len() != to_send.len() {
-        return Err(format!("la IA devolvió {} segmentos y se enviaron {}", done.len(), to_send.len()));
-    }
-    let mut translated: Vec<String> = blocks.iter().map(|b| b.text.clone()).collect();
-    for (&i, text) in wanted.iter().zip(done) {
-        if let Some(slot) = translated.get_mut(i) {
-            *slot = text;
+    let cancel = AtomicBool::new(false);
+    let report = translate_document(
+        &mut doc,
+        &[page],
+        &language,
+        &TranslateOptions::default(),
+        &Ai { provider, mock },
+        &mut |p| eprintln!("{p:?}"),
+        &cancel,
+    );
+    for p in &report.pages {
+        eprintln!("página {}: {p:?}", p.page + 1);
+        if let Some(e) = &p.error {
+            return Err(e.clone());
         }
-    }
-    let edits: Vec<BlockEdit> = blocks
-        .iter()
-        .zip(translated.iter().zip(&tagged))
-        .map(|(b, (text, marked))| match marked {
-            _ if !is_translatable(&b.text) => BlockEdit::new(BlockKey::of(b), b.text.clone()),
-            // Only hard line breaks (`⟦br⟧`) to restore: the block keeps its own single style.
-            Some(m) if m.runs.is_empty() => BlockEdit::new(BlockKey::of(b), untag_runs(text, &m.runs).text),
-            Some(m) => {
-                let done = untag_runs(text, &m.runs);
-                BlockEdit { key: BlockKey::of(b), text: done.text, style: done.exact, fallback: Some(done.standard) }
-            }
-            None => BlockEdit::new(BlockKey::of(b), text.clone()),
-        })
-        .collect();
-    let report = rewrite_page_blocks(&mut doc, page, &edits, 0.7).map_err(|e| format!("no se pudo reescribir la página: {e}"))?;
-    for (index, (block, outcome)) in blocks.iter().zip(&report.outcomes).enumerate() {
-        let shown: String = block.text.chars().take(40).collect();
-        eprintln!("  [{index}] {outcome:?} {shown:?}");
     }
     let out = write_full(&doc, &SaveOptions::default()).map_err(|e| format!("no se pudo guardar: {e}"))?;
     std::fs::write(&output, out).map_err(|e| format!("no se pudo escribir {output}: {e}"))?;
     eprintln!("escrito {output}");
     Ok(())
-}
-
-/// Rows of code or data (assignments, brackets, quotes) must keep their line breaks.
-fn looks_like_code(text: &str) -> bool {
-    text.chars().filter(|c| matches!(c, '=' | '[' | ']' | '{' | '}' | '(' | ')' | '"' | ';')).count() >= 4
 }

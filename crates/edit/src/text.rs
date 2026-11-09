@@ -36,10 +36,12 @@ mod fallback;
 mod interp;
 mod lines;
 mod rewrite;
+mod translate;
 
 use blocks::paragraph_separator;
 #[cfg(test)]
 use blocks::wrap;
+pub use translate::{PageReport, Progress, SkipReason, TranslateOptions, TranslationReport, Translator, looks_like_code, translate_document};
 pub use runs::{RunStyle, TaggedBlock, Untagged, tag_runs, untag_runs};
 pub use batch::{BatchReport, BlockEdit, BlockOutcome, is_translatable, rewrite_page_blocks};
 pub use blocks::{
