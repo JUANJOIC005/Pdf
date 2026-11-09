@@ -10,3 +10,7 @@
 - 2026-11-09: Motor `translate_copy` y herramienta `text_translate` (traducción de páginas a una copia) integrados desde `agent/p2e-engine-translate`.
 - 2026-11-09: Panel de traducción en la barra lateral (`crates/ui-egui/src/translate_ui.rs`, `RightPanel::Translate`): idioma, páginas, progreso con cancelar, abrir o guardar la copia; ver `docs/translate-panel.md`.
 - 2026-11-09: Versión 0.19.2 (paneles de IA y traducción).
+- 2026-11-09: Nuevo ajuste «Always open documents with continuous scrolling» (`force_continuous`): abre siempre en desplazamiento continuo, por encima de `/PageLayout` del PDF y de la última vista recordada; documentado en `docs/page-display.md`.
+- 2026-11-09: El desplazamiento continuo pasa a estar activado por defecto (`force_continuous`), para que los PDF con `/PageLayout /SinglePage` (cursos de AWS) no se abran página a página.
+- 2026-11-09: Los paneles de IA y traducción usan el primer agente instalado cuando el guardado o el predeterminado (Codex) no lo está (`ai_model::use_an_installed_agent`); antes fallaban sin avisar con solo Claude instalado.
+- 2026-11-09: Versión 0.19.3.

@@ -416,6 +416,10 @@ pub struct PdfCraftApp {
     /// Preferences: open every document at Default zoom and Default page display, whatever
     /// layout or zoom it asks for (#1618).
     pub always_default_view: bool,
+    /// Preferences: always open documents with continuous scrolling, whatever the PDF asks for
+    /// (`/PageLayout /SinglePage`) and whatever view was remembered for the file. It keeps the
+    /// layout (single or two-up) and only turns continuous scrolling on.
+    pub force_continuous: bool,
     /// Open documents' files, watched for changes on disk.
     #[cfg(not(target_arch = "wasm32"))]
     pub(crate) watch: file_watch::FileWatch,
