@@ -43,6 +43,7 @@ macro_rules! tl_ctx {
 mod ai_ui;
 pub mod canvas;
 mod chrome;
+pub mod markdown;
 mod image_engine;
 pub use combine_grid::ThumbState as CombineThumb;
 pub use combine_ui::{Columns as CombineColumns, CombineView, Lock as CombineLock, SortKey};
