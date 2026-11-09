@@ -873,13 +873,19 @@ impl Metrics {
             }
             // A CID /W leaves out takes /DW, and Skia (Chrome) leaves out every CID of that width: for
             // those, only the subset's program says whether the glyph is there.
+            let outlined = self.outlined_cids.get(cid as usize / 64).is_some_and(|w| (*w >> (cid % 64)) & 1 == 1);
+            // A readable subset program is the authority: a width in /W says nothing about the glyph
+            // (a subsetter empties the glyphs it drops but keeps their widths), so a letter such as
+            // "ñ" would be written as an empty box. Blank glyphs (spaces) are legitimately empty.
+            if self.subset && !self.outlined_cids.is_empty() {
+                return outlined || self.unicode.text(code).is_some_and(|t| !t.is_empty() && t.chars().all(char::is_whitespace));
+            }
             return self.cid_widths.contains_key(&cid)
                 || self.cid_ranges.find(cid).is_some()
                 || !self.subset
-                || self.outlined_cids.get(cid as usize / 64).is_some_and(|w| (*w >> (cid % 64)) & 1 == 1)
                 // No readable TrueType program to ask (e.g. CFF or missing): an explicit /DW
                 // still says /W may leave out glyphs of that width (#1443).
-                || (self.outlined_cids.is_empty() && self.explicit_default);
+                || self.explicit_default;
         }
         match code.checked_sub(self.first).and_then(|i| self.widths.get(i as usize)) {
             Some(w) => *w > 0.0 || code == 32,
