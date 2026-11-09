@@ -795,3 +795,44 @@ fn low_codes_resolve_to_the_covering_range() {
     assert_eq!(covered, [5, 6, 7, 100, 101]);
     assert_eq!((u.covering(0xFFFF).is_some(), u.covering(0x1_0001).is_some(), u.covering(0x1_0002).is_none()), (true, true, true));
 }
+
+/// A subset keeps the widths of the glyphs it dropped: a letter whose glyph is empty in the embedded
+/// program must not be written (it would show as an empty box), however `/W` lists it.
+#[test]
+fn composite_subset_letter_without_an_outline_is_not_encoded() {
+    use skrifa::MetadataProvider as _;
+    let program = include_bytes!("../../../../assets/fonts/Inter-Regular.ttf");
+    let face = skrifa::FontRef::new(program).unwrap();
+    let gid = |c: char| face.charmap().map(c).unwrap().to_u32() as u16;
+    // CID 5 shows "n" (a real glyph), CID 6 shows "ñ" but points at the empty space glyph.
+    let mut map = vec![0u8; 14];
+    map[10..12].copy_from_slice(&gid('n').to_be_bytes());
+    map[12..14].copy_from_slice(&gid(' ').to_be_bytes());
+    let mut doc = Document::new_empty();
+    let cmap = b"/CIDInit /ProcSet findresource begin 1 begincodespacerange <0000> <FFFF> endcodespacerange \
+            1 beginbfrange <0005> <0006> [<006E> <00F1>] endbfrange end";
+    let tu = doc.add(Object::Stream(Stream::from_raw(Dict::new(), cmap.to_vec())));
+    let file = doc.add(Object::Stream(Stream::flate(Dict::new(), program)));
+    let to_gid = doc.add(Object::Stream(Stream::from_raw(Dict::new(), map)));
+    let mut descriptor = Dict::new();
+    descriptor.set(b"FontFile2".to_vec(), Object::Ref(file));
+    let mut desc = Dict::new();
+    desc.set(b"Subtype".to_vec(), Object::name("CIDFontType2"));
+    desc.set(b"FontDescriptor".to_vec(), Object::Dict(descriptor));
+    desc.set(b"CIDToGIDMap".to_vec(), Object::Ref(to_gid));
+    desc.set(b"W".to_vec(), Object::Array(vec![Object::Int(5), Object::Array(vec![Object::Int(556), Object::Int(556)])]));
+    let f = font(
+        &mut doc,
+        vec![
+            ("Subtype", Object::name("Type0")),
+            ("BaseFont", Object::name("ABCDEF+DroidSansFallback")),
+            ("Encoding", Object::name("Identity-H")),
+            ("DescendantFonts", Object::Array(vec![Object::Dict(desc)])),
+            ("ToUnicode", Object::Ref(tu)),
+        ],
+    );
+    let m = Metrics::from_dict(&doc, &f);
+    assert!(m.subset);
+    assert_eq!(m.encode("n").as_deref(), Some(&[0, 5][..]));
+    assert_eq!(m.encode("ñ"), None, "its glyph is empty in the embedded program");
+}
