@@ -98,6 +98,9 @@ impl PdfCraftApp {
             "highlight_fields": self.view_defaults.highlight_fields,
             "units": self.units,
             "language": self.language,
+            "ai_provider": self.ai_choice.provider.id(),
+            "ai_model_claude": ai_model::model_to_json(&self.ai_choice.model_claude),
+            "ai_model_codex": ai_model::model_to_json(&self.ai_choice.model_codex),
             "reading_colors": self.reading_colors,
             // Null follows the system's text scaling.
             "ui_scale": self.ui_scale,
@@ -305,6 +308,7 @@ impl PdfCraftApp {
         if let Some(language) = v["language"].as_str().and_then(i18n::normalize_pref) {
             self.language = language.to_string();
         }
+        self.ai_choice.restore(v);
         if let Some(on) = v["flatten_fill_sign"].as_bool() {
             self.flatten_fill_sign_on_save = on;
         }

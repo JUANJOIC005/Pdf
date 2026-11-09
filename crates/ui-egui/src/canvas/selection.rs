@@ -82,6 +82,11 @@ impl DocView {
     }
 
     /// Selected text, if any (⌘C).
+    /// Whether some text is selected (cheaper than [`Self::selected_text`], which builds it).
+    pub(crate) fn has_text_selection(&self) -> bool {
+        self.all_text || self.selection.is_some()
+    }
+
     /// The selected text: of the pages read so far, after Select All of the document (Copy reads
     /// the others, [`DocView::pages_without_text`]).
     pub fn selected_text(&self) -> Option<String> {

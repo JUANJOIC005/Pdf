@@ -272,27 +272,33 @@ fn table_ui(ui: &mut Ui, cx: &mut Cx<'_>, align: &[ColAlign], head: &[Vec<Inline
     }
     let base = base_style(ui, cx.t);
     let t = cx.t;
-    ScrollArea::horizontal().id_salt(id.with("table")).auto_shrink([false, true]).show(ui, |ui| {
-        egui::Grid::new(id.with("grid")).num_columns(cols).striped(true).spacing(vec2(16.0, 6.0)).show(ui, |ui| {
-            let mut row = |ui: &mut Ui, cells: &[Vec<Inline>], style: Style| {
-                for c in 0..cols {
-                    let a = match align.get(c) {
-                        Some(ColAlign::Center) => Align::Center,
-                        Some(ColAlign::Right) => Align::Max,
-                        _ => Align::Min,
+    egui::Frame::NONE
+        .stroke(egui::Stroke::new(1.0, t.border))
+        .corner_radius(egui::CornerRadius::same(8))
+        .inner_margin(egui::Margin::symmetric(10, 6))
+        .show(ui, |ui| {
+            ScrollArea::horizontal().id_salt(id.with("table")).auto_shrink([false, true]).show(ui, |ui| {
+                egui::Grid::new(id.with("grid")).num_columns(cols).striped(false).spacing(vec2(18.0, 8.0)).show(ui, |ui| {
+                    let mut row = |ui: &mut Ui, cells: &[Vec<Inline>], style: Style| {
+                        for c in 0..cols {
+                            let a = match align.get(c) {
+                                Some(ColAlign::Center) => Align::Center,
+                                Some(ColAlign::Right) => Align::Max,
+                                _ => Align::Min,
+                            };
+                            let empty = Vec::new();
+                            let cell = cells.get(c).unwrap_or(&empty);
+                            ui.with_layout(Layout::top_down(a), |ui| inline_ui(ui, cx, cell, style, false));
+                        }
+                        ui.end_row();
                     };
-                    let empty = Vec::new();
-                    let cell = cells.get(c).unwrap_or(&empty);
-                    ui.with_layout(Layout::top_down(a), |ui| inline_ui(ui, cx, cell, style, false));
-                }
-                ui.end_row();
-            };
-            row(ui, head, Style { strong: true, color: t.text, ..base });
-            for r in rows {
-                row(ui, r, base);
-            }
+                    row(ui, head, Style { strong: true, color: t.text, ..base });
+                    for r in rows {
+                        row(ui, r, base);
+                    }
+                });
+            });
         });
-    });
 }
 
 /// Replaces a few common LaTeX commands and `^`/`_` digits with Unicode. This is NOT LaTeX: no

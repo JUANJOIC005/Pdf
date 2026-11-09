@@ -41,6 +41,8 @@ macro_rules! tl_ctx {
     };
 }
 mod ai_ui;
+pub mod ai_model;
+pub use ai_ui::{ChatBackend, PdfAiBackend};
 pub mod canvas;
 mod chrome;
 pub mod markdown;
@@ -289,8 +291,10 @@ pub struct PdfCraftApp {
     pub left: LeftPanel,
     pub left_open: bool,
     pub right: Option<RightPanel>,
-    /// This fork's local MarkItDown reading and translation assistant.
+    /// The AI assistant panel's chat state.
     pub(crate) ai: ai_ui::AiPane,
+    /// The agent and model the AI panels use (Preferences-persisted; shared by every AI panel).
+    pub ai_choice: ai_model::AiChoice,
     /// The side panel F4 reopens: the one open last.
     pub(crate) last_right: RightPanel,
     /// The right panel that was open when the user switched to Read mode, which starts with the
