@@ -35,6 +35,7 @@ mod redact;
 mod signing;
 mod text_cache;
 mod tools;
+mod translate;
 
 use std::collections::{HashMap, HashSet};
 use std::path::{Path, PathBuf};
@@ -88,6 +89,8 @@ pub struct Automation {
     root: Option<PathBuf>,
     /// The read and write folders of `--automation-read-root` / `--automation-write-root`.
     roots: Option<Arc<file_access::AutomationRoots>>,
+    /// May `text_translate` call the codex or claude agents? Off unless the host asks for it.
+    allow_ai: bool,
     /// Synchronous renderers, rebuilt when a document's working bytes change.
     renderers: HashMap<DocId, (Arc<Vec<u8>>, PageRenderer)>,
     /// Extracted page text, under one memory budget across all open documents.
@@ -115,6 +118,7 @@ impl Automation {
             session: Session::new(),
             root: None,
             roots: None,
+            allow_ai: false,
             renderers: HashMap::new(),
             texts: TextCache::default(),
             listed: HashMap::new(),
@@ -139,6 +143,13 @@ impl Automation {
     /// are set.
     pub fn with_automation_roots(mut self, roots: Option<Arc<file_access::AutomationRoots>>) -> Self {
         self.roots = roots;
+        self
+    }
+
+    /// Let `text_translate` use the `codex` and `claude` providers, which send the page text to an
+    /// external agent. Off by default; the offline `echo` provider never needs it.
+    pub fn with_allow_ai(mut self, allow: bool) -> Self {
+        self.allow_ai = allow;
         self
     }
 
