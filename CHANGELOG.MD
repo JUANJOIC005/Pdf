@@ -5,3 +5,4 @@
 
 - 2026-11-08: La Release Linux incorpora las traducciones de `craft-i18n` y publica el DEB aunque la cuota de artifacts temporales esté llena.
 - 2026-11-08: Los paquetes de Pdf usan el logotipo de Adobe Acrobat solicitado para el lanzador y la ventana.
+- 2026-11-09: Piloto de traducción en el sitio (`crates/edit` `rewrite_page_blocks`, `tag_runs`/`untag_runs`, ejemplo `translate_page`; `crates/ai` `translate_segments`); `has_glyph` comprueba la fuente CID subset embebida y los índices con puntos guía ya no se fusionan; ver `docs/translate-in-place.md`.

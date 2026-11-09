@@ -20,6 +20,7 @@
 - [Localización](localization.md): sistema de traducciones.
 - [MCP](mcp.md): integración MCP.
 - [Visualización de páginas](page-display.md): renderizado y presentación.
+- [Traducir una página en su sitio](translate-in-place.md): piloto de traducción con IA que conserva el formato.
 - [Paridad con la especificación PDF](pdf-spec-parity.md): cobertura del estándar.
 - [Publicación](releasing.md): compilación, paquetes y Releases.
 - [Hoja de ruta](roadmap.md): evolución prevista.
