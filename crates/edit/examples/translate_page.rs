@@ -11,7 +11,7 @@ use std::sync::Arc;
 
 use pdfcraft_ai::Provider;
 use pdfcraft_cos::{Document, SaveOptions, write_full};
-use pdfcraft_edit::text::{BlockEdit, BlockKey, rewrite_page_blocks, tag_runs, text_blocks, untag_runs};
+use pdfcraft_edit::text::{BlockEdit, BlockKey, is_translatable, rewrite_page_blocks, tag_runs, text_blocks, untag_runs};
 
 fn main() -> Result<(), String> {
     let mut args = std::env::args().skip(1);
@@ -46,15 +46,31 @@ fn main() -> Result<(), String> {
         tagged.push(marked);
     }
     eprintln!("{} bloques de texto en la página {}", sources.len(), page + 1);
-    let translated: Vec<String> = if mock {
-        sources.iter().map(|s| format!("[{language}] {s}")).collect()
+    // Numbers, symbols and the like have no letters to translate: they never go to the model and
+    // their paragraphs stay as they are.
+    let wanted: Vec<usize> = (0..sources.len()).filter(|&i| sources.get(i).is_some_and(|s| is_translatable(s))).collect();
+    let to_send: Vec<String> = wanted.iter().filter_map(|&i| sources.get(i).cloned()).collect();
+    let done: Vec<String> = if mock {
+        to_send.iter().map(|s| format!("[{language}] {s}")).collect()
+    } else if to_send.is_empty() {
+        Vec::new()
     } else {
-        pdfcraft_ai::translate_segments(provider, &language, &sources)?
+        pdfcraft_ai::translate_segments(provider, &language, &to_send)?
     };
+    if done.len() != to_send.len() {
+        return Err(format!("la IA devolvió {} segmentos y se enviaron {}", done.len(), to_send.len()));
+    }
+    let mut translated: Vec<String> = blocks.iter().map(|b| b.text.clone()).collect();
+    for (&i, text) in wanted.iter().zip(done) {
+        if let Some(slot) = translated.get_mut(i) {
+            *slot = text;
+        }
+    }
     let edits: Vec<BlockEdit> = blocks
         .iter()
         .zip(translated.iter().zip(&tagged))
         .map(|(b, (text, marked))| match marked {
+            _ if !is_translatable(&b.text) => BlockEdit::new(BlockKey::of(b), b.text.clone()),
             Some(m) => {
                 let done = untag_runs(text, &m.runs);
                 BlockEdit { key: BlockKey::of(b), text: done.text, style: done.exact, fallback: Some(done.standard) }

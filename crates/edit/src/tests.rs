@@ -10799,6 +10799,67 @@ fn style_marks_round_trip_into_ranges_and_bad_marks_are_dropped() {
     assert_eq!(text::untag_runs("⟦9⟧x⟦/9⟧", &runs).text, "x");
 }
 
+const LONG_WORD: &str = "Supercalifragilisticexpialidocious";
+
+/// A word that can't wrap grows to the right, so a paragraph near the page edge must shrink (or
+/// say it overflows) rather than run off the page.
+#[test]
+fn a_batch_keeps_the_new_text_inside_the_right_edge_of_the_page() {
+    let mut doc = text_page("BT /F1 12 Tf 500 700 Td (Hi) Tj ET");
+    let edits = batch_edits(&doc, |_| LONG_WORD.to_string());
+    let report = text::rewrite_page_blocks(&mut doc, 0, &edits, 0.7).unwrap();
+    match &report.outcomes[..] {
+        [text::BlockOutcome::Applied { scale, overflow, .. }] => assert!(*scale < 1.0 && *overflow, "{report:?}"),
+        other => panic!("{other:?}"),
+    }
+    let blocks = text::text_blocks(&doc, 0).unwrap();
+    assert_eq!(blocks.len(), 1);
+    assert!(blocks[0].text.contains(LONG_WORD));
+}
+
+/// The new text may not cover the paragraph beside it.
+#[test]
+fn a_batch_does_not_let_a_paragraph_cover_its_neighbour() {
+    let mut doc = text_page("BT /F1 12 Tf 72 700 Td (Hi) Tj ET BT /F1 12 Tf 230 700 Td (Other) Tj ET");
+    let before = text::text_blocks(&doc, 0).unwrap();
+    assert_eq!(before.len(), 2);
+    let key = text::BlockKey::of(before.iter().min_by(|a, b| a.rect[0].total_cmp(&b.rect[0])).unwrap());
+    let report = text::rewrite_page_blocks(&mut doc, 0, &[text::BlockEdit::new(key, LONG_WORD)], 0.7).unwrap();
+    match &report.outcomes[..] {
+        [text::BlockOutcome::Applied { scale, overflow, .. }] => assert!(*scale < 1.0 || *overflow, "{report:?}"),
+        other => panic!("{other:?}"),
+    }
+    // The shrunk text stops short of the neighbour, or the overflow is reported.
+    let blocks = text::text_blocks(&doc, 0).unwrap();
+    let (mine, other) = (&blocks[0], &blocks[1]);
+    let (mine, other) = if mine.rect[0] < other.rect[0] { (mine, other) } else { (other, mine) };
+    if let text::BlockOutcome::Applied { overflow: false, .. } = report.outcomes[0] {
+        assert!(mine.rect[2] <= other.rect[0] + 1.0, "{:?} covers {:?}", mine.rect, other.rect);
+    }
+}
+
+#[test]
+fn a_batch_leaves_paragraphs_with_nothing_to_translate_alone() {
+    for s in ["4", "© 2025", "→", "  ", "", "1.2 – 3,4 %"] {
+        assert!(!text::is_translatable(s), "{s:?}");
+    }
+    for s in ["a", "Año 2025", "日本語", "Ünï"] {
+        assert!(text::is_translatable(s), "{s:?}");
+    }
+    let mut doc = text_page("BT /F1 12 Tf 72 700 Td (4) Tj ET BT /F1 12 Tf 72 600 Td (Chapter) Tj ET");
+    let before = page_text(&doc);
+    let mut edits = batch_edits(&doc, |t| t.to_string());
+    for e in &mut edits {
+        e.text = if e.text == "4" { "5".into() } else { "7".into() };
+    }
+    let report = text::rewrite_page_blocks(&mut doc, 0, &edits, 0.7).unwrap();
+    // "4" -> "5": no letters either side, left alone. "Chapter" -> "7": its word would vanish.
+    let by_text = |t: &str| edits.iter().position(|e| e.text == t).unwrap();
+    assert_eq!(report.outcomes[by_text("5")], text::BlockOutcome::Unchanged);
+    assert!(matches!(&report.outcomes[by_text("7")], text::BlockOutcome::Lost { .. }), "{report:?}");
+    assert_eq!(page_text(&doc), before);
+}
+
 #[test]
 fn a_paragraph_with_two_styles_is_tagged_and_one_with_a_single_style_is_not() {
     let one = text_page("BT /F1 12 Tf 72 700 Td (just one style) Tj ET");
