@@ -45,28 +45,12 @@ fn hard_breaks(editor_text: &str) -> Vec<bool> {
     let widest = rows.iter().map(|r| r.trim().chars().count()).max().unwrap_or(0);
     rows.windows(2)
         .map(|pair| {
-            let (prev, next) = (pair[0].trim(), pair[1].trim());
+            let [prev, next] = pair else { return false };
+            let (prev, next) = (prev.trim(), next.trim());
             let short = (prev.chars().count() as f64) < widest as f64 * 0.7;
-            starts_with_list_marker(next) || (short && prev.ends_with(['.', ':', ';', '?', '!']))
+            super::regions::opens_with_marker(next) || (short && prev.ends_with(['.', ':', ';', '?', '!']))
         })
         .collect()
-}
-
-/// Bullets and dashes followed by a space, `1.` / `12)` and `a)` at the start of a row.
-fn starts_with_list_marker(row: &str) -> bool {
-    let mut chars = row.chars();
-    let Some(first) = chars.next() else { return false };
-    if matches!(first, '•' | '·' | '◦' | '▪' | '‣' | '●' | '■' | '–' | '—' | '-' | '*') {
-        let rest = chars.as_str();
-        return rest.is_empty() || rest.starts_with(char::is_whitespace);
-    }
-    let digits = row.chars().take_while(char::is_ascii_digit).count();
-    if digits > 0 && digits <= 3 {
-        // ASCII digits are one byte each, so `digits` is a char boundary.
-        let after = row.get(digits..).unwrap_or("");
-        return after.starts_with(')') || after.strip_prefix('.').is_some_and(|t| t.starts_with(char::is_whitespace));
-    }
-    first.is_ascii_alphabetic() && chars.as_str().starts_with(')')
 }
 
 /// `gap` (the text between two spans of `editor_text`, `row` rows after its start) with each
@@ -254,8 +238,9 @@ mod tests {
         assert_eq!(hard_breaks("• Problem\n• Prioritize\n• Measure"), [true, true]);
         assert_eq!(hard_breaks("1. One\n2) Two\na) Three"), [true, true]);
         assert_eq!(hard_breaks("a long row of running text\nthat wraps on and on\nuntil it ends"), [false, false]);
-        // No space after the dash, a decimal and a word in brackets are not markers.
-        assert_eq!(hard_breaks("text here and there\n-5 degrees\n1.5 metres\nab) no"), [false, false, false]);
+        // A decimal and a word in brackets are not markers. A leading dash is taken as a bullet even
+        // before a digit ("-5"): one break too many is safer than a list flattened into a line.
+        assert_eq!(hard_breaks("text here and there\n-5 degrees\n1.5 metres\nab) no"), [true, false, false]);
     }
 
     #[test]

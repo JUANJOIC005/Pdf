@@ -10895,11 +10895,12 @@ fn a_batch_leaves_paragraphs_with_nothing_to_translate_alone() {
         e.text = if e.text == "4" { "5".into() } else { "7".into() };
     }
     let report = text::rewrite_page_blocks(&mut doc, 0, &edits, 0.7).unwrap();
-    // "4" -> "5": no letters either side, left alone. "Chapter" -> "7": its word would vanish.
+    // "4" -> "5": a number for a number is a real edit. "Chapter" -> "7": its word would vanish.
     let by_text = |t: &str| edits.iter().position(|e| e.text == t).unwrap();
-    assert_eq!(report.outcomes[by_text("5")], text::BlockOutcome::Unchanged);
+    assert!(matches!(&report.outcomes[by_text("5")], text::BlockOutcome::Applied { .. }), "{report:?}");
     assert!(matches!(&report.outcomes[by_text("7")], text::BlockOutcome::Lost { .. }), "{report:?}");
-    assert_eq!(page_text(&doc), before);
+    let now = page_text(&doc);
+    assert!(now.contains('5') && !now.contains('4') && now.contains("Chapter") && !now.contains('7'), "{before:?} became {now:?}");
 }
 
 #[test]

@@ -226,9 +226,9 @@ fn same_style(a: &TextLine, b: &TextLine) -> bool {
 /// Does a row open with a list marker? A bullet or a dash, or an ordered marker — digits (or a
 /// single letter) followed by `.` or `)` and then a space or the row's end, so prose such as
 /// `1.5` or `Dr. Smith` is left alone.
-fn opens_with_marker(text: &str) -> bool {
+pub(in crate::text) fn opens_with_marker(text: &str) -> bool {
     let Some(first) = text.chars().next() else { return false };
-    if matches!(first, '•' | '◦' | '▪' | '‣' | '⁃' | '*' | '-' | '–' | '—') {
+    if matches!(first, '•' | '·' | '◦' | '▪' | '●' | '■' | '‣' | '⁃' | '*' | '-' | '–' | '—') {
         return true;
     }
     if !first.is_ascii_digit() && !first.is_ascii_alphabetic() {

@@ -113,12 +113,10 @@ fn try_edit(doc: &mut Document, page: usize, edit: &BlockEdit, others: &[&BlockK
     if edit.text.trim().is_empty() || edit.text == block.text || edit.text == block.reflow_text {
         return Ok(Attempt::Done(BlockOutcome::Unchanged));
     }
-    if !is_translatable(&edit.text) {
-        // Nothing to translate in the new text. When the old text had words, they would vanish.
-        if is_translatable(&block.text) {
-            return Ok(Attempt::Done(BlockOutcome::Lost { missing: block.text.chars().filter(|c| c.is_alphabetic()).collect() }));
-        }
-        return Ok(Attempt::Done(BlockOutcome::Unchanged));
+    // Nothing alphabetic in the new text while the old one had words: they would vanish. A number
+    // changed for another ("2024" to "2025", a localised "1.234,56") is a legitimate edit.
+    if !is_translatable(&edit.text) && is_translatable(&block.text) {
+        return Ok(Attempt::Done(BlockOutcome::Lost { missing: block.text.chars().filter(|c| c.is_alphabetic()).collect() }));
     }
     // The visible page area; without a readable page there is no right edge to hold to.
     let crop = pdfcraft_model::pages(doc).get(page).map(|p| p.crop(doc));
