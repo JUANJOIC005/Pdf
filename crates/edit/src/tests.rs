@@ -10920,3 +10920,65 @@ fn a_paragraph_with_two_styles_is_tagged_and_one_with_a_single_style_is_not() {
         }
     }
 }
+
+fn tagged_blocks(doc: &Document) -> Vec<Option<text::TaggedBlock>> {
+    text::text_blocks(doc, 0).unwrap().iter().map(|b| text::tag_runs(doc, 0, b).unwrap()).collect()
+}
+
+fn plain_run(resource: &str, size: f64) -> text::RunStyle {
+    text::RunStyle { resource: resource.into(), size, color: [0.0; 3], bold: false, italic: false, family: added::Family::Helvetica }
+}
+
+#[test]
+fn a_wrapped_paragraph_has_no_hard_breaks() {
+    let page = text_page("BT /F1 12 Tf 14 TL 72 700 Td (The quick brown fox jumps over the lazy dog and) Tj T* (keeps running across the whole field until) Tj T* (it finally stops.) Tj ET");
+    assert!(tagged_blocks(&page).iter().all(Option::is_none));
+}
+
+#[test]
+fn a_short_sentence_row_is_a_hard_break_but_a_short_row_without_a_stop_is_not() {
+    let page = text_page("BT /F1 12 Tf 14 TL 72 700 Td (A long first row of ordinary running text here.) Tj T* (Short end.) Tj T* (Then another long row of running text goes on) Tj ET");
+    let all = tagged_blocks(&page);
+    let tagged = all.iter().flatten().next().expect("break after the short row");
+    assert_eq!(tagged.text.matches("⟦br⟧").count(), 1, "{:?}", tagged.text);
+    let page = text_page("BT /F1 12 Tf 14 TL 72 700 Td (A long first row of ordinary running text here.) Tj T* (Short) Tj T* (Then another long row of running text goes on) Tj ET");
+    assert!(tagged_blocks(&page).iter().all(Option::is_none));
+}
+
+#[test]
+fn untag_turns_breaks_into_newlines_and_places_ranges_after_them() {
+    let runs = vec![plain_run("F1", 12.0), plain_run("F2", 20.0)];
+    let done = text::untag_runs("Año⟦br⟧⟦2⟧ñandú⟦/2⟧⟦br⟧fin", &runs);
+    assert_eq!(done.text, "Año\nñandú\nfin");
+    assert_eq!(done.exact.ranges.len(), 1);
+    assert_eq!(&done.text[done.exact.ranges[0].range.clone()], "ñandú");
+}
+
+#[test]
+fn untag_survives_hostile_breaks() {
+    let runs = vec![plain_run("F1", 12.0)];
+    for input in ["", "⟦br⟧", "⟦br⟧⟦br⟧⟦br⟧", "a⟦br⟧⟦br⟧b", "⟦1⟧a⟦br⟧", "⟦1⟧⟦br⟧⟦/1⟧", "⟦1⟧a⟦br⟧b", "⟦1⟧a⟦1⟧⟦br⟧b⟦/1⟧⟦/1⟧", "⟦br", "é⟦br⟧⟦1⟧日本⟦br⟧語⟦/1⟧⟦br⟧", "⟦BR⟧⟦ br ⟧"] {
+        let done = text::untag_runs(input, &runs);
+        assert!(!done.text.ends_with('\n') && !done.text.starts_with('\n'), "{input:?} -> {:?}", done.text);
+        assert!(!done.text.contains("\n\n"), "{input:?}");
+        for r in done.exact.ranges.iter().chain(&done.standard.ranges) {
+            assert!(r.range.start < r.range.end && r.range.end <= done.text.len(), "{input:?}");
+            assert!(done.text.is_char_boundary(r.range.start) && done.text.is_char_boundary(r.range.end), "{input:?}");
+        }
+    }
+}
+
+
+#[test]
+fn breaks_survive_mixed_styles_and_the_ranges_stay_inside_the_text() {
+    let page = text_page("BT /F1 20 Tf 72 700 Td (Big title) Tj ET BT /F1 12 Tf 14 TL 72 680 Td (A body row that is quite long indeed.) Tj T* (Short end.) Tj T* (Then more running text follows here) Tj ET");
+    let all = tagged_blocks(&page);
+    let tagged = all.iter().flatten().find(|t| t.runs.len() == 2).expect("two runs");
+    assert!(tagged.text.matches("⟦br⟧").count() >= 2, "{:?}", tagged.text);
+    let done = text::untag_runs(&tagged.text, &tagged.runs);
+    assert!(done.text.contains('\n') && !done.text.contains('⟦'), "{:?}", done.text);
+    for r in done.exact.ranges.iter().chain(&done.standard.ranges) {
+        assert!(r.range.start < r.range.end && r.range.end <= done.text.len());
+        assert!(done.text.is_char_boundary(r.range.start) && done.text.is_char_boundary(r.range.end));
+    }
+}
