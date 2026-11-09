@@ -8669,6 +8669,48 @@ fn reading_keeps_dotted_leader_entries_whole_and_in_order() {
     );
 }
 
+/// Contents entries (Word tab leaders) and the body paragraph under them, at a tight leading.
+fn leader_entries_page() -> Document {
+    let mut content = String::new();
+    let dots = ".".repeat(108);
+    // Title and dots are one run, as Word writes them; the page number follows the dots closely,
+    // so the entry reads as one row.
+    for (title, page, y) in [("Chapter one", "3", 700), ("Chapter two", "9", 686), ("Chapter three", "14", 672), ("Chapter four", "21", 658)] {
+        content.push_str(&format!(
+            "BT /F1 12 Tf 72 {y} Td ({title} {dots}) Tj ET \
+             BT /F1 12 Tf 510 {y} Td ({page}) Tj ET\n"
+        ));
+    }
+    content.push_str("BT /F1 12 Tf 72 644 Td (Ordinary body text starts here.) Tj ET BT /F1 12 Tf 72 630 Td (Still the same paragraph.) Tj ET");
+    text_page(&content)
+}
+
+#[test]
+fn editing_blocks_keep_contents_entries_apart() {
+    let blocks = text::text_blocks(&leader_entries_page(), 0).unwrap();
+    let texts: Vec<_> = blocks.iter().map(|b| b.text.as_str()).collect();
+    for title in ["Chapter one", "Chapter two", "Chapter three", "Chapter four"] {
+        let mine: Vec<_> = blocks.iter().filter(|b| b.text.contains(title)).collect();
+        assert_eq!(mine.len(), 1, "{title}: {texts:?}");
+        let text = &mine[0].text;
+        // One entry per block: no other title, no body text, and its own page number.
+        assert_eq!(["Chapter", "Ordinary", "Still"].iter().map(|w| text.matches(w).count()).sum::<usize>(), 1, "{text:?}");
+    }
+    let body: Vec<_> = blocks.iter().filter(|b| b.text.contains("Ordinary")).collect();
+    assert_eq!(body.len(), 1, "{texts:?}");
+    assert_eq!(body[0].text, "Ordinary body text starts here. Still the same paragraph.");
+    assert!(blocks.iter().filter(|b| b.text.contains("..")).all(|b| b.text.trim_end().chars().last().is_some_and(|c| c.is_ascii_digit())), "{texts:?}");
+}
+
+#[test]
+fn editing_blocks_keep_a_plain_paragraph_whole() {
+    let content = "BT /F1 12 Tf 72 700 Td (First line of a paragraph) Tj ET BT /F1 12 Tf 72 686 Td (second line of it) Tj ET \
+                   BT /F1 12 Tf 72 672 Td (and a third one 2024.) Tj ET";
+    let blocks = text::text_blocks(&text_page(content), 0).unwrap();
+    assert_eq!(blocks.len(), 1);
+    assert_eq!(blocks[0].rows.len(), 3);
+}
+
 #[cfg(test)]
 mod proptests {
     use super::*;
