@@ -28,6 +28,8 @@ pub use fallback::strip_subset_tag;
 use regions::{alignment_frame, group_blocks, is_centred, rewrite_styled_block};
 pub use session::TextSession;
 
+mod batch;
+mod runs;
 mod blocks;
 mod editor;
 mod fallback;
@@ -38,6 +40,8 @@ mod rewrite;
 use blocks::paragraph_separator;
 #[cfg(test)]
 use blocks::wrap;
+pub use runs::{RunStyle, TaggedBlock, Untagged, tag_runs, untag_runs};
+pub use batch::{BatchReport, BlockEdit, BlockOutcome, rewrite_page_blocks};
 pub use blocks::{
     BlockKey, BlockStyle, RangeStyle, ReadingBlocks, TextBlock, block_overlapping, clear_block, reading_blocks, reading_blocks_checked,
     replace_block, text_blocks,

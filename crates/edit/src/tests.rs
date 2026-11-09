@@ -10696,3 +10696,124 @@ fn review_inside_scope_group_move_matches_direct_transform_under_outer_scale() {
         }
     }
 }
+
+/// The paragraphs of page 0 as `BlockEdit`s whose new text is `f(old)`.
+fn batch_edits(doc: &Document, f: impl Fn(&str) -> String) -> Vec<text::BlockEdit> {
+    text::text_blocks(doc, 0).unwrap().iter().map(|b| text::BlockEdit::new(text::BlockKey::of(b), f(&b.text))).collect()
+}
+
+fn page_text(doc: &Document) -> String {
+    text::text_blocks(doc, 0).unwrap().iter().map(|b| b.text.clone()).collect::<Vec<_>>().join("\n")
+}
+
+/// Three paragraphs far enough apart to be three blocks.
+const THREE_PARAGRAPHS: &str = "BT /F1 12 Tf 72 700 Td (First paragraph one) Tj ET BT /F1 12 Tf 72 600 Td (Second paragraph two) Tj ET BT /F1 12 Tf 72 500 Td (Third paragraph three) Tj ET";
+
+#[test]
+fn a_batch_rewrites_every_paragraph_by_key_whatever_the_order_of_blocks() {
+    let mut doc = text_page(THREE_PARAGRAPHS);
+    let edits = batch_edits(&doc, |t| format!("<{t}>"));
+    assert_eq!(edits.len(), 3);
+    let report = text::rewrite_page_blocks(&mut doc, 0, &edits, 0.7).unwrap();
+    assert!(report.outcomes.iter().all(|o| matches!(o, text::BlockOutcome::Applied { overflow: false, .. })), "{report:?}");
+    let now = page_text(&reopen(&doc));
+    for word in ["<First paragraph one>", "<Second paragraph two>", "<Third paragraph three>"] {
+        assert!(now.contains(word), "{word} missing from {now:?}");
+    }
+}
+
+#[test]
+fn a_batch_reports_a_missing_paragraph_and_leaves_an_empty_or_unchanged_one_alone() {
+    let mut doc = text_page(THREE_PARAGRAPHS);
+    let before = page_text(&doc);
+    assert_eq!(text::rewrite_page_blocks(&mut doc, 0, &[], 0.7).unwrap(), text::BatchReport::default());
+    let mut edits = batch_edits(&doc, |t| t.to_string());
+    edits[1].text = "   ".into();
+    let stranger = text::TextBlock { text: "not on the page".into(), ..text::text_blocks(&doc, 0).unwrap().remove(0) };
+    edits.push(text::BlockEdit::new(text::BlockKey::of(&stranger), "x"));
+    let report = text::rewrite_page_blocks(&mut doc, 0, &edits, f64::NAN).unwrap();
+    assert_eq!(
+        report.outcomes,
+        vec![text::BlockOutcome::Unchanged, text::BlockOutcome::Unchanged, text::BlockOutcome::Unchanged, text::BlockOutcome::Missing]
+    );
+    assert_eq!(page_text(&doc), before);
+}
+
+#[test]
+fn a_batch_shrinks_longer_text_to_fit_and_says_when_it_cannot() {
+    // A three-row paragraph keeps its width, so three times the text needs more rows than it has.
+    let rows = "BT /F1 12 Tf 14 TL 72 700 Td (alpha beta gamma delta epsilon) Tj T* (zeta eta theta iota kappa) Tj T* (lambda mu nu xi omicron) Tj ET";
+    let mut doc = text_page(rows);
+    assert_eq!(text::text_blocks(&doc, 0).unwrap().len(), 1);
+    let edits = batch_edits(&doc, |t| format!("{t} {t} {t}"));
+    let report = text::rewrite_page_blocks(&mut doc, 0, &edits, 0.7).unwrap();
+    assert_eq!(report.outcomes.len(), 1);
+    for outcome in &report.outcomes {
+        match outcome {
+            text::BlockOutcome::Applied { scale, overflow, .. } => assert!(*scale < 1.0 || *overflow, "{outcome:?}"),
+            other => panic!("expected an applied edit, got {other:?}"),
+        }
+    }
+}
+
+/// Whatever a batch does, a paragraph it reports as applied shows its new text and one it doesn't
+/// still shows its old one: nothing is lost to a merge, as replacing by index did.
+#[test]
+fn a_batch_never_loses_a_paragraph_when_neighbours_are_close() {
+    // A heading 25 pt above its paragraph, as in a worksheet; the new heading drops its "2." marker.
+    let content = "BT /F1 12 Tf 72 700 Td (Intro text here) Tj ET BT /F1 12 Tf 72 675 Td (2. Heading) Tj ET BT /F1 12 Tf 72 650 Td (Body text under it) Tj ET";
+    let mut doc = text_page(content);
+    let original = text::text_blocks(&doc, 0).unwrap();
+    let edits = batch_edits(&doc, |t| t.replace("2. ", "").to_uppercase());
+    let report = text::rewrite_page_blocks(&mut doc, 0, &edits, 0.7).unwrap();
+    assert_eq!(report.outcomes.len(), original.len());
+    let now = page_text(&reopen(&doc));
+    for (old, (edit, outcome)) in original.iter().zip(edits.iter().zip(&report.outcomes)) {
+        match outcome {
+            text::BlockOutcome::Applied { .. } => assert!(now.contains(&edit.text), "{:?} missing from {now:?}", edit.text),
+            _ => assert!(now.contains(&old.text), "{:?} was lost from {now:?} ({outcome:?})", old.text),
+        }
+    }
+}
+
+#[test]
+fn style_marks_round_trip_into_ranges_and_bad_marks_are_dropped() {
+    let run = |resource: &str, size: f64| text::RunStyle { resource: resource.into(), size, color: [1.0, 0.0, 0.0], bold: false, italic: false, family: added::Family::Helvetica };
+    let runs = [run("F1", 12.0), run("F2", 20.0)];
+    let done = text::untag_runs("⟦2⟧Título⟦/2⟧\n⟦1⟧cuerpo ñ⟦/1⟧ fin", &runs);
+    let (plain, style) = (done.text, done.exact);
+    assert_eq!(plain, "Título\ncuerpo ñ fin");
+    let got: Vec<_> = style.ranges.iter().map(|r| (r.range.clone(), r.resource.clone().unwrap(), r.size.unwrap())).collect();
+    assert_eq!(got, vec![(0..7, "F2".to_string(), 20.0), (8..17, "F1".to_string(), 12.0)]);
+    for r in &style.ranges {
+        assert!(plain.get(r.range.clone()).is_some(), "ranges sit on char boundaries");
+    }
+    // Unknown run numbers, unbalanced and unterminated marks keep their text and never panic.
+    for bad in ["⟦9⟧x⟦/9⟧", "⟦1⟧x", "x⟦/1⟧y", "⟦", "⟦1", "⟦a⟧b⟦/a⟧", "⟦0⟧z⟦/0⟧", "", "⟦1⟧⟦/1⟧", "⟦1⟧ñ⟦2⟧é⟦/2⟧"] {
+        let done = text::untag_runs(bad, &runs);
+        let (plain, style) = (done.text, done.exact);
+        for r in done.standard.ranges.iter().chain(&style.ranges) {
+            assert!(plain.get(r.range.clone()).is_some(), "{bad:?}");
+        }
+    }
+    assert_eq!(text::untag_runs("⟦9⟧x⟦/9⟧", &runs).text, "x");
+}
+
+#[test]
+fn a_paragraph_with_two_styles_is_tagged_and_one_with_a_single_style_is_not() {
+    let one = text_page("BT /F1 12 Tf 72 700 Td (just one style) Tj ET");
+    let block = text::text_blocks(&one, 0).unwrap().remove(0);
+    assert_eq!(text::tag_runs(&one, 0, &block).unwrap(), None);
+    // A 20 pt title over a 12 pt body, close enough to be one paragraph.
+    let two = text_page("BT /F1 20 Tf 72 700 Td (Big title) Tj ET BT /F1 12 Tf 72 680 Td (small body here) Tj ET");
+    for block in text::text_blocks(&two, 0).unwrap() {
+        if let Some(tagged) = text::tag_runs(&two, 0, &block).unwrap() {
+            assert!(tagged.text.contains('⟦') && tagged.runs.len() == 2, "{tagged:?}");
+            let done = text::untag_runs(&tagged.text, &tagged.runs);
+            let (plain, style) = (done.text, done.exact);
+            assert_eq!(style.ranges.len(), 2);
+            assert_eq!(done.standard.ranges.len(), 2);
+            assert!(plain.contains("Big title") && plain.contains("small body here"), "{plain:?}");
+        }
+    }
+}

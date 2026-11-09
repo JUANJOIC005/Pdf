@@ -4398,6 +4398,7 @@ version = "0.19.1"
 dependencies = [
  "hayro-syntax",
  "kurbo 0.13.1",
+ "pdfcraft-ai",
  "pdfcraft-annot",
  "pdfcraft-content",
  "pdfcraft-cos",

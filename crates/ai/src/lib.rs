@@ -160,6 +160,43 @@ pub fn analyse_markdown(provider: Provider, request: &Request, document: &Markdo
     run_agent(&program, provider, &prompt)
 }
 
+/// Translate `segments` (the text blocks of a page) into `language`, one translation per segment,
+/// in the same order. The model is asked for a JSON array so each translation can be put back where
+/// its source text was; the segments are untrusted content, never instructions.
+pub fn translate_segments(provider: Provider, language: &str, segments: &[String]) -> Result<Vec<String>, String> {
+    if segments.is_empty() {
+        return Ok(Vec::new());
+    }
+    let program = find_program(provider.id()).ok_or_else(|| format!("{} no está instalado o no aparece en PATH", provider.id()))?;
+    let answer = run_agent(&program, provider, &translation_prompt(language, segments))?;
+    parse_translations(&answer, segments.len())
+}
+
+fn translation_prompt(language: &str, segments: &[String]) -> String {
+    let json = Value::Array(segments.iter().map(|s| Value::String(s.clone())).collect());
+    format!(
+        "TAREA:\nTraduce al {language} cada texto del array JSON siguiente. Devuelve ÚNICAMENTE un array JSON de cadenas con exactamente {} elementos, en el mismo orden, sin texto antes ni después ni bloque de código. Conserva números, nombres propios, código, URLs y símbolos; mantén una longitud parecida al original. Un texto que no deba traducirse se devuelve igual. Si un texto lleva marcas de estilo ⟦n⟧…⟦/n⟧, devuélvelas intactas alrededor de la parte equivalente traducida (mismos números, sin añadir ni quitar marcas, aunque cambie el orden de las palabras) y conserva los saltos de línea \\n.\n\n--- INICIO DE LOS TEXTOS (JSON) ---\n{json}\n--- FIN DE LOS TEXTOS ---",
+        segments.len()
+    )
+}
+
+/// The array of strings in a model answer, which may wrap it in a code fence or a sentence. It must
+/// have exactly `expected` items: a shorter or longer list can't be matched to its blocks.
+fn parse_translations(answer: &str, expected: usize) -> Result<Vec<String>, String> {
+    let (Some(start), Some(end)) = (answer.find('['), answer.rfind(']')) else {
+        return Err("la respuesta no contiene una lista JSON".into());
+    };
+    let body = answer.get(start..=end).ok_or("la respuesta no contiene una lista JSON")?;
+    let value: Value = serde_json::from_str(body).map_err(|e| format!("la lista JSON no es válida: {e}"))?;
+    let items = value.as_array().ok_or("la respuesta no es una lista")?;
+    let texts: Option<Vec<String>> = items.iter().map(|v| v.as_str().map(str::to_string)).collect();
+    let texts = texts.ok_or("la lista contiene elementos que no son texto")?;
+    if texts.len() != expected {
+        return Err(format!("se esperaban {expected} traducciones y llegaron {}", texts.len()));
+    }
+    Ok(texts)
+}
+
 fn run_agent(program: &Path, provider: Provider, prompt: &str) -> Result<String, String> {
     let temp = TempDir::new()?;
     let mut command = Command::new(program);
@@ -245,6 +282,23 @@ mod tests {
             response_text(Provider::Claude, &json!({"type":"assistant","message":{"content":[{"type":"text","text":"Traducción"}]}})),
             Some("Traducción".into())
         );
+    }
+
+    #[test]
+    fn translations_are_read_from_a_wrapped_json_array() {
+        assert_eq!(parse_translations("```json\n[\"a\", \"b\"]\n```", 2), Ok(vec!["a".into(), "b".into()]));
+        assert_eq!(parse_translations("Aquí: [\"x\"] listo", 1), Ok(vec!["x".into()]));
+        assert!(parse_translations("[\"a\"]", 2).is_err(), "a short list can't be matched to its blocks");
+        assert!(parse_translations("[1, 2]", 2).is_err(), "only strings");
+        assert!(parse_translations("sin lista", 1).is_err());
+        assert!(parse_translations("] [", 1).is_err(), "end before start is not a slice");
+    }
+
+    #[test]
+    fn the_translation_prompt_carries_the_segments_as_data() {
+        let prompt = translation_prompt("español", &["Hello \"world\"".into(), "Bye".into()]);
+        assert!(prompt.contains("exactamente 2 elementos"));
+        assert!(prompt.contains("[\"Hello \\\"world\\\"\",\"Bye\"]"));
     }
 
     #[test]
