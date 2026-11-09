@@ -140,6 +140,7 @@ impl PdfCraftApp {
             update_check_at_start: true,
             show_secured_notice: true,
             always_default_view: false,
+            force_continuous: true,
             #[cfg(not(target_arch = "wasm32"))]
             watch: Default::default(),
             #[cfg(not(target_arch = "wasm32"))]

@@ -297,6 +297,13 @@ impl PdfCraftApp {
         self.apply_initial_view(self.views.len() - 1, &initial);
         // Where the reader left off wins over the file's own initial view (#1767).
         self.apply_last_view(self.views.len() - 1);
+        // The reader's own switch: continuous scrolling wins over the file's request and the
+        // remembered view alike.
+        if self.force_continuous
+            && let Some(view) = self.views.last_mut()
+        {
+            view.set_continuous(true);
+        }
         // After both, so full screen shows one fitted page and leaving it comes back to them.
         if self.full_screen
             && let Some(view) = self.views.last_mut()

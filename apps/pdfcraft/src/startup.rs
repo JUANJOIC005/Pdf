@@ -148,6 +148,8 @@ mod tests {
         let second = second_path.to_str().unwrap();
         for enabled in [false, true] {
             let mut app = PdfCraftApp::new();
+            // This test is about the layout the flag and the document ask for, not forced scrolling.
+            app.force_continuous = false;
             app.set_option("default-layout", "single").unwrap();
             app.open_bytes("restored.pdf", None, include_bytes!("../../../crates/ui-egui/tests/data/form.pdf").to_vec()).unwrap();
             let restored = app.views[0].id;

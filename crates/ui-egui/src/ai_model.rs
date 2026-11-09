@@ -69,8 +69,24 @@ fn model_from_json(v: &serde_json::Value) -> Option<ModelChoice> {
     }
 }
 
+/// Whether the agent's command is installed. Always false on the web, where there are no agents.
+fn installed(p: Provider) -> bool {
+    cfg!(not(target_arch = "wasm32")) && pdfcraft_ai::find_program(p.id()).is_some()
+}
+
+/// The saved or default agent may not be installed (Codex is the default, and only Claude may be):
+/// use the first one that is, so the panels work without the user having to find the selector.
+fn use_an_installed_agent(choice: &mut AiChoice) {
+    if !installed(choice.provider)
+        && let Some(other) = Provider::ALL.into_iter().find(|p| installed(*p))
+    {
+        choice.provider = other;
+    }
+}
+
 /// The agent and model selectors. Every AI panel shows this one widget.
 pub fn picker(ui: &mut egui::Ui, choice: &mut AiChoice, t: &Tokens) {
+    use_an_installed_agent(choice);
     let id = ui.scope_id().with("ai-model-picker");
     // One compact row; the combos carry their names for tooltips and assistive tech.
     ui.horizontal(|ui| {

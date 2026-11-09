@@ -231,6 +231,13 @@ impl PdfCraftApp {
                     _ => return Err("always-default-view must be on or off".into()),
                 };
             }
+            ("force-continuous", _) => {
+                self.force_continuous = match value {
+                    "on" => true,
+                    "off" => false,
+                    _ => return Err("force-continuous must be on or off".into()),
+                };
+            }
             ("tools-side", _) => {
                 self.side_panels.tools_side = match value {
                     "left" => side_panels::ToolsSide::Left,

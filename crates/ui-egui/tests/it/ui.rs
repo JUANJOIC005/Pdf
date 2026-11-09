@@ -1846,7 +1846,10 @@ fn a_file_opened_again_shows_its_last_view() {
     use pdfcraft_ui_egui::canvas::{Fit, PageLayout};
     let path = std::env::temp_dir().join(format!("pdfcraft-last-view-{}.pdf", std::process::id())).to_string_lossy().into_owned();
     let p = path.clone();
-    let mut h = harness(move |app| app.open_bytes("doc.pdf", Some(p), pages_fixture(3)).expect("opens"));
+    let mut h = harness(move |app| {
+        app.force_continuous = false;
+        app.open_bytes("doc.pdf", Some(p), pages_fixture(3)).expect("opens")
+    });
     let p = path.clone();
     assert!(h.state().restore_last_view, "on by default");
     {
@@ -1921,7 +1924,10 @@ fn full_screen_neither_is_remembered_nor_hides_the_last_view() {
     use pdfcraft_ui_egui::canvas::{Fit, PageLayout};
     let path = std::env::temp_dir().join(format!("pdfcraft-last-view-fs-{}.pdf", std::process::id())).to_string_lossy().into_owned();
     let p = path.clone();
-    let mut h = harness(move |app| app.open_bytes("doc.pdf", Some(p), pages_fixture(3)).expect("opens"));
+    let mut h = harness(move |app| {
+        app.force_continuous = false;
+        app.open_bytes("doc.pdf", Some(p), pages_fixture(3)).expect("opens")
+    });
     {
         let app = h.state_mut();
         app.set_option("zoom", "50").unwrap();

@@ -1167,6 +1167,8 @@ fn always_use_my_default_zoom_and_page_layout_ignores_what_the_pdf_asks_for() {
     let open = |always: Option<&str>| {
         let mut app = PdfCraftApp::new();
         app.set_option("language", "en").unwrap();
+        // About the default view, not forced continuous scrolling (on by default).
+        app.force_continuous = false;
         if let Some(on) = always {
             app.set_option("always-default-view", on).unwrap();
         }
@@ -1208,6 +1210,55 @@ fn preferences_turn_on_always_use_my_default_zoom_and_page_layout() {
     h.get_by_label("Always use my default zoom and page layout").click();
     h.run_steps(2);
     assert!(h.state().always_default_view);
+}
+
+#[test]
+fn force_continuous_overrides_the_pdf_and_the_remembered_view() {
+    use pdfcraft_ui_egui::canvas::PageLayout;
+    // A PDF that asks for one page at a time, like the AWS course files.
+    let asks = String::from_utf8_lossy(PAGES).replace("/Pages 2 0 R >>", "/Pages 2 0 R /PageLayout /SinglePage >>");
+    let open = |force: Option<&str>| {
+        let mut app = PdfCraftApp::new();
+        app.set_option("language", "en").unwrap();
+        if let Some(on) = force {
+            app.set_option("force-continuous", on).unwrap();
+        }
+        app.open_bytes("asks.pdf", None, asks.clone().into_bytes()).expect("opens");
+        (app.views[0].layout, app.views[0].continuous)
+    };
+    assert_eq!(open(None), (PageLayout::Single, true), "on by default: the document opens in continuous scrolling");
+    assert_eq!(open(Some("off")), (PageLayout::Single, false));
+    assert_eq!(open(Some("on")), (PageLayout::Single, true));
+    assert!(PdfCraftApp::new().set_option("force-continuous", "yes").is_err());
+}
+
+#[test]
+fn force_continuous_survives_a_restart() {
+    let mut app = PdfCraftApp::new();
+    assert!(app.force_continuous, "on by default");
+    app.force_continuous = false;
+    let mut restarted = PdfCraftApp::new();
+    restarted.restore(&app.persist());
+    assert!(!restarted.force_continuous, "the choice is kept");
+    restarted.restore(r#"{"force_continuous":"bogus"}"#);
+    assert!(!restarted.force_continuous, "garbage leaves it alone");
+    let mut legacy = PdfCraftApp::new();
+    legacy.restore("{}");
+    assert!(legacy.force_continuous, "a legacy file without the key keeps the default (on)");
+}
+
+#[test]
+fn preferences_turn_on_force_continuous() {
+    use egui_kittest::kittest::Queryable;
+    let mut h = harness(&[]);
+    h.state_mut().force_continuous = false;
+    assert!(h.state_mut().execute("app.preferences"));
+    h.run_steps(3);
+    h.get_by_label("Always open documents with continuous scrolling").scroll_to_me();
+    h.run_steps(4);
+    h.get_by_label("Always open documents with continuous scrolling").click();
+    h.run_steps(2);
+    assert!(h.state().force_continuous);
 }
 
 #[test]
