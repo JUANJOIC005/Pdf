@@ -29,21 +29,19 @@ use regions::{alignment_frame, group_blocks, is_centred, rewrite_styled_block};
 pub use session::TextSession;
 
 mod batch;
-mod runs;
 mod blocks;
 mod editor;
 mod fallback;
 mod interp;
 mod lines;
 mod rewrite;
+mod runs;
 mod translate;
 
+pub use batch::{BatchReport, BlockEdit, BlockOutcome, is_translatable, rewrite_page_blocks};
 use blocks::paragraph_separator;
 #[cfg(test)]
 use blocks::wrap;
-pub use translate::{PageReport, Progress, SkipReason, TranslateOptions, TranslationReport, Translator, looks_like_code, translate_document};
-pub use runs::{RunStyle, TaggedBlock, Untagged, tag_runs, untag_runs};
-pub use batch::{BatchReport, BlockEdit, BlockOutcome, is_translatable, rewrite_page_blocks};
 pub use blocks::{
     BlockKey, BlockStyle, RangeStyle, ReadingBlocks, TextBlock, block_overlapping, clear_block, reading_blocks, reading_blocks_checked,
     replace_block, text_blocks,
@@ -68,6 +66,8 @@ use rewrite::{coincident_ops, rewrite_block_from};
 #[cfg(test)]
 pub(crate) use rewrite::{replace_line_with_limit, rewrite_block_with_limit};
 pub(crate) use rewrite::{reveal_ops, selectable_blocks, translate_blocks};
+pub use runs::{RunStyle, TaggedBlock, Untagged, tag_runs, untag_runs};
+pub use translate::{PageReport, Progress, SkipReason, TranslateOptions, TranslationReport, Translator, looks_like_code, translate_document};
 
 /// One line of existing text.
 #[derive(Clone, Debug, PartialEq)]

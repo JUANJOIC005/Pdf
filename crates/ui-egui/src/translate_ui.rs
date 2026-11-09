@@ -10,7 +10,9 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc::{Receiver, TryRecvError, channel};
 
 use egui::{Align2, Color32, CornerRadius, Sense, Stroke, vec2};
-use pdfcraft_engine::translate::{AiTranslator, Progress, SkipReason, TranslateOptions, TranslationOutput, Translator, parse_page_range, translate_copy};
+use pdfcraft_engine::translate::{
+    AiTranslator, Progress, SkipReason, TranslateOptions, TranslationOutput, Translator, parse_page_range, translate_copy,
+};
 use pdfcraft_engine::{EditError, Session};
 
 use crate::theme::{self, Tokens};
@@ -94,7 +96,17 @@ pub struct TranslatePane {
 
 impl Default for TranslatePane {
     fn default() -> Self {
-        Self { language: 0, custom: String::new(), scope: Scope::All, range: String::new(), run: None, outcome: None, hint: None, pending_name: None, factory: ai_factory() }
+        Self {
+            language: 0,
+            custom: String::new(),
+            scope: Scope::All,
+            range: String::new(),
+            run: None,
+            outcome: None,
+            hint: None,
+            pending_name: None,
+            factory: ai_factory(),
+        }
     }
 }
 
@@ -176,31 +188,34 @@ pub fn panel(app: &mut PdfCraftApp, ui: &mut egui::Ui) {
     let t = Tokens::get(ui.ctx());
     let mut act = Actions::default();
     let has_doc = app.active_ids().is_some();
-    egui::Frame::NONE.fill(t.panel).inner_margin(egui::Margin { left: 12, right: 10, top: 11, bottom: 9 }).stroke(Stroke::new(1.0, t.divider)).show(ui, |ui| {
-        header(app, ui, &t, &mut act);
-        ui.add_space(6.0);
-        ui.separator();
-        egui::Panel::bottom("pdf-translate-action").frame(egui::Frame::NONE).show_separator_line(false).show(ui, |ui| {
-            ui.add_space(8.0);
-            action_area(app, ui, &t, has_doc, &mut act);
-        });
-        egui::ScrollArea::vertical().id_salt("pdf-translate-body").auto_shrink([false, false]).show(ui, |ui| {
-            ui.set_width(ui.available_width());
-            ui.add_space(10.0);
-            let editable = !app.translate.running();
-            ui.add_enabled_ui(editable, |ui| {
-                language_section(app, ui, &t);
-                ui.add_space(16.0);
-                pages_section(app, ui, &t);
+    egui::Frame::NONE.fill(t.panel).inner_margin(egui::Margin { left: 12, right: 10, top: 11, bottom: 9 }).stroke(Stroke::new(1.0, t.divider)).show(
+        ui,
+        |ui| {
+            header(app, ui, &t, &mut act);
+            ui.add_space(6.0);
+            ui.separator();
+            egui::Panel::bottom("pdf-translate-action").frame(egui::Frame::NONE).show_separator_line(false).show(ui, |ui| {
+                ui.add_space(8.0);
+                action_area(app, ui, &t, has_doc, &mut act);
             });
-            ui.add_space(14.0);
-            privacy(ui, &t);
-            if let Some(outcome) = &app.translate.outcome {
+            egui::ScrollArea::vertical().id_salt("pdf-translate-body").auto_shrink([false, false]).show(ui, |ui| {
+                ui.set_width(ui.available_width());
+                ui.add_space(10.0);
+                let editable = !app.translate.running();
+                ui.add_enabled_ui(editable, |ui| {
+                    language_section(app, ui, &t);
+                    ui.add_space(16.0);
+                    pages_section(app, ui, &t);
+                });
                 ui.add_space(14.0);
-                outcome_card(outcome, ui, &t, &mut act);
-            }
-        });
-    });
+                privacy(ui, &t);
+                if let Some(outcome) = &app.translate.outcome {
+                    ui.add_space(14.0);
+                    outcome_card(outcome, ui, &t, &mut act);
+                }
+            });
+        },
+    );
     if app.translate.running() {
         ui.ctx().request_repaint_after(std::time::Duration::from_millis(100));
     }
@@ -224,10 +239,15 @@ fn header(app: &mut PdfCraftApp, ui: &mut egui::Ui, t: &Tokens, act: &mut Action
         });
     });
     ui.add_space(8.0);
-    egui::Frame::NONE.fill(t.hover).stroke(Stroke::new(1.0, t.divider)).corner_radius(CornerRadius::same(10)).inner_margin(egui::Margin::symmetric(9, 6)).show(ui, |ui| {
-        ui.set_width(ui.available_width());
-        ui.add_enabled_ui(!app.translate.running(), |ui| crate::ai_model::picker(ui, &mut app.ai_choice, t));
-    });
+    egui::Frame::NONE
+        .fill(t.hover)
+        .stroke(Stroke::new(1.0, t.divider))
+        .corner_radius(CornerRadius::same(10))
+        .inner_margin(egui::Margin::symmetric(9, 6))
+        .show(ui, |ui| {
+            ui.set_width(ui.available_width());
+            ui.add_enabled_ui(!app.translate.running(), |ui| crate::ai_model::picker(ui, &mut app.ai_choice, t));
+        });
 }
 
 fn section_title(ui: &mut egui::Ui, t: &Tokens, text: &str) {
@@ -266,7 +286,14 @@ fn pages_section(app: &mut PdfCraftApp, ui: &mut egui::Ui, t: &Tokens) {
 fn privacy(ui: &mut egui::Ui, t: &Tokens) {
     ui.horizontal_top(|ui| {
         ui.add(icons::image("shield-check", 13.0, t.text_faint));
-        ui.add(egui::Label::new(egui::RichText::new(tl!("The original is never changed. Page text is sent to the chosen agent only when you press Translate.")).font(theme::regular(11.0)).color(t.text_faint)).wrap());
+        ui.add(
+            egui::Label::new(
+                egui::RichText::new(tl!("The original is never changed. Page text is sent to the chosen agent only when you press Translate."))
+                    .font(theme::regular(11.0))
+                    .color(t.text_faint),
+            )
+            .wrap(),
+        );
     });
 }
 
@@ -277,7 +304,8 @@ fn choice_pill(ui: &mut egui::Ui, t: &Tokens, label: &str, selected: bool) -> eg
     let (rect, resp) = ui.allocate_exact_size(vec2(galley.size().x + 26.0, 28.0), Sense::click());
     resp.widget_info(|| egui::WidgetInfo::selected(egui::Role::RadioButton, ui.is_enabled(), selected, label));
     let press = theme::Press::track(ui, &resp);
-    let (fill, stroke) = if selected { (t.accent_soft, Stroke::new(1.0, t.accent)) } else { (press.fill(t.card, t.hover, t.pressed), Stroke::new(1.0, t.border)) };
+    let (fill, stroke) =
+        if selected { (t.accent_soft, Stroke::new(1.0, t.accent)) } else { (press.fill(t.card, t.hover, t.pressed), Stroke::new(1.0, t.border)) };
     ui.painter().rect(rect, CornerRadius::same(14), fill, stroke, egui::StrokeKind::Inside);
     ui.painter().galley(rect.center() - galley.size() / 2.0, galley, ink);
     theme::hand(resp)
@@ -315,7 +343,10 @@ fn action_area(app: &mut PdfCraftApp, ui: &mut egui::Ui, t: &Tokens, has_doc: bo
         let text = if run.of == 0 {
             tl!("Preparing…").to_string()
         } else {
-            crate::i18n::fmt(tl!("Translating page {n} of {total}…"), &[("n", &run.done.saturating_add(1).min(run.of).to_string()), ("total", &run.of.to_string())])
+            crate::i18n::fmt(
+                tl!("Translating page {n} of {total}…"),
+                &[("n", &run.done.saturating_add(1).min(run.of).to_string()), ("total", &run.of.to_string())],
+            )
         };
         ui.label(egui::RichText::new(text).font(theme::medium(12.5)).color(t.text_muted));
         ui.add_space(6.0);
@@ -362,52 +393,70 @@ fn outcome_card(outcome: &Outcome, ui: &mut egui::Ui, t: &Tokens, act: &mut Acti
     match outcome {
         Outcome::Failed(why) => {
             let red = ui.visuals().error_fg_color;
-            egui::Frame::NONE.fill(red.gamma_multiply(0.09)).stroke(Stroke::new(1.0, red.gamma_multiply(0.55))).corner_radius(CornerRadius::same(11)).inner_margin(egui::Margin::symmetric(12, 10)).show(ui, |ui| {
-                ui.set_width(ui.available_width());
-                ui.horizontal_top(|ui| {
-                    ui.add(icons::image("triangle-alert", 15.0, red));
-                    ui.add(egui::Label::new(egui::RichText::new(why).color(t.text)).wrap());
+            egui::Frame::NONE
+                .fill(red.gamma_multiply(0.09))
+                .stroke(Stroke::new(1.0, red.gamma_multiply(0.55)))
+                .corner_radius(CornerRadius::same(11))
+                .inner_margin(egui::Margin::symmetric(12, 10))
+                .show(ui, |ui| {
+                    ui.set_width(ui.available_width());
+                    ui.horizontal_top(|ui| {
+                        ui.add(icons::image("triangle-alert", 15.0, red));
+                        ui.add(egui::Label::new(egui::RichText::new(why).color(t.text)).wrap());
+                    });
                 });
-            });
         }
         Outcome::Done(s) => {
-            egui::Frame::NONE.fill(t.card).stroke(Stroke::new(1.0, t.border)).corner_radius(CornerRadius::same(12)).inner_margin(egui::Margin::symmetric(14, 12)).show(ui, |ui| {
-                ui.set_width(ui.available_width());
-                ui.horizontal(|ui| {
-                    ui.add(icons::image("check-circle-2", 18.0, t.accent_text));
-                    ui.label(egui::RichText::new(tl!("Translation ready")).font(theme::semibold(14.0)).color(t.text));
-                });
-                ui.add_space(4.0);
-                let n = s.translated.to_string();
-                let total = s.pages.to_string();
-                ui.label(egui::RichText::new(crate::i18n::fmt(tl!("{n} of {total} pages translated"), &[("n", &n), ("total", &total)])).font(theme::regular(12.5)).color(t.text_muted));
-                let mut notes = Vec::new();
-                if s.no_text > 0 {
-                    notes.push(crate::i18n::fmt(tl!("{n} pages without text were left as they are"), &[("n", &s.no_text.to_string())]));
-                }
-                if s.paragraphs_failed > 0 {
-                    notes.push(crate::i18n::fmt(tl!("{n} paragraphs could not be translated"), &[("n", &s.paragraphs_failed.to_string())]));
-                }
-                if s.overflowed > 0 {
-                    notes.push(crate::i18n::fmt(tl!("{n} paragraphs are tight for their box"), &[("n", &s.overflowed.to_string())]));
-                }
-                for note in notes {
-                    ui.label(egui::RichText::new(note).font(theme::regular(11.5)).color(t.text_faint));
-                }
-                if s.signed {
+            egui::Frame::NONE
+                .fill(t.card)
+                .stroke(Stroke::new(1.0, t.border))
+                .corner_radius(CornerRadius::same(12))
+                .inner_margin(egui::Margin::symmetric(14, 12))
+                .show(ui, |ui| {
+                    ui.set_width(ui.available_width());
+                    ui.horizontal(|ui| {
+                        ui.add(icons::image("check-circle-2", 18.0, t.accent_text));
+                        ui.label(egui::RichText::new(tl!("Translation ready")).font(theme::semibold(14.0)).color(t.text));
+                    });
                     ui.add_space(4.0);
-                    ui.label(egui::RichText::new(tl!("The copy does not keep the original's signatures.")).font(theme::regular(11.5)).color(ui.visuals().warn_fg_color));
-                }
-                ui.add_space(10.0);
-                ui.horizontal(|ui| {
-                    if widgets::pill_button(ui, tl!("Open copy"), true).clicked() {
-                        act.open = true;
+                    let n = s.translated.to_string();
+                    let total = s.pages.to_string();
+                    ui.label(
+                        egui::RichText::new(crate::i18n::fmt(tl!("{n} of {total} pages translated"), &[("n", &n), ("total", &total)]))
+                            .font(theme::regular(12.5))
+                            .color(t.text_muted),
+                    );
+                    let mut notes = Vec::new();
+                    if s.no_text > 0 {
+                        notes.push(crate::i18n::fmt(tl!("{n} pages without text were left as they are"), &[("n", &s.no_text.to_string())]));
                     }
-                    if widgets::pill_button(ui, tl!("Save as…"), false).clicked() {
-                        act.save = true;
+                    if s.paragraphs_failed > 0 {
+                        notes.push(crate::i18n::fmt(tl!("{n} paragraphs could not be translated"), &[("n", &s.paragraphs_failed.to_string())]));
                     }
+                    if s.overflowed > 0 {
+                        notes.push(crate::i18n::fmt(tl!("{n} paragraphs are tight for their box"), &[("n", &s.overflowed.to_string())]));
+                    }
+                    for note in notes {
+                        ui.label(egui::RichText::new(note).font(theme::regular(11.5)).color(t.text_faint));
+                    }
+                    if s.signed {
+                        ui.add_space(4.0);
+                        ui.label(
+                            egui::RichText::new(tl!("The copy does not keep the original's signatures."))
+                                .font(theme::regular(11.5))
+                                .color(ui.visuals().warn_fg_color),
+                        );
+                    }
+                    ui.add_space(10.0);
+                    ui.horizontal(|ui| {
+                        if widgets::pill_button(ui, tl!("Open copy"), true).clicked() {
+                            act.open = true;
+                        }
+                        if widgets::pill_button(ui, tl!("Save as…"), false).clicked() {
+                            act.save = true;
+                        }
+                    });
                 });
-            });
         }
     }
 }

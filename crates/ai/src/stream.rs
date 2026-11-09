@@ -45,9 +45,7 @@ pub fn parse(provider: Provider, line: &Value) -> Vec<Event> {
             "assistant" => {
                 let text = line["message"]["content"]
                     .as_array()
-                    .map(|parts| {
-                        parts.iter().filter(|p| p["type"] == "text").filter_map(|p| p["text"].as_str()).collect::<Vec<_>>().concat()
-                    })
+                    .map(|parts| parts.iter().filter(|p| p["type"] == "text").filter_map(|p| p["text"].as_str()).collect::<Vec<_>>().concat())
                     .unwrap_or_default();
                 if !text.trim().is_empty() {
                     out.push(Event::Final(text));
@@ -76,10 +74,7 @@ mod tests {
 
     #[test]
     fn claude_init_delta_and_final() {
-        assert_eq!(
-            parse(Provider::Claude, &json!({"type":"system","subtype":"init","model":"claude-x"})),
-            vec![Event::Model("claude-x".into())]
-        );
+        assert_eq!(parse(Provider::Claude, &json!({"type":"system","subtype":"init","model":"claude-x"})), vec![Event::Model("claude-x".into())]);
         let delta = json!({"type":"stream_event","event":{"type":"content_block_delta","delta":{"type":"text_delta","text":"Ho"}}});
         assert_eq!(parse(Provider::Claude, &delta), vec![Event::Delta("Ho".into())]);
         let fin = json!({"type":"assistant","message":{"content":[{"type":"text","text":"Hola"},{"type":"tool_use"}]}});

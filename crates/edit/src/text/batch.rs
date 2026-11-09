@@ -73,8 +73,7 @@ pub fn rewrite_page_blocks(doc: &mut Document, page: usize, edits: &[BlockEdit],
         for (n, &i) in pending.iter().enumerate() {
             let Some(edit) = edits.get(i) else { continue };
             // Everything still to be edited, but this one: it has to survive this edit.
-            let others: Vec<&BlockKey> =
-                pending.iter().skip(n + 1).chain(deferred.iter()).filter_map(|&j| edits.get(j)).map(|e| &e.key).collect();
+            let others: Vec<&BlockKey> = pending.iter().skip(n + 1).chain(deferred.iter()).filter_map(|&j| edits.get(j)).map(|e| &e.key).collect();
             match try_edit(doc, page, edit, &others, min_scale)? {
                 Attempt::Done(outcome) => {
                     progressed |= matches!(outcome, BlockOutcome::Applied { .. });
@@ -216,9 +215,11 @@ fn fits(original: &TextBlock, before: &[TextBlock], after: &[TextBlock], crop: O
     // A neighbour the new text swallowed into its own box shows as one box, not as an overlap.
     let swallowed = before.iter().any(|b| b.rect != original.rect && !already(&b.rect) && block_overlapping(after, b.rect) == Some(at));
     !swallowed
-        && after.iter().enumerate().filter(|(i, _)| *i != at).all(|(_, other)| {
-            !overlaps(&now.rect, &other.rect) || before.iter().any(|b| b.rect == other.rect && already(&b.rect))
-        })
+        && after
+            .iter()
+            .enumerate()
+            .filter(|(i, _)| *i != at)
+            .all(|(_, other)| !overlaps(&now.rect, &other.rect) || before.iter().any(|b| b.rect == other.rect && already(&b.rect)))
 }
 
 /// Whether `text` has anything to translate: at least one alphabetic letter. Numbers, signs,

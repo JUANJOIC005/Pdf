@@ -8699,7 +8699,10 @@ fn editing_blocks_keep_contents_entries_apart() {
     let body: Vec<_> = blocks.iter().filter(|b| b.text.contains("Ordinary")).collect();
     assert_eq!(body.len(), 1, "{texts:?}");
     assert_eq!(body[0].text, "Ordinary body text starts here. Still the same paragraph.");
-    assert!(blocks.iter().filter(|b| b.text.contains("..")).all(|b| b.text.trim_end().chars().last().is_some_and(|c| c.is_ascii_digit())), "{texts:?}");
+    assert!(
+        blocks.iter().filter(|b| b.text.contains("..")).all(|b| b.text.trim_end().chars().last().is_some_and(|c| c.is_ascii_digit())),
+        "{texts:?}"
+    );
 }
 
 #[test]
@@ -10784,7 +10787,8 @@ fn a_batch_reports_a_missing_paragraph_and_leaves_an_empty_or_unchanged_one_alon
 #[test]
 fn a_batch_shrinks_longer_text_to_fit_and_says_when_it_cannot() {
     // A three-row paragraph keeps its width, so three times the text needs more rows than it has.
-    let rows = "BT /F1 12 Tf 14 TL 72 700 Td (alpha beta gamma delta epsilon) Tj T* (zeta eta theta iota kappa) Tj T* (lambda mu nu xi omicron) Tj ET";
+    let rows =
+        "BT /F1 12 Tf 14 TL 72 700 Td (alpha beta gamma delta epsilon) Tj T* (zeta eta theta iota kappa) Tj T* (lambda mu nu xi omicron) Tj ET";
     let mut doc = text_page(rows);
     assert_eq!(text::text_blocks(&doc, 0).unwrap().len(), 1);
     let edits = batch_edits(&doc, |t| format!("{t} {t} {t}"));
@@ -10803,7 +10807,8 @@ fn a_batch_shrinks_longer_text_to_fit_and_says_when_it_cannot() {
 #[test]
 fn a_batch_never_loses_a_paragraph_when_neighbours_are_close() {
     // A heading 25 pt above its paragraph, as in a worksheet; the new heading drops its "2." marker.
-    let content = "BT /F1 12 Tf 72 700 Td (Intro text here) Tj ET BT /F1 12 Tf 72 675 Td (2. Heading) Tj ET BT /F1 12 Tf 72 650 Td (Body text under it) Tj ET";
+    let content =
+        "BT /F1 12 Tf 72 700 Td (Intro text here) Tj ET BT /F1 12 Tf 72 675 Td (2. Heading) Tj ET BT /F1 12 Tf 72 650 Td (Body text under it) Tj ET";
     let mut doc = text_page(content);
     let original = text::text_blocks(&doc, 0).unwrap();
     let edits = batch_edits(&doc, |t| t.replace("2. ", "").to_uppercase());
@@ -10820,7 +10825,14 @@ fn a_batch_never_loses_a_paragraph_when_neighbours_are_close() {
 
 #[test]
 fn style_marks_round_trip_into_ranges_and_bad_marks_are_dropped() {
-    let run = |resource: &str, size: f64| text::RunStyle { resource: resource.into(), size, color: [1.0, 0.0, 0.0], bold: false, italic: false, family: added::Family::Helvetica };
+    let run = |resource: &str, size: f64| text::RunStyle {
+        resource: resource.into(),
+        size,
+        color: [1.0, 0.0, 0.0],
+        bold: false,
+        italic: false,
+        family: added::Family::Helvetica,
+    };
     let runs = [run("F1", 12.0), run("F2", 20.0)];
     let done = text::untag_runs("⟦2⟧Título⟦/2⟧\n⟦1⟧cuerpo ñ⟦/1⟧ fin", &runs);
     let (plain, style) = (done.text, done.exact);
@@ -10831,7 +10843,8 @@ fn style_marks_round_trip_into_ranges_and_bad_marks_are_dropped() {
         assert!(plain.get(r.range.clone()).is_some(), "ranges sit on char boundaries");
     }
     // Unknown run numbers, unbalanced and unterminated marks keep their text and never panic.
-    for bad in ["⟦9⟧x⟦/9⟧", "⟦1⟧x", "x⟦/1⟧y", "⟦", "⟦1", "⟦a⟧b⟦/a⟧", "⟦0⟧z⟦/0⟧", "", "⟦1⟧⟦/1⟧", "⟦1⟧ñ⟦2⟧é⟦/2⟧"] {
+    for bad in ["⟦9⟧x⟦/9⟧", "⟦1⟧x", "x⟦/1⟧y", "⟦", "⟦1", "⟦a⟧b⟦/a⟧", "⟦0⟧z⟦/0⟧", "", "⟦1⟧⟦/1⟧", "⟦1⟧ñ⟦2⟧é⟦/2⟧"]
+    {
         let done = text::untag_runs(bad, &runs);
         let (plain, style) = (done.text, done.exact);
         for r in done.standard.ranges.iter().chain(&style.ranges) {
@@ -10932,17 +10945,23 @@ fn plain_run(resource: &str, size: f64) -> text::RunStyle {
 
 #[test]
 fn a_wrapped_paragraph_has_no_hard_breaks() {
-    let page = text_page("BT /F1 12 Tf 14 TL 72 700 Td (The quick brown fox jumps over the lazy dog and) Tj T* (keeps running across the whole field until) Tj T* (it finally stops.) Tj ET");
+    let page = text_page(
+        "BT /F1 12 Tf 14 TL 72 700 Td (The quick brown fox jumps over the lazy dog and) Tj T* (keeps running across the whole field until) Tj T* (it finally stops.) Tj ET",
+    );
     assert!(tagged_blocks(&page).iter().all(Option::is_none));
 }
 
 #[test]
 fn a_short_sentence_row_is_a_hard_break_but_a_short_row_without_a_stop_is_not() {
-    let page = text_page("BT /F1 12 Tf 14 TL 72 700 Td (A long first row of ordinary running text here.) Tj T* (Short end.) Tj T* (Then another long row of running text goes on) Tj ET");
+    let page = text_page(
+        "BT /F1 12 Tf 14 TL 72 700 Td (A long first row of ordinary running text here.) Tj T* (Short end.) Tj T* (Then another long row of running text goes on) Tj ET",
+    );
     let all = tagged_blocks(&page);
     let tagged = all.iter().flatten().next().expect("break after the short row");
     assert_eq!(tagged.text.matches("⟦br⟧").count(), 1, "{:?}", tagged.text);
-    let page = text_page("BT /F1 12 Tf 14 TL 72 700 Td (A long first row of ordinary running text here.) Tj T* (Short) Tj T* (Then another long row of running text goes on) Tj ET");
+    let page = text_page(
+        "BT /F1 12 Tf 14 TL 72 700 Td (A long first row of ordinary running text here.) Tj T* (Short) Tj T* (Then another long row of running text goes on) Tj ET",
+    );
     assert!(tagged_blocks(&page).iter().all(Option::is_none));
 }
 
@@ -10958,7 +10977,19 @@ fn untag_turns_breaks_into_newlines_and_places_ranges_after_them() {
 #[test]
 fn untag_survives_hostile_breaks() {
     let runs = vec![plain_run("F1", 12.0)];
-    for input in ["", "⟦br⟧", "⟦br⟧⟦br⟧⟦br⟧", "a⟦br⟧⟦br⟧b", "⟦1⟧a⟦br⟧", "⟦1⟧⟦br⟧⟦/1⟧", "⟦1⟧a⟦br⟧b", "⟦1⟧a⟦1⟧⟦br⟧b⟦/1⟧⟦/1⟧", "⟦br", "é⟦br⟧⟦1⟧日本⟦br⟧語⟦/1⟧⟦br⟧", "⟦BR⟧⟦ br ⟧"] {
+    for input in [
+        "",
+        "⟦br⟧",
+        "⟦br⟧⟦br⟧⟦br⟧",
+        "a⟦br⟧⟦br⟧b",
+        "⟦1⟧a⟦br⟧",
+        "⟦1⟧⟦br⟧⟦/1⟧",
+        "⟦1⟧a⟦br⟧b",
+        "⟦1⟧a⟦1⟧⟦br⟧b⟦/1⟧⟦/1⟧",
+        "⟦br",
+        "é⟦br⟧⟦1⟧日本⟦br⟧語⟦/1⟧⟦br⟧",
+        "⟦BR⟧⟦ br ⟧",
+    ] {
         let done = text::untag_runs(input, &runs);
         assert!(!done.text.ends_with('\n') && !done.text.starts_with('\n'), "{input:?} -> {:?}", done.text);
         assert!(!done.text.contains("\n\n"), "{input:?}");
@@ -10969,10 +11000,11 @@ fn untag_survives_hostile_breaks() {
     }
 }
 
-
 #[test]
 fn breaks_survive_mixed_styles_and_the_ranges_stay_inside_the_text() {
-    let page = text_page("BT /F1 20 Tf 72 700 Td (Big title) Tj ET BT /F1 12 Tf 14 TL 72 680 Td (A body row that is quite long indeed.) Tj T* (Short end.) Tj T* (Then more running text follows here) Tj ET");
+    let page = text_page(
+        "BT /F1 20 Tf 72 700 Td (Big title) Tj ET BT /F1 12 Tf 14 TL 72 680 Td (A body row that is quite long indeed.) Tj T* (Short end.) Tj T* (Then more running text follows here) Tj ET",
+    );
     let all = tagged_blocks(&page);
     let tagged = all.iter().flatten().find(|t| t.runs.len() == 2).expect("two runs");
     assert!(tagged.text.matches("⟦br⟧").count() >= 2, "{:?}", tagged.text);

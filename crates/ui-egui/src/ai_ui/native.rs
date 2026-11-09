@@ -64,7 +64,18 @@ pub(super) struct Msg {
 
 impl Msg {
     fn new(who: Who, text: String) -> Self {
-        Self { who, text, model: None, ask: None, stopped: false, cache: MarkdownCache::default(), snap_len: 0, last_parse: None, force_parse: false, got_delta: false }
+        Self {
+            who,
+            text,
+            model: None,
+            ask: None,
+            stopped: false,
+            cache: MarkdownCache::default(),
+            snap_len: 0,
+            last_parse: None,
+            force_parse: false,
+            got_delta: false,
+        }
     }
 
     /// The parsed text. While streaming it is parsed again at most every [`REPARSE`], or at once
@@ -401,7 +412,11 @@ pub(super) struct Actions {
 fn source_for(app: &PdfCraftApp) -> Result<Source, String> {
     match app.ai.context {
         ContextChoice::Document => Ok(Source::Document),
-        ContextChoice::Page => app.active_ids().and_then(|(i, _)| app.views.get(i)).map(|v| Source::Page(v.current)).ok_or_else(|| tl!("Open a document first.").to_string()),
+        ContextChoice::Page => app
+            .active_ids()
+            .and_then(|(i, _)| app.views.get(i))
+            .map(|v| Source::Page(v.current))
+            .ok_or_else(|| tl!("Open a document first.").to_string()),
         ContextChoice::Selection => app
             .active_ids()
             .and_then(|(i, _)| app.views.get(i))
@@ -416,11 +431,9 @@ pub fn panel(app: &mut PdfCraftApp, ui: &mut egui::Ui) {
     let t = Tokens::get(ui.ctx());
     let bytes = app.active_ids().and_then(|(_, id)| app.session.get(id)).map(|doc| doc.bytes.clone());
     let mut act = Actions::default();
-    egui::Frame::NONE
-        .fill(t.panel)
-        .inner_margin(egui::Margin { left: 12, right: 10, top: 11, bottom: 9 })
-        .stroke(Stroke::new(1.0, t.divider))
-        .show(ui, |ui| {
+    egui::Frame::NONE.fill(t.panel).inner_margin(egui::Margin { left: 12, right: 10, top: 11, bottom: 9 }).stroke(Stroke::new(1.0, t.divider)).show(
+        ui,
+        |ui| {
             header::show(app, ui, &t, &mut act);
             ui.add_space(6.0);
             ui.separator();
@@ -430,7 +443,8 @@ pub fn panel(app: &mut PdfCraftApp, ui: &mut egui::Ui) {
                 composer::show(app, ui, &t, bytes.is_some(), &mut act);
             });
             messages::show(app, ui, &t, &mut act);
-        });
+        },
+    );
     if app.ai.running() {
         ui.ctx().request_repaint_after(REPARSE);
     }
@@ -472,7 +486,10 @@ fn finish_frame(app: &mut PdfCraftApp, ctx: &egui::Context, bytes: Option<Arc<Ve
 fn send(app: &mut PdfCraftApp, ctx: &egui::Context, bytes: Arc<Vec<u8>>, request: Request, source: Source) {
     // Page and selection text are extracted from the document: honour a no-copy permission.
     let extracted = !matches!(source, Source::Document);
-    if extracted && let Some((_, id)) = app.active_ids() && !app.may_copy(id) {
+    if extracted
+        && let Some((_, id)) = app.active_ids()
+        && !app.may_copy(id)
+    {
         return;
     }
     if matches!(request, Request::Ask(_)) {

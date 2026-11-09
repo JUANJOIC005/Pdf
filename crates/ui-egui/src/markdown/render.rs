@@ -88,11 +88,7 @@ impl Writer<'_> {
                 Inline::Emphasis(v) => self.add(v, Style { emph: true, ..s }),
                 Inline::Strike(v) => self.add(v, Style { strike: true, ..s }),
                 Inline::Code(x) => {
-                    let f = TextFormat {
-                        font_id: FontId::monospace(s.size * 0.92),
-                        background: self.t.hover,
-                        ..s.format()
-                    };
+                    let f = TextFormat { font_id: FontId::monospace(s.size * 0.92), background: self.t.hover, ..s.format() };
                     self.cur.append(x, 0.0, f);
                 }
                 Inline::Math(x) => {
@@ -239,12 +235,9 @@ fn code_ui(ui: &mut Ui, cx: &mut Cx<'_>, lang: Option<&str>, text: &str, id: Id)
     let t = cx.t;
     let size = egui::TextStyle::Body.resolve(ui.style()).size * 0.92;
     let code = text.strip_suffix('\n').unwrap_or(text);
-    Frame::new()
-        .fill(t.pasteboard)
-        .stroke(Stroke::new(1.0, t.border))
-        .corner_radius(t.radius)
-        .inner_margin(Margin::symmetric(10, 6))
-        .show(ui, |ui| {
+    Frame::new().fill(t.pasteboard).stroke(Stroke::new(1.0, t.border)).corner_radius(t.radius).inner_margin(Margin::symmetric(10, 6)).show(
+        ui,
+        |ui| {
             ui.set_width(ui.available_width());
             ui.spacing_mut().item_spacing.y = 4.0;
             ui.horizontal(|ui| {
@@ -262,7 +255,8 @@ fn code_ui(ui: &mut Ui, cx: &mut Cx<'_>, lang: Option<&str>, text: &str, id: Id)
             ScrollArea::horizontal().id_salt(id.with("code")).auto_shrink([false, true]).show(ui, |ui| {
                 ui.add(Label::new(job).wrap_mode(TextWrapMode::Extend));
             });
-        });
+        },
+    );
 }
 
 fn table_ui(ui: &mut Ui, cx: &mut Cx<'_>, align: &[ColAlign], head: &[Vec<Inline>], rows: &[Vec<Vec<Inline>>], id: Id) {
@@ -305,11 +299,43 @@ fn table_ui(ui: &mut Ui, cx: &mut Cx<'_>, align: &[ColAlign], head: &[Vec<Inline
 /// fractions, roots, matrices or layout; anything it does not know is shown as written.
 pub fn math_text(src: &str) -> String {
     const WORDS: &[(&str, &str)] = &[
-        ("alpha", "α"), ("beta", "β"), ("gamma", "γ"), ("delta", "δ"), ("epsilon", "ε"), ("theta", "θ"), ("lambda", "λ"),
-        ("mu", "μ"), ("pi", "π"), ("rho", "ρ"), ("sigma", "σ"), ("tau", "τ"), ("phi", "φ"), ("omega", "ω"), ("Delta", "Δ"),
-        ("Sigma", "Σ"), ("Omega", "Ω"), ("times", "×"), ("cdot", "·"), ("pm", "±"), ("leq", "≤"), ("le", "≤"), ("geq", "≥"),
-        ("ge", "≥"), ("neq", "≠"), ("ne", "≠"), ("approx", "≈"), ("rightarrow", "→"), ("to", "→"), ("leftarrow", "←"),
-        ("infty", "∞"), ("sum", "∑"), ("int", "∫"), ("sqrt", "√"), ("in", "∈"), ("forall", "∀"), ("exists", "∃"),
+        ("alpha", "α"),
+        ("beta", "β"),
+        ("gamma", "γ"),
+        ("delta", "δ"),
+        ("epsilon", "ε"),
+        ("theta", "θ"),
+        ("lambda", "λ"),
+        ("mu", "μ"),
+        ("pi", "π"),
+        ("rho", "ρ"),
+        ("sigma", "σ"),
+        ("tau", "τ"),
+        ("phi", "φ"),
+        ("omega", "ω"),
+        ("Delta", "Δ"),
+        ("Sigma", "Σ"),
+        ("Omega", "Ω"),
+        ("times", "×"),
+        ("cdot", "·"),
+        ("pm", "±"),
+        ("leq", "≤"),
+        ("le", "≤"),
+        ("geq", "≥"),
+        ("ge", "≥"),
+        ("neq", "≠"),
+        ("ne", "≠"),
+        ("approx", "≈"),
+        ("rightarrow", "→"),
+        ("to", "→"),
+        ("leftarrow", "←"),
+        ("infty", "∞"),
+        ("sum", "∑"),
+        ("int", "∫"),
+        ("sqrt", "√"),
+        ("in", "∈"),
+        ("forall", "∀"),
+        ("exists", "∃"),
     ];
     const SUP: &str = "⁰¹²³⁴⁵⁶⁷⁸⁹";
     const SUB: &str = "₀₁₂₃₄₅₆₇₈₉";

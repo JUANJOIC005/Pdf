@@ -83,7 +83,14 @@ pub fn tag_runs(doc: &Document, page: usize, block: &TextBlock) -> Result<Option
     let mut spans: Vec<(Range<usize>, usize)> = Vec::new();
     for (range, index) in &block.spans {
         let Some(line) = lines.get(*index) else { continue };
-        let style = RunStyle { resource: line.font.clone(), size: line.size, color: line.color, bold: line.bold, italic: line.italic, family: super::fallback::source_family(&line.base_font) };
+        let style = RunStyle {
+            resource: line.font.clone(),
+            size: line.size,
+            color: line.color,
+            bold: line.bold,
+            italic: line.italic,
+            family: super::fallback::source_family(&line.base_font),
+        };
         let id = match runs.iter().position(|r| same_look(r, &style)) {
             Some(id) => id,
             None => {

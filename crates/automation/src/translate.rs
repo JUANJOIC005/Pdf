@@ -10,9 +10,9 @@
 use std::path::Path;
 use std::sync::atomic::AtomicBool;
 
+use pdfcraft_engine::EditError;
 use pdfcraft_engine::ai::{ModelChoice, Options, Provider, validate_model_id};
 use pdfcraft_engine::translate::{AiTranslator, EchoTranslator, TranslateOptions, TranslationOutput, Translator, parse_page_range, translate_copy};
-use pdfcraft_engine::EditError;
 use serde_json::{Value, json};
 
 use super::Automation;
@@ -73,7 +73,8 @@ impl Automation {
         }
         let cancel = AtomicBool::new(false);
         let TranslationOutput { bytes, report, signed } =
-            translate_copy(&self.session, id, &pages, &language, &opts, translator.as_ref(), &mut |_| {}, &cancel).map_err(|e: EditError| failed(e))?;
+            translate_copy(&self.session, id, &pages, &language, &opts, translator.as_ref(), &mut |_| {}, &cancel)
+                .map_err(|e: EditError| failed(e))?;
         write_atomic(&target, &bytes)?;
         let rows: Vec<Value> = report
             .pages

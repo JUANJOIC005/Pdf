@@ -40,17 +40,17 @@ macro_rules! tl_ctx {
         $crate::i18n::tr_ctx($crate::i18n::current(), $context, $s)
     };
 }
-mod ai_ui;
 pub mod ai_model;
+mod ai_ui;
 #[cfg(not(target_arch = "wasm32"))]
 mod translate_ui;
+pub use ai_ui::{ChatBackend, PdfAiBackend};
 #[cfg(not(target_arch = "wasm32"))]
 pub use translate_ui::TranslatorFactory;
-pub use ai_ui::{ChatBackend, PdfAiBackend};
 pub mod canvas;
 mod chrome;
-pub mod markdown;
 mod image_engine;
+pub mod markdown;
 pub use combine_grid::ThumbState as CombineThumb;
 pub use combine_ui::{Columns as CombineColumns, CombineView, Lock as CombineLock, SortKey};
 mod commands;

@@ -65,10 +65,15 @@ pub enum Request {
     KeyPoints,
     Explain,
     ActionItems,
-    Translate { language: String },
+    Translate {
+        language: String,
+    },
     Ask(String),
     /// Translate a loose fragment; needs no document and treats the text as content.
-    TranslateText { text: String, language: String },
+    TranslateText {
+        text: String,
+        language: String,
+    },
 }
 
 impl Request {
@@ -164,12 +169,7 @@ fn markdown_with(program: &Path, bytes: &[u8]) -> Result<MarkdownDocument, AiErr
     let output = temp.0.join("document.md");
     std::fs::write(&input, bytes).map_err(|_| AiError::PrepareFailed)?;
     let out = File::create(&output).map_err(|_| AiError::PrepareFailed)?;
-    let status = Command::new(program)
-        .arg(&input)
-        .stdout(Stdio::from(out))
-        .stderr(Stdio::null())
-        .status()
-        .map_err(|_| AiError::PrepareFailed)?;
+    let status = Command::new(program).arg(&input).stdout(Stdio::from(out)).stderr(Stdio::null()).status().map_err(|_| AiError::PrepareFailed)?;
     if !status.success() {
         return Err(AiError::PrepareFailed);
     }
@@ -426,11 +426,7 @@ fn run_agent_with(
         return Err(AiError::AgentFailed(if tail.is_empty() { format!("{} terminó con {status}", provider.id()) } else { tail }));
     }
     let answer = if final_text.trim().is_empty() { streamed } else { final_text };
-    if answer.trim().is_empty() {
-        Err(AiError::AgentFailed(format!("{} terminó sin devolver una respuesta", provider.id())))
-    } else {
-        Ok(answer)
-    }
+    if answer.trim().is_empty() { Err(AiError::AgentFailed(format!("{} terminó sin devolver una respuesta", provider.id()))) } else { Ok(answer) }
 }
 
 #[cfg(test)]
@@ -524,7 +520,8 @@ mod tests {
 
     #[test]
     fn invalid_model_is_rejected_before_spawning() {
-        let r = run_agent_with(Path::new("/nonexistent"), Provider::Claude, &ModelChoice::Named("-x".into()), "p", &AtomicBool::new(false), &mut |_| {});
+        let r =
+            run_agent_with(Path::new("/nonexistent"), Provider::Claude, &ModelChoice::Named("-x".into()), "p", &AtomicBool::new(false), &mut |_| {});
         assert_eq!(r, Err(AiError::InvalidModel));
     }
 
@@ -550,7 +547,8 @@ mod tests {
 
         #[test]
         fn cancel_kills_the_child_quickly() {
-            let (dir, path) = script("#!/bin/sh\necho $$ > \"$(dirname \"$0\")/pid\"\ni=0\nwhile [ $i -lt 25 ]; do echo '{}'; sleep 0.2; i=$((i+1)); done\n");
+            let (dir, path) =
+                script("#!/bin/sh\necho $$ > \"$(dirname \"$0\")/pid\"\ni=0\nwhile [ $i -lt 25 ]; do echo '{}'; sleep 0.2; i=$((i+1)); done\n");
             let cancel = Arc::new(AtomicBool::new(false));
             let flag = Arc::clone(&cancel);
             let trigger = std::thread::spawn(move || {

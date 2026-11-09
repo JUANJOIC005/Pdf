@@ -47,15 +47,8 @@ fn main() -> Result<(), String> {
     let bytes = std::fs::read(&input).map_err(|e| format!("no se pudo leer {input}: {e}"))?;
     let mut doc = Document::open(Arc::new(bytes)).map_err(|e| format!("no se pudo abrir el PDF: {e}"))?;
     let cancel = AtomicBool::new(false);
-    let report = translate_document(
-        &mut doc,
-        &[page],
-        &language,
-        &TranslateOptions::default(),
-        &Ai { provider, mock },
-        &mut |p| eprintln!("{p:?}"),
-        &cancel,
-    );
+    let report =
+        translate_document(&mut doc, &[page], &language, &TranslateOptions::default(), &Ai { provider, mock }, &mut |p| eprintln!("{p:?}"), &cancel);
     for p in &report.pages {
         eprintln!("página {}: {p:?}", p.page + 1);
         if let Some(e) = &p.error {

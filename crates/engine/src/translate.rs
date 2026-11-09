@@ -16,7 +16,7 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use pdfcraft_ai::{AiError, Options};
 use pdfcraft_edit::text::translate_document;
 
-pub use pdfcraft_edit::text::{PageReport, SkipReason, TranslateOptions, Translator, Progress, TranslationReport};
+pub use pdfcraft_edit::text::{PageReport, Progress, SkipReason, TranslateOptions, TranslationReport, Translator};
 
 use crate::doc_state::guard;
 use crate::{DocId, EditError, Session};
@@ -109,7 +109,9 @@ pub fn translate_copy(
     if encrypted && copy.output_handler().is_none() {
         return Err(EditError::Write("the translated copy would lose the document's encryption".into()));
     }
-    let out = guard(|| pdfcraft_cos::write_full(&copy, &pdfcraft_cos::SaveOptions::default())).map_err(EditError::Write)?.map_err(|e| EditError::Write(e.to_string()))?;
+    let out = guard(|| pdfcraft_cos::write_full(&copy, &pdfcraft_cos::SaveOptions::default()))
+        .map_err(EditError::Write)?
+        .map_err(|e| EditError::Write(e.to_string()))?;
     Ok(TranslationOutput { bytes: out, report, signed })
 }
 

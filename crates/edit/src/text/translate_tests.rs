@@ -54,7 +54,10 @@ fn doc_of(contents: &[&str]) -> Document {
         "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>".into(),
     ];
     for (i, c) in contents.iter().enumerate() {
-        objs.push(format!("<< /Type /Page /Parent 2 0 R /MediaBox [0 0 600 800] /Contents {} 0 R /Resources << /Font << /F1 3 0 R >> >> >>", 5 + 2 * i));
+        objs.push(format!(
+            "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 600 800] /Contents {} 0 R /Resources << /Font << /F1 3 0 R >> >> >>",
+            5 + 2 * i
+        ));
         objs.push(format!("<< /Length {} >>\nstream\n{c}\nendstream", c.len()));
     }
     let mut out = b"%PDF-1.7\n".to_vec();

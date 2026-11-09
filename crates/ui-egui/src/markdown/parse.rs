@@ -30,7 +30,10 @@ pub enum Inline {
     Strike(Vec<Inline>),
     Code(String),
     /// A link or an image (shown as its alt text); the url is unchecked, the renderer filters it.
-    Link { text: Vec<Inline>, url: String },
+    Link {
+        text: Vec<Inline>,
+        url: String,
+    },
     /// A hard line break.
     Break,
     /// A `$…$` formula, source text as written.
@@ -40,13 +43,28 @@ pub enum Inline {
 /// Block content.
 #[derive(Clone, Debug, PartialEq)]
 pub enum Block {
-    Heading { level: u8, inlines: Vec<Inline> },
+    Heading {
+        level: u8,
+        inlines: Vec<Inline>,
+    },
     Paragraph(Vec<Inline>),
     /// `checked` has one entry per item: `Some` for a task-list item.
-    List { ordered: bool, start: u64, items: Vec<Vec<Block>>, checked: Vec<Option<bool>> },
+    List {
+        ordered: bool,
+        start: u64,
+        items: Vec<Vec<Block>>,
+        checked: Vec<Option<bool>>,
+    },
     Quote(Vec<Block>),
-    Code { lang: Option<String>, text: String },
-    Table { align: Vec<Align>, head: Vec<Vec<Inline>>, rows: Vec<Vec<Vec<Inline>>> },
+    Code {
+        lang: Option<String>,
+        text: String,
+    },
+    Table {
+        align: Vec<Align>,
+        head: Vec<Vec<Inline>>,
+        rows: Vec<Vec<Vec<Inline>>>,
+    },
     Rule,
 }
 
@@ -59,17 +77,41 @@ enum Kind {
 
 enum Frame {
     /// A container of blocks; loose inlines (tight list items) wait in `pending`.
-    Container { kind: Kind, blocks: Vec<Block>, pending: Vec<Inline> },
-    List { ordered: bool, start: u64, items: Vec<Vec<Block>>, checked: Vec<Option<bool>>, stray: Vec<Inline> },
-    Heading { level: u8, inl: Vec<Inline> },
+    Container {
+        kind: Kind,
+        blocks: Vec<Block>,
+        pending: Vec<Inline>,
+    },
+    List {
+        ordered: bool,
+        start: u64,
+        items: Vec<Vec<Block>>,
+        checked: Vec<Option<bool>>,
+        stray: Vec<Inline>,
+    },
+    Heading {
+        level: u8,
+        inl: Vec<Inline>,
+    },
     Paragraph(Vec<Inline>),
-    Code { lang: Option<String>, text: String },
-    Table { align: Vec<Align>, head: Vec<Vec<Inline>>, rows: Vec<Vec<Vec<Inline>>>, row: Vec<Vec<Inline>> },
+    Code {
+        lang: Option<String>,
+        text: String,
+    },
+    Table {
+        align: Vec<Align>,
+        head: Vec<Vec<Inline>>,
+        rows: Vec<Vec<Vec<Inline>>>,
+        row: Vec<Vec<Inline>>,
+    },
     Cell(Vec<Inline>),
     Strong(Vec<Inline>),
     Emphasis(Vec<Inline>),
     Strike(Vec<Inline>),
-    Link { url: String, inl: Vec<Inline> },
+    Link {
+        url: String,
+        inl: Vec<Inline>,
+    },
 }
 
 struct Builder {
@@ -162,12 +204,9 @@ impl Builder {
                 stray: Vec::new(),
             }),
             Tag::Item => self.push_frame(Self::container(Kind::Item(None))),
-            Tag::Table(al) => self.push_frame(Frame::Table {
-                align: al.iter().map(|a| align(*a)).collect(),
-                head: Vec::new(),
-                rows: Vec::new(),
-                row: Vec::new(),
-            }),
+            Tag::Table(al) => {
+                self.push_frame(Frame::Table { align: al.iter().map(|a| align(*a)).collect(), head: Vec::new(), rows: Vec::new(), row: Vec::new() })
+            }
             Tag::TableHead | Tag::TableRow => {
                 // Not a frame of its own: the cells collect into the table's current row.
                 if let Some(Frame::Table { row, .. }) = self.stack.last_mut() {
