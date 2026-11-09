@@ -1,0 +1,26 @@
+Image
+Label = "Translate"
+Label = "Into a new copy of this PDF"
+Button "Close" [off]
+ComboBox "Agent" = "Codex"
+ComboBox "Model" = "Automatic"
+Pane
+  Button "Start translation"
+Label = "Translate into"
+RadioButton "Spanish" [on]
+RadioButton "English" [off]
+RadioButton "French" [off]
+RadioButton "German" [off]
+RadioButton "Portuguese" [off]
+RadioButton "Italian" [off]
+RadioButton "Chinese" [off]
+RadioButton "Japanese" [off]
+RadioButton "Arabic" [off]
+RadioButton "Russian" [off]
+RadioButton "Other…" [off]
+Label = "Pages"
+RadioButton "Current page" [off]
+RadioButton "All pages" [on]
+RadioButton "Range" [off]
+Image
+Label = "The original is never changed. Page text is sent to the chosen agent only when you press Translate."

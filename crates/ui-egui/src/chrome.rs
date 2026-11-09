@@ -571,6 +571,7 @@ pub fn right_rail(app: &mut PdfCraftApp, ui: &mut egui::Ui) {
     let has = |has: bool, label: &'static str| has.then_some(label);
     let mut items = vec![
         item(RightPanel::Ai, "sparkles", "AI assistant", None),
+        item(RightPanel::Translate, "languages", "Translate", None),
         item(RightPanel::Comments, "message-square-text", "Comments", has(has_comments, "Has comments")),
         item(RightPanel::Bookmarks, "bookmark", "Bookmarks", has(has_outline, "Has bookmarks")),
         item(RightPanel::Pages, "files", "Page thumbnails", None),

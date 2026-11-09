@@ -81,6 +81,9 @@ impl PdfCraftApp {
             left_open: true,
             right: None,
             ai: Default::default(),
+            ai_choice: Default::default(),
+            #[cfg(not(target_arch = "wasm32"))]
+            translate: Default::default(),
             last_right: RightPanel::Comments,
             right_before_read: None,
             comments_panel_closed: false,

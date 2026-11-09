@@ -1790,9 +1790,9 @@ fn short_window_rail_buttons_scroll_clear_of_page_navigation() {
         };
         let dock = rail(&h, dock_label);
         assert!(dock.top() >= page.bottom() && dock.bottom() <= height, "dock button {dock:?} stays below navigation and inside the window");
-        assert!(rail(&h, "Comments").bottom() <= page.top(), "the first button sits above the page field");
+        assert!(rail(&h, "AI assistant").bottom() <= page.top(), "the first button sits above the page field");
         assert!(rail(&h, "Tags").top() >= page.top(), "the window is short enough that the buttons must scroll");
-        let first = rail(&h, "Comments");
+        let first = rail(&h, "AI assistant");
         let over = first.center();
         h.event(egui::Event::PointerMoved(over));
         for _ in 0..8 {

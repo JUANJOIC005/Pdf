@@ -58,6 +58,7 @@ pub mod text_fonts;
 mod text_preview;
 pub mod text_script;
 pub mod text_style_bookmarks;
+pub mod translate;
 pub mod word_count;
 pub mod xfa;
 mod xfa_form;
@@ -101,6 +102,7 @@ pub use pdfcraft_forms::{
 };
 
 pub use pdfcraft_a11y as a11y;
+pub use pdfcraft_ai as ai;
 pub use pdfcraft_edit::{Backdrop, BlockKey, BlockStyle, PageImage, RangeStyle, TextBlock, TextLine, block_overlapping, first_undrawable};
 pub use pdfcraft_measure as measure;
 pub use pdfcraft_xfa::Report as XfaLayout;

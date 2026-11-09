@@ -122,17 +122,8 @@ pub(crate) fn group_reading_blocks(lines: &[TextLine]) -> Vec<TextBlock> {
     let mut blocks = Vec::new();
     let mut start = 0;
     let mut offset = 0;
-    for row in lines.chunk_by(|a, b| same_plane(a, b) && (a.origin.baseline - b.origin.baseline).abs() < a.size.min(b.size) * 0.2) {
-        let mut text = String::new();
-        for (i, line) in row.iter().enumerate() {
-            if !text.ends_with(char::is_whitespace)
-                && !line.text.starts_with(char::is_whitespace)
-                && i.checked_sub(1).and_then(|i| row.get(i)).is_some_and(|prev| line.rect[0] - prev.rect[2] > line.size * 0.12)
-            {
-                text.push(' ');
-            }
-            text.push_str(&line.text);
-        }
+    for row in baseline_rows(lines) {
+        let text = baseline_row_text(row);
         if leader_entry(&text)
             && let Some(first) = row.first()
         {
@@ -149,6 +140,37 @@ pub(crate) fn group_reading_blocks(lines: &[TextLine]) -> Vec<TextBlock> {
     }
     blocks.extend(group_layout(lines.get(start..).unwrap_or_default(), false));
     blocks
+}
+
+/// The lines of a page that sit on one baseline of one plane, in reading order.
+fn baseline_rows(lines: &[TextLine]) -> impl Iterator<Item = &[TextLine]> {
+    lines.chunk_by(|a, b| same_plane(a, b) && (a.origin.baseline - b.origin.baseline).abs() < a.size.min(b.size) * 0.2)
+}
+
+/// The text of one baseline row, with a space where two runs are apart but carry none.
+fn baseline_row_text(row: &[TextLine]) -> String {
+    let mut text = String::new();
+    for (i, line) in row.iter().enumerate() {
+        if !text.ends_with(char::is_whitespace)
+            && !line.text.starts_with(char::is_whitespace)
+            && i.checked_sub(1).and_then(|i| row.get(i)).is_some_and(|prev| line.rect[0] - prev.rect[2] > line.size * 0.12)
+        {
+            text.push(' ');
+        }
+        text.push_str(&line.text);
+    }
+    text
+}
+
+/// Per line: does it belong to a dotted-leader contents entry ([`leader_entry`])? Such an entry
+/// is a row of its own, so editing blocks never join it to its neighbours.
+fn leader_flags(lines: &[TextLine]) -> Vec<bool> {
+    let mut flags = Vec::with_capacity(lines.len());
+    for row in baseline_rows(lines) {
+        let entry = leader_entry(&baseline_row_text(row));
+        flags.extend(std::iter::repeat_n(entry, row.len()));
+    }
+    flags
 }
 
 /// Dotted leaders end in a page number, with a title before the dots. A dot in an article
@@ -204,9 +226,9 @@ fn same_style(a: &TextLine, b: &TextLine) -> bool {
 /// Does a row open with a list marker? A bullet or a dash, or an ordered marker — digits (or a
 /// single letter) followed by `.` or `)` and then a space or the row's end, so prose such as
 /// `1.5` or `Dr. Smith` is left alone.
-fn opens_with_marker(text: &str) -> bool {
+pub(in crate::text) fn opens_with_marker(text: &str) -> bool {
     let Some(first) = text.chars().next() else { return false };
-    if matches!(first, '•' | '◦' | '▪' | '‣' | '⁃' | '*' | '-' | '–' | '—') {
+    if matches!(first, '•' | '·' | '◦' | '▪' | '●' | '■' | '‣' | '⁃' | '*' | '-' | '–' | '—') {
         return true;
     }
     if !first.is_ascii_digit() && !first.is_ascii_alphabetic() {
@@ -274,6 +296,9 @@ fn group_layout(lines: &[TextLine], mixed: bool) -> Vec<TextBlock> {
             rows.push(vec![i]);
         }
     }
+    // Editing blocks (`mixed`) keep each contents entry apart, as the reading route does.
+    let entries = if mixed { leader_flags(lines) } else { Vec::new() };
+    let is_entry = |row: &[usize]| row.first().is_some_and(|i| entries.get(*i).copied().unwrap_or(false));
     let mut blocks: Vec<TextBlock> = Vec::new();
     for row_at in 0..rows.len() {
         let Some(row) = rows.get(row_at) else { continue };
@@ -287,6 +312,10 @@ fn group_layout(lines: &[TextLine], mixed: bool) -> Vec<TextBlock> {
                 return false;
             }
             let Some(prev_row) = block.rows.last() else { return false };
+            // A contents entry (title, leader dots, page number) is a paragraph of its own.
+            if is_entry(row) || is_entry(prev_row) {
+                return false;
+            }
             let Some(prev) = prev_row.first().and_then(|i| lines.get(*i)) else { return false };
             let Some(pr) = frame_row_rect(prev_row, lines) else { return false };
             let gap = prev.frame_origin().1 - first.frame_origin().1;

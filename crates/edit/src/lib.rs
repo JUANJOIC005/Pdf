@@ -56,8 +56,10 @@ mod linebreak;
 pub mod paragraph_align;
 pub mod text;
 pub use text::{
-    BlockKey, BlockStyle, LineEdit, MAX_FORM_DEPTH, MAX_FORM_VISITS, RangeStyle, ReadingBlocks, TextBlock, TextLine, TextSession, block_overlapping,
-    clear_block, glyph_text_lines, reading_blocks, reading_blocks_checked, replace_block, replace_line, rewrite_block, text_blocks, text_lines,
+    BatchReport, BlockEdit, BlockKey, BlockOutcome, BlockStyle, LineEdit, MAX_FORM_DEPTH, MAX_FORM_VISITS, PageReport, Progress, RangeStyle,
+    ReadingBlocks, RunStyle, SkipReason, TaggedBlock, TextBlock, TextLine, TextSession, TranslateOptions, TranslationReport, Translator, Untagged,
+    block_overlapping, clear_block, glyph_text_lines, looks_like_code, reading_blocks, reading_blocks_checked, replace_block, replace_line,
+    rewrite_block, rewrite_page_blocks, tag_runs, text_blocks, text_lines, translate_document, untag_runs,
 };
 pub mod added;
 pub use added::{

@@ -232,6 +232,14 @@ pub fn tools() -> Vec<ToolDef> {
             .with(schema(json!({ "doc": doc(), "query": { "type": "string", "minLength": 1 }, "limit": { "type": "integer", "minimum": 1, "description": "Maximum matches (default 500). When another match exists, next holds start_page and skip to continue. complete is false for either additional matches or failed pages; an exhausted search with warnings has no next." },
                 "start_page": { "type": "integer", "minimum": 1, "description": "Page to start searching from (default 1)." },
                 "skip": { "type": "integer", "minimum": 0, "description": "Matches to pass over on start_page before returning any (default 0)." } }), &["doc", "query"])),
+        t("text_translate", "Translate pages", "Translate the text of some or all pages (a range such as \"3-7\", \"1,3,5-6\" or \"all\") into `language` and write the result to a NEW PDF at `out`; the open document is not changed. Layout is kept: each paragraph is rewritten in place, shrinking the font down to min_scale when the translation is longer. At most 200 pages per call. Needs permission to modify and copy. A signed document gives a copy without valid signatures (signed: true). provider `echo` (default) only prefixes each paragraph with [language] and sends nothing anywhere; `codex` and `claude` send the page text to that command-line agent and work only when the host enabled AI (allow_ai). out must be inside the allowed folders and must not be the input file. Returns a per-page report (applied, unchanged, lost, merged, failed, overflowed, substituted, plain, skipped, error).")
+            .destructive()
+            .with(schema(json!({ "doc": doc(), "pages": { "type": "string", "description": "1-based range: all (default), 3, 3-7, 1,3,5-6." },
+                "language": { "type": "string", "minLength": 1, "maxLength": 64, "description": "Target language, e.g. es or Spanish." },
+                "provider": { "type": "string", "enum": ["echo", "codex", "claude"] },
+                "model": { "type": "string", "description": "Model of the codex/claude provider (default: the agent's own)." },
+                "min_scale": { "type": "number", "minimum": 0.7, "maximum": 1, "description": "Smallest font scale for longer translations (default 0.7)." },
+                "out": path_arg() }), &["doc", "language", "out"])),
         t("page_rotate", "Rotate pages", "Rotate pages by a multiple of 90 degrees (positive is clockwise): the listed pages (default all), filtered like Acrobat's Rotate Pages by subset (all, even, odd page numbers) and orientation (all, landscape, portrait). Undoable.")
             .cmd("page.rotate")
             .with(schema(

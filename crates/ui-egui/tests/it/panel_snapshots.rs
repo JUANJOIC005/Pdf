@@ -139,6 +139,7 @@ fn check(h: &Harness<'static, PdfCraftApp>, name: &str) -> Result<(), String> {
     let mut got = String::new();
     describe(&panel(h), 0, &mut got);
     let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/snapshots").join(format!("panel_{name}.txt"));
+    assert!(!got.to_lowercase().contains("markitdown"), "{name} panel names the preparing tool");
     if std::env::var_os("UPDATE_SNAPSHOTS").is_some() {
         std::fs::create_dir_all(path.parent().unwrap()).unwrap();
         std::fs::write(&path, &got).unwrap();
@@ -164,8 +165,9 @@ fn check(h: &Harness<'static, PdfCraftApp>, name: &str) -> Result<(), String> {
 }
 
 /// Every panel, in the order of the rail.
-const ALL: [RightPanel; 12] = [
+const ALL: [RightPanel; 13] = [
     RightPanel::Ai,
+    RightPanel::Translate,
     RightPanel::Comments,
     RightPanel::Bookmarks,
     RightPanel::Pages,
@@ -184,6 +186,7 @@ const ALL: [RightPanel; 12] = [
 fn open(p: RightPanel) -> (Harness<'static, PdfCraftApp>, &'static str) {
     let name = match p {
         RightPanel::Ai => "ai",
+        RightPanel::Translate => "translate",
         RightPanel::Comments => "comments",
         RightPanel::Bookmarks => "bookmarks",
         RightPanel::Pages => "pages",

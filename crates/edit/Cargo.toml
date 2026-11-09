@@ -23,6 +23,7 @@ kurbo = { workspace = true }
 unicode-bidi = "0.3"
 
 [dev-dependencies]
+pdfcraft-ai = { workspace = true }
 hayro-syntax = { workspace = true }
 pdfcraft-render = { workspace = true }
 proptest = { workspace = true }

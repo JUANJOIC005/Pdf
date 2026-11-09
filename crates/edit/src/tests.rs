@@ -8669,6 +8669,51 @@ fn reading_keeps_dotted_leader_entries_whole_and_in_order() {
     );
 }
 
+/// Contents entries (Word tab leaders) and the body paragraph under them, at a tight leading.
+fn leader_entries_page() -> Document {
+    let mut content = String::new();
+    let dots = ".".repeat(108);
+    // Title and dots are one run, as Word writes them; the page number follows the dots closely,
+    // so the entry reads as one row.
+    for (title, page, y) in [("Chapter one", "3", 700), ("Chapter two", "9", 686), ("Chapter three", "14", 672), ("Chapter four", "21", 658)] {
+        content.push_str(&format!(
+            "BT /F1 12 Tf 72 {y} Td ({title} {dots}) Tj ET \
+             BT /F1 12 Tf 510 {y} Td ({page}) Tj ET\n"
+        ));
+    }
+    content.push_str("BT /F1 12 Tf 72 644 Td (Ordinary body text starts here.) Tj ET BT /F1 12 Tf 72 630 Td (Still the same paragraph.) Tj ET");
+    text_page(&content)
+}
+
+#[test]
+fn editing_blocks_keep_contents_entries_apart() {
+    let blocks = text::text_blocks(&leader_entries_page(), 0).unwrap();
+    let texts: Vec<_> = blocks.iter().map(|b| b.text.as_str()).collect();
+    for title in ["Chapter one", "Chapter two", "Chapter three", "Chapter four"] {
+        let mine: Vec<_> = blocks.iter().filter(|b| b.text.contains(title)).collect();
+        assert_eq!(mine.len(), 1, "{title}: {texts:?}");
+        let text = &mine[0].text;
+        // One entry per block: no other title, no body text, and its own page number.
+        assert_eq!(["Chapter", "Ordinary", "Still"].iter().map(|w| text.matches(w).count()).sum::<usize>(), 1, "{text:?}");
+    }
+    let body: Vec<_> = blocks.iter().filter(|b| b.text.contains("Ordinary")).collect();
+    assert_eq!(body.len(), 1, "{texts:?}");
+    assert_eq!(body[0].text, "Ordinary body text starts here. Still the same paragraph.");
+    assert!(
+        blocks.iter().filter(|b| b.text.contains("..")).all(|b| b.text.trim_end().chars().last().is_some_and(|c| c.is_ascii_digit())),
+        "{texts:?}"
+    );
+}
+
+#[test]
+fn editing_blocks_keep_a_plain_paragraph_whole() {
+    let content = "BT /F1 12 Tf 72 700 Td (First line of a paragraph) Tj ET BT /F1 12 Tf 72 686 Td (second line of it) Tj ET \
+                   BT /F1 12 Tf 72 672 Td (and a third one 2024.) Tj ET";
+    let blocks = text::text_blocks(&text_page(content), 0).unwrap();
+    assert_eq!(blocks.len(), 1);
+    assert_eq!(blocks[0].rows.len(), 3);
+}
+
 #[cfg(test)]
 mod proptests {
     use super::*;
@@ -10694,5 +10739,279 @@ fn review_inside_scope_group_move_matches_direct_transform_under_outer_scale() {
                 "group and direct transforms must agree, preserving other artwork"
             );
         }
+    }
+}
+
+/// The paragraphs of page 0 as `BlockEdit`s whose new text is `f(old)`.
+fn batch_edits(doc: &Document, f: impl Fn(&str) -> String) -> Vec<text::BlockEdit> {
+    text::text_blocks(doc, 0).unwrap().iter().map(|b| text::BlockEdit::new(text::BlockKey::of(b), f(&b.text))).collect()
+}
+
+fn page_text(doc: &Document) -> String {
+    text::text_blocks(doc, 0).unwrap().iter().map(|b| b.text.clone()).collect::<Vec<_>>().join("\n")
+}
+
+/// Three paragraphs far enough apart to be three blocks.
+const THREE_PARAGRAPHS: &str = "BT /F1 12 Tf 72 700 Td (First paragraph one) Tj ET BT /F1 12 Tf 72 600 Td (Second paragraph two) Tj ET BT /F1 12 Tf 72 500 Td (Third paragraph three) Tj ET";
+
+#[test]
+fn a_batch_rewrites_every_paragraph_by_key_whatever_the_order_of_blocks() {
+    let mut doc = text_page(THREE_PARAGRAPHS);
+    let edits = batch_edits(&doc, |t| format!("<{t}>"));
+    assert_eq!(edits.len(), 3);
+    let report = text::rewrite_page_blocks(&mut doc, 0, &edits, 0.7).unwrap();
+    assert!(report.outcomes.iter().all(|o| matches!(o, text::BlockOutcome::Applied { overflow: false, .. })), "{report:?}");
+    let now = page_text(&reopen(&doc));
+    for word in ["<First paragraph one>", "<Second paragraph two>", "<Third paragraph three>"] {
+        assert!(now.contains(word), "{word} missing from {now:?}");
+    }
+}
+
+#[test]
+fn a_batch_reports_a_missing_paragraph_and_leaves_an_empty_or_unchanged_one_alone() {
+    let mut doc = text_page(THREE_PARAGRAPHS);
+    let before = page_text(&doc);
+    assert_eq!(text::rewrite_page_blocks(&mut doc, 0, &[], 0.7).unwrap(), text::BatchReport::default());
+    let mut edits = batch_edits(&doc, |t| t.to_string());
+    edits[1].text = "   ".into();
+    let stranger = text::TextBlock { text: "not on the page".into(), ..text::text_blocks(&doc, 0).unwrap().remove(0) };
+    edits.push(text::BlockEdit::new(text::BlockKey::of(&stranger), "x"));
+    let report = text::rewrite_page_blocks(&mut doc, 0, &edits, f64::NAN).unwrap();
+    assert_eq!(
+        report.outcomes,
+        vec![text::BlockOutcome::Unchanged, text::BlockOutcome::Unchanged, text::BlockOutcome::Unchanged, text::BlockOutcome::Missing]
+    );
+    assert_eq!(page_text(&doc), before);
+}
+
+#[test]
+fn a_batch_shrinks_longer_text_to_fit_and_says_when_it_cannot() {
+    // A three-row paragraph keeps its width, so three times the text needs more rows than it has.
+    let rows =
+        "BT /F1 12 Tf 14 TL 72 700 Td (alpha beta gamma delta epsilon) Tj T* (zeta eta theta iota kappa) Tj T* (lambda mu nu xi omicron) Tj ET";
+    let mut doc = text_page(rows);
+    assert_eq!(text::text_blocks(&doc, 0).unwrap().len(), 1);
+    let edits = batch_edits(&doc, |t| format!("{t} {t} {t}"));
+    let report = text::rewrite_page_blocks(&mut doc, 0, &edits, 0.7).unwrap();
+    assert_eq!(report.outcomes.len(), 1);
+    for outcome in &report.outcomes {
+        match outcome {
+            text::BlockOutcome::Applied { scale, overflow, .. } => assert!(*scale < 1.0 || *overflow, "{outcome:?}"),
+            other => panic!("expected an applied edit, got {other:?}"),
+        }
+    }
+}
+
+/// Whatever a batch does, a paragraph it reports as applied shows its new text and one it doesn't
+/// still shows its old one: nothing is lost to a merge, as replacing by index did.
+#[test]
+fn a_batch_never_loses_a_paragraph_when_neighbours_are_close() {
+    // A heading 25 pt above its paragraph, as in a worksheet; the new heading drops its "2." marker.
+    let content =
+        "BT /F1 12 Tf 72 700 Td (Intro text here) Tj ET BT /F1 12 Tf 72 675 Td (2. Heading) Tj ET BT /F1 12 Tf 72 650 Td (Body text under it) Tj ET";
+    let mut doc = text_page(content);
+    let original = text::text_blocks(&doc, 0).unwrap();
+    let edits = batch_edits(&doc, |t| t.replace("2. ", "").to_uppercase());
+    let report = text::rewrite_page_blocks(&mut doc, 0, &edits, 0.7).unwrap();
+    assert_eq!(report.outcomes.len(), original.len());
+    let now = page_text(&reopen(&doc));
+    for (old, (edit, outcome)) in original.iter().zip(edits.iter().zip(&report.outcomes)) {
+        match outcome {
+            text::BlockOutcome::Applied { .. } => assert!(now.contains(&edit.text), "{:?} missing from {now:?}", edit.text),
+            _ => assert!(now.contains(&old.text), "{:?} was lost from {now:?} ({outcome:?})", old.text),
+        }
+    }
+}
+
+#[test]
+fn style_marks_round_trip_into_ranges_and_bad_marks_are_dropped() {
+    let run = |resource: &str, size: f64| text::RunStyle {
+        resource: resource.into(),
+        size,
+        color: [1.0, 0.0, 0.0],
+        bold: false,
+        italic: false,
+        family: added::Family::Helvetica,
+    };
+    let runs = [run("F1", 12.0), run("F2", 20.0)];
+    let done = text::untag_runs("⟦2⟧Título⟦/2⟧\n⟦1⟧cuerpo ñ⟦/1⟧ fin", &runs);
+    let (plain, style) = (done.text, done.exact);
+    assert_eq!(plain, "Título\ncuerpo ñ fin");
+    let got: Vec<_> = style.ranges.iter().map(|r| (r.range.clone(), r.resource.clone().unwrap(), r.size.unwrap())).collect();
+    assert_eq!(got, vec![(0..7, "F2".to_string(), 20.0), (8..17, "F1".to_string(), 12.0)]);
+    for r in &style.ranges {
+        assert!(plain.get(r.range.clone()).is_some(), "ranges sit on char boundaries");
+    }
+    // Unknown run numbers, unbalanced and unterminated marks keep their text and never panic.
+    for bad in ["⟦9⟧x⟦/9⟧", "⟦1⟧x", "x⟦/1⟧y", "⟦", "⟦1", "⟦a⟧b⟦/a⟧", "⟦0⟧z⟦/0⟧", "", "⟦1⟧⟦/1⟧", "⟦1⟧ñ⟦2⟧é⟦/2⟧"]
+    {
+        let done = text::untag_runs(bad, &runs);
+        let (plain, style) = (done.text, done.exact);
+        for r in done.standard.ranges.iter().chain(&style.ranges) {
+            assert!(plain.get(r.range.clone()).is_some(), "{bad:?}");
+        }
+    }
+    assert_eq!(text::untag_runs("⟦9⟧x⟦/9⟧", &runs).text, "x");
+}
+
+const LONG_WORD: &str = "Supercalifragilisticexpialidocious";
+
+/// A word that can't wrap grows to the right, so a paragraph near the page edge must shrink (or
+/// say it overflows) rather than run off the page.
+#[test]
+fn a_batch_keeps_the_new_text_inside_the_right_edge_of_the_page() {
+    let mut doc = text_page("BT /F1 12 Tf 500 700 Td (Hi) Tj ET");
+    let edits = batch_edits(&doc, |_| LONG_WORD.to_string());
+    let report = text::rewrite_page_blocks(&mut doc, 0, &edits, 0.7).unwrap();
+    match &report.outcomes[..] {
+        [text::BlockOutcome::Applied { scale, overflow, .. }] => assert!(*scale < 1.0 && *overflow, "{report:?}"),
+        other => panic!("{other:?}"),
+    }
+    let blocks = text::text_blocks(&doc, 0).unwrap();
+    assert_eq!(blocks.len(), 1);
+    assert!(blocks[0].text.contains(LONG_WORD));
+}
+
+/// The new text may not cover the paragraph beside it.
+#[test]
+fn a_batch_does_not_let_a_paragraph_cover_its_neighbour() {
+    let mut doc = text_page("BT /F1 12 Tf 72 700 Td (Hi) Tj ET BT /F1 12 Tf 230 700 Td (Other) Tj ET");
+    let before = text::text_blocks(&doc, 0).unwrap();
+    assert_eq!(before.len(), 2);
+    let key = text::BlockKey::of(before.iter().min_by(|a, b| a.rect[0].total_cmp(&b.rect[0])).unwrap());
+    let report = text::rewrite_page_blocks(&mut doc, 0, &[text::BlockEdit::new(key, LONG_WORD)], 0.7).unwrap();
+    match &report.outcomes[..] {
+        [text::BlockOutcome::Applied { scale, overflow, .. }] => assert!(*scale < 1.0 || *overflow, "{report:?}"),
+        other => panic!("{other:?}"),
+    }
+    // The shrunk text stops short of the neighbour, or the overflow is reported.
+    let blocks = text::text_blocks(&doc, 0).unwrap();
+    let (mine, other) = (&blocks[0], &blocks[1]);
+    let (mine, other) = if mine.rect[0] < other.rect[0] { (mine, other) } else { (other, mine) };
+    if let text::BlockOutcome::Applied { overflow: false, .. } = report.outcomes[0] {
+        assert!(mine.rect[2] <= other.rect[0] + 1.0, "{:?} covers {:?}", mine.rect, other.rect);
+    }
+}
+
+#[test]
+fn a_batch_leaves_paragraphs_with_nothing_to_translate_alone() {
+    for s in ["4", "© 2025", "→", "  ", "", "1.2 – 3,4 %"] {
+        assert!(!text::is_translatable(s), "{s:?}");
+    }
+    for s in ["a", "Año 2025", "日本語", "Ünï"] {
+        assert!(text::is_translatable(s), "{s:?}");
+    }
+    let mut doc = text_page("BT /F1 12 Tf 72 700 Td (4) Tj ET BT /F1 12 Tf 72 600 Td (Chapter) Tj ET");
+    let before = page_text(&doc);
+    let mut edits = batch_edits(&doc, |t| t.to_string());
+    for e in &mut edits {
+        e.text = if e.text == "4" { "5".into() } else { "7".into() };
+    }
+    let report = text::rewrite_page_blocks(&mut doc, 0, &edits, 0.7).unwrap();
+    // "4" -> "5": a number for a number is a real edit. "Chapter" -> "7": its word would vanish.
+    let by_text = |t: &str| edits.iter().position(|e| e.text == t).unwrap();
+    assert!(matches!(&report.outcomes[by_text("5")], text::BlockOutcome::Applied { .. }), "{report:?}");
+    assert!(matches!(&report.outcomes[by_text("7")], text::BlockOutcome::Lost { .. }), "{report:?}");
+    let now = page_text(&doc);
+    assert!(now.contains('5') && !now.contains('4') && now.contains("Chapter") && !now.contains('7'), "{before:?} became {now:?}");
+}
+
+#[test]
+fn a_paragraph_with_two_styles_is_tagged_and_one_with_a_single_style_is_not() {
+    let one = text_page("BT /F1 12 Tf 72 700 Td (just one style) Tj ET");
+    let block = text::text_blocks(&one, 0).unwrap().remove(0);
+    assert_eq!(text::tag_runs(&one, 0, &block).unwrap(), None);
+    // A 20 pt title over a 12 pt body, close enough to be one paragraph.
+    let two = text_page("BT /F1 20 Tf 72 700 Td (Big title) Tj ET BT /F1 12 Tf 72 680 Td (small body here) Tj ET");
+    for block in text::text_blocks(&two, 0).unwrap() {
+        if let Some(tagged) = text::tag_runs(&two, 0, &block).unwrap() {
+            assert!(tagged.text.contains('⟦') && tagged.runs.len() == 2, "{tagged:?}");
+            let done = text::untag_runs(&tagged.text, &tagged.runs);
+            let (plain, style) = (done.text, done.exact);
+            assert_eq!(style.ranges.len(), 2);
+            assert_eq!(done.standard.ranges.len(), 2);
+            assert!(plain.contains("Big title") && plain.contains("small body here"), "{plain:?}");
+        }
+    }
+}
+
+fn tagged_blocks(doc: &Document) -> Vec<Option<text::TaggedBlock>> {
+    text::text_blocks(doc, 0).unwrap().iter().map(|b| text::tag_runs(doc, 0, b).unwrap()).collect()
+}
+
+fn plain_run(resource: &str, size: f64) -> text::RunStyle {
+    text::RunStyle { resource: resource.into(), size, color: [0.0; 3], bold: false, italic: false, family: added::Family::Helvetica }
+}
+
+#[test]
+fn a_wrapped_paragraph_has_no_hard_breaks() {
+    let page = text_page(
+        "BT /F1 12 Tf 14 TL 72 700 Td (The quick brown fox jumps over the lazy dog and) Tj T* (keeps running across the whole field until) Tj T* (it finally stops.) Tj ET",
+    );
+    assert!(tagged_blocks(&page).iter().all(Option::is_none));
+}
+
+#[test]
+fn a_short_sentence_row_is_a_hard_break_but_a_short_row_without_a_stop_is_not() {
+    let page = text_page(
+        "BT /F1 12 Tf 14 TL 72 700 Td (A long first row of ordinary running text here.) Tj T* (Short end.) Tj T* (Then another long row of running text goes on) Tj ET",
+    );
+    let all = tagged_blocks(&page);
+    let tagged = all.iter().flatten().next().expect("break after the short row");
+    assert_eq!(tagged.text.matches("⟦br⟧").count(), 1, "{:?}", tagged.text);
+    let page = text_page(
+        "BT /F1 12 Tf 14 TL 72 700 Td (A long first row of ordinary running text here.) Tj T* (Short) Tj T* (Then another long row of running text goes on) Tj ET",
+    );
+    assert!(tagged_blocks(&page).iter().all(Option::is_none));
+}
+
+#[test]
+fn untag_turns_breaks_into_newlines_and_places_ranges_after_them() {
+    let runs = vec![plain_run("F1", 12.0), plain_run("F2", 20.0)];
+    let done = text::untag_runs("Año⟦br⟧⟦2⟧ñandú⟦/2⟧⟦br⟧fin", &runs);
+    assert_eq!(done.text, "Año\nñandú\nfin");
+    assert_eq!(done.exact.ranges.len(), 1);
+    assert_eq!(&done.text[done.exact.ranges[0].range.clone()], "ñandú");
+}
+
+#[test]
+fn untag_survives_hostile_breaks() {
+    let runs = vec![plain_run("F1", 12.0)];
+    for input in [
+        "",
+        "⟦br⟧",
+        "⟦br⟧⟦br⟧⟦br⟧",
+        "a⟦br⟧⟦br⟧b",
+        "⟦1⟧a⟦br⟧",
+        "⟦1⟧⟦br⟧⟦/1⟧",
+        "⟦1⟧a⟦br⟧b",
+        "⟦1⟧a⟦1⟧⟦br⟧b⟦/1⟧⟦/1⟧",
+        "⟦br",
+        "é⟦br⟧⟦1⟧日本⟦br⟧語⟦/1⟧⟦br⟧",
+        "⟦BR⟧⟦ br ⟧",
+    ] {
+        let done = text::untag_runs(input, &runs);
+        assert!(!done.text.ends_with('\n') && !done.text.starts_with('\n'), "{input:?} -> {:?}", done.text);
+        assert!(!done.text.contains("\n\n"), "{input:?}");
+        for r in done.exact.ranges.iter().chain(&done.standard.ranges) {
+            assert!(r.range.start < r.range.end && r.range.end <= done.text.len(), "{input:?}");
+            assert!(done.text.is_char_boundary(r.range.start) && done.text.is_char_boundary(r.range.end), "{input:?}");
+        }
+    }
+}
+
+#[test]
+fn breaks_survive_mixed_styles_and_the_ranges_stay_inside_the_text() {
+    let page = text_page(
+        "BT /F1 20 Tf 72 700 Td (Big title) Tj ET BT /F1 12 Tf 14 TL 72 680 Td (A body row that is quite long indeed.) Tj T* (Short end.) Tj T* (Then more running text follows here) Tj ET",
+    );
+    let all = tagged_blocks(&page);
+    let tagged = all.iter().flatten().find(|t| t.runs.len() == 2).expect("two runs");
+    assert!(tagged.text.matches("⟦br⟧").count() >= 2, "{:?}", tagged.text);
+    let done = text::untag_runs(&tagged.text, &tagged.runs);
+    assert!(done.text.contains('\n') && !done.text.contains('⟦'), "{:?}", done.text);
+    for r in done.exact.ranges.iter().chain(&done.standard.ranges) {
+        assert!(r.range.start < r.range.end && r.range.end <= done.text.len());
+        assert!(done.text.is_char_boundary(r.range.start) && done.text.is_char_boundary(r.range.end));
     }
 }

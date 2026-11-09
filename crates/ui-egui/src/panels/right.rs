@@ -12,6 +12,10 @@ pub fn right_panel(app: &mut PdfCraftApp, ui: &mut egui::Ui) {
         crate::ai_ui::panel(app, ui);
         return;
     }
+    if panel == RightPanel::Translate {
+        crate::translate_panel(app, ui);
+        return;
+    }
     let Some((index, id)) = app.active_ids() else { return };
     let mut nav: Option<Nav> = None;
     let mut close = false;
@@ -49,7 +53,7 @@ pub fn right_panel(app: &mut PdfCraftApp, ui: &mut egui::Ui) {
             .stroke(Stroke::new(1.0, t.divider))
             .show(ui, |ui| {
                 let (title, count) = match panel {
-                    RightPanel::Ai => return,
+                    RightPanel::Ai | RightPanel::Translate => return,
                     RightPanel::Comments => ("Comments", Some(crate::comments_panel::count(info))),
                     RightPanel::Bookmarks => ("Bookmarks", None),
                     RightPanel::Pages => ("Pages", Some(info.pages.len())),
@@ -191,7 +195,7 @@ pub fn right_panel(app: &mut PdfCraftApp, ui: &mut egui::Ui) {
                     thumbnail_size(ui, &t, view, enabled);
                 }
                 egui::ScrollArea::vertical().auto_shrink([false, false]).show(ui, |ui| match panel {
-                    RightPanel::Ai => {}
+                    RightPanel::Ai | RightPanel::Translate => {}
                     RightPanel::Comments => {
                         if let Some(e) = crate::comments_panel::show(ui, &t, doc, view, prefs, comment_allowed, &mut nav) {
                             panel_edit = Some(e);

@@ -2,24 +2,19 @@ Image
 Label = "AI assistant"
 Label = "Chat with the current PDF"
 Button "Close" [off]
-Button "New chat" [off]
-Image
-Label = "MarkItDown · PDF"
-ComboBox = "codex"
-Label = "Agent"
-Image
+Button "Conversation options" [off]
+ComboBox "Agent" = "Codex"
+ComboBox "Model" = "Automatic"
+Pane
+  MultilineTextInput
+  Image
+  ComboBox "Context" = "Entire document"
+  Button "Send" [disabled]
+  Image
+  Label = "The document is not sent until you ask."
 Label = "What would you like to know?"
-Label = "Ask a question or choose a suggestion below. Pdf prepares the document locally with MarkItDown first."
+Label = "Ask a question or choose a suggestion."
 Button "Summarize"
 Button "Key points"
 Button "Explain"
 Button "Actions & risks"
-Image
-Label = "Translate to"
-TextInput = "español"
-Button "Translate"
-MultilineTextInput
-Label = "Ctrl/⌘ + Enter to send"
-Button "Send" [on] [disabled]
-Image
-Label = "The PDF is not sent until you ask."
