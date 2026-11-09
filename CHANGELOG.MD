@@ -9,3 +9,4 @@
 - 2026-11-09: Panel de IA rediseñado (`crates/ui-egui/src/ai_ui/`: cabecera, mensajes y compositor; selector de agente y modelo compartido en `ai_model.rs`; respuestas en Markdown sin burbuja, tablas con borde); ver `docs/ai-panel.md`.
 - 2026-11-09: Motor `translate_copy` y herramienta `text_translate` (traducción de páginas a una copia) integrados desde `agent/p2e-engine-translate`.
 - 2026-11-09: Panel de traducción en la barra lateral (`crates/ui-egui/src/translate_ui.rs`, `RightPanel::Translate`): idioma, páginas, progreso con cancelar, abrir o guardar la copia; ver `docs/translate-panel.md`.
+- 2026-11-09: Versión 0.19.2 (paneles de IA y traducción).
