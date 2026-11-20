@@ -16,4 +16,5 @@ mod ocr_words;
 mod styled;
 
 pub(super) use grouping::{alignment_frame, group_blocks, group_reading_blocks, is_centred, opens_with_marker};
+pub(super) use ocr_words::rewrite_changed_words;
 pub(super) use styled::rewrite_styled_block;
