@@ -805,7 +805,25 @@ fn card_documents_and_view(ui: &mut egui::Ui, app: &mut PdfCraftApp, t: &Tokens,
         }
     });
     ctx.label_secondary(ui, tl!("Used when a PDF doesn't ask for a layout or zoom. Continuous scrolling never snaps between pages."), t);
-    ctx.checkbox(ui, &mut app.always_default_view, tl!("Always use my default zoom and page layout"), t);
+    let always_changed = ctx.checkbox(ui, &mut app.always_default_view, tl!("Always use my default zoom and page layout"), t).changed();
+
+    let changes = ViewPrefChanges {
+        always_reset: always_changed,
+        layout: layout_changed,
+        continuous: continuous_changed,
+        gaps: gaps_changed,
+        fit: fit_changed,
+        zoom: zoom_changed,
+    };
+    if app.always_default_view && (always_changed || layout_changed || continuous_changed || gaps_changed || fit_changed || zoom_changed) {
+        let defaults = app.view_defaults;
+        for view in &mut app.views {
+            apply_view_pref_changes(view, &defaults, changes);
+        }
+    } else if let Some(i) = app.active {
+        let defaults = app.view_defaults;
+        apply_view_pref_changes(&mut app.views[i], &defaults, ViewPrefChanges { always_reset: false, ..changes });
+    }
     ctx.checkbox(ui, &mut app.force_continuous, tl!("Always open documents with continuous scrolling"), t);
     ctx.label_secondary(ui, tl!("Overrides the page layout a PDF asks for and the view remembered for the file."), t);
     ui.add_space(6.0);

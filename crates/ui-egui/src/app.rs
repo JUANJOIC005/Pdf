@@ -590,6 +590,18 @@ impl eframe::App for PdfCraftApp {
 }
 
 impl PdfCraftApp {
+    /// Returns whether a native close is being handled, or `None` when the window may close now.
+    fn native_close_state(&mut self, ctx: &egui::Context) -> Option<bool> {
+        let requested = ctx.input(|i| i.viewport().close_requested());
+        if requested {
+            self.guard_quit(ctx);
+            if self.close_request.is_none() {
+                return None;
+            }
+        }
+        Some(requested)
+    }
+
     fn logic_unguarded(&mut self, ctx: &egui::Context) {
         #[cfg(test)]
         self.injected_panic(crate::frame_guard::FramePart::Logic);
@@ -602,16 +614,14 @@ impl PdfCraftApp {
         // Notices raised outside `ui` (opened files, OS events, the control channel) translate too.
         let lang = i18n::Lang::from_pref(&self.language);
         i18n::set_current(lang);
+        self.apply_status_captions(lang);
+        // Form date fields name months in the date language (Preferences ▸ Date format), which
+        // follows the interface language until one is picked (#5303).
+        pdfcraft_engine::dates::use_form_date_language(self.session.date_language().unwrap_or(lang.code()));
         // Handle an accepted native close before workers and rendering. This avoids a final empty
         // frame (seen as a brief black flash with Super+W) while preserving the save prompt for
         // documents with unsaved work.
-        let native_close = ctx.input(|i| i.viewport().close_requested());
-        if native_close {
-            self.guard_quit(ctx);
-            if self.close_request.is_none() {
-                return;
-            }
-        }
+        let Some(native_close) = self.native_close_state(ctx) else { return };
         #[cfg(not(target_arch = "wasm32"))]
         {
             if let Some(worker) = &self.open_worker {

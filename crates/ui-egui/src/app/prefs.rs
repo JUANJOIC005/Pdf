@@ -397,15 +397,9 @@ impl PdfCraftApp {
         if let Some(on) = v["always_default_view"].as_bool() {
             self.always_default_view = on;
         }
+        self.restore_print_prefs(v);
         if let Some(on) = v["force_continuous"].as_bool() {
             self.force_continuous = on;
-        }
-        if let Some(paper) = v
-            .get("print_paper")
-            .and_then(serde_json::Value::as_str)
-            .and_then(|name| pdfcraft_engine::print::PAPERS.iter().position(|(canonical, _)| *canonical == name))
-        {
-            self.print_draft.paper = paper;
         }
         if let Some(on) = v["highlight_fields"].as_bool() {
             self.view_defaults.highlight_fields = on;
