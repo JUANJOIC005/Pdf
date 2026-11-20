@@ -174,6 +174,12 @@ pub fn absolute(paths: &[String]) -> Vec<String> {
 pub fn claim(files: &[String], may_hand_off: bool, combine: bool) -> Claim {
     #[cfg(any(windows, all(unix, not(target_os = "macos"))))]
     {
+        #[cfg(target_os = "linux")]
+        let may_hand_off = {
+            let wayland_display = std::env::var("WAYLAND_DISPLAY").ok();
+            let activation_token = std::env::var("XDG_ACTIVATION_TOKEN").ok();
+            hand_off_keeps_focus(may_hand_off, wayland_display.as_deref(), activation_token.as_deref())
+        };
         match socket_path() {
             Some(path) => claim_at(&path, files, may_hand_off, combine),
             None => Claim::Alone,
@@ -184,6 +190,17 @@ pub fn claim(files: &[String], may_hand_off: bool, combine: bool) -> Claim {
         let _ = (files, may_hand_off, combine);
         Claim::Alone
     }
+}
+
+/// Whether this launch may disappear into the running instance without losing the compositor's
+/// permission to focus it. Files and other desktop launchers give a new Wayland process a
+/// single-use activation token. Winit can apply it only while creating a window, so handing the
+/// files to an existing process would discard the token and leave that window behind Files.
+#[cfg(target_os = "linux")]
+fn hand_off_keeps_focus(may_hand_off: bool, wayland_display: Option<&str>, activation_token: Option<&str>) -> bool {
+    let native_wayland = wayland_display.is_some_and(|value| !value.is_empty());
+    let activated_launch = activation_token.is_some_and(|value| !value.is_empty());
+    may_hand_off && !(native_wayland && activated_launch)
 }
 
 /// The socket in `%LOCALAPPDATA%\PdfCraft` (beside the crash-recovery folder); none when
@@ -425,6 +442,15 @@ mod tests {
         assert_eq!(out, vec![std::env::current_dir().unwrap().join("Quote.pdf").to_string_lossy().into_owned()]);
         let already = std::env::current_dir().unwrap().join("x.pdf").to_string_lossy().into_owned();
         assert_eq!(absolute(std::slice::from_ref(&already)), vec![already]);
+    }
+
+    #[cfg(target_os = "linux")]
+    #[test]
+    fn a_wayland_file_manager_launch_keeps_its_activation_token_for_a_new_window() {
+        assert!(!hand_off_keeps_focus(true, Some("wayland-1"), Some("xdg-token")));
+        assert!(hand_off_keeps_focus(true, Some("wayland-1"), None));
+        assert!(hand_off_keeps_focus(true, None, Some("xdg-token")));
+        assert!(!hand_off_keeps_focus(false, Some("wayland-1"), Some("xdg-token")));
     }
 
     /// #3425: the open parameters after a file reach the running app as they were given. Made
