@@ -595,9 +595,7 @@ impl PdfCraftApp {
         let requested = ctx.input(|i| i.viewport().close_requested());
         if requested {
             self.guard_quit(ctx);
-            if self.close_request.is_none() {
-                return None;
-            }
+            self.close_request?;
         }
         Some(requested)
     }
