@@ -29,4 +29,5 @@
 - [Paridad de la aplicación objetivo](target-app-parity.md): comparación funcional.
 - [Paridad de interfaz](ui-parity.md): cobertura de interfaz.
 - [Inicio del renderizador de Windows](windows-renderer-startup.md): arranque gráfico en Windows.
+- [Activación desde Files](window-activation.md): foco y espacio de trabajo al abrir un PDF desde Wayland.
 - [Recuento de palabras](word-count.md): cálculo de palabras.
