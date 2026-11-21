@@ -58,11 +58,7 @@ pub(crate) use fallback::{SOURCE_SPACE_CALLS, take_source_character_measurements
 #[cfg(test)]
 use fallback::{add_type3_font, is_type3_fallback};
 pub(crate) use fallback::{glyph_path, type3_font_dict, unique_font_name};
-#[cfg(test)]
-pub(crate) use interp::METRICS_BUILT;
 use interp::{Origin, Paint, union};
-#[cfg(test)]
-pub(crate) use lines::dropped_advances_within;
 pub(crate) use lines::{
     ContentStream, FormBudget, Read, content_streams, content_streams_within, dict_in_place, drawn_before_damage, dropped_advances,
     dropped_side_effects, first_op_after_damage, form_call, joined, reopen_text_object, resource_dict, rewritten_contents, splice,
