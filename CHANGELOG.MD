@@ -1,6 +1,6 @@
 # Registro de cambios
 
-- 2026-11-20: Las aperturas desde Files en Wayland conservan el token de activación y muestran el PDF en una ventana enfocada del espacio de trabajo actual; se restauran los iconos abiertos del proyecto y se corrigen los conflictos de integración de la sincronización 0.21.1.
+- 2026-11-20: Las aperturas desde Files en Wayland conservan el token de activación y muestran el PDF en una ventana enfocada del espacio de trabajo actual; se restauran los iconos abiertos del proyecto, se corrigen los conflictos de integración de la sincronización 0.21.1 y se alinean las pruebas Flatpak con el identificador del fork.
 - 2026-11-08: Pdf se sincroniza con PdfCraft 0.19.0 como versión 0.19.1, conservando la identidad y funciones del fork.
 \n- 2026-11-08: El sincronizador de upstream atribuye los commits al propietario y valida las actualizaciones en una rama antes de integrarlas.
 

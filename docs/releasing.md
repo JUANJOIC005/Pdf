@@ -1,5 +1,7 @@
 # Releasing PdfCraft
 
+En el fork Pdf, los paquetes Linux y las pruebas Flatpak usan el identificador `io.github.juanjoic005.pdf`; los manifiestos están en `packaging/linux/flatpak/` con ese nombre.
+
 Every push to the `release` branch runs `.github/workflows/release.yml`. It builds installers for
 macOS, Windows, Linux, FreeBSD and the web, signs the ones it has certificates for, and creates or
 updates a **draft** GitHub Release named `PdfCraft v<version>`. Nobody sees a draft until a
